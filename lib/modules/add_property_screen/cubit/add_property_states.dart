@@ -20,3 +20,7 @@ class AddPropertySuccess extends AddPropertyStates {}
 class SelectItemState extends AddPropertyStates {}
 
 class FetchItemsLoading extends AddPropertyStates {}
+
+class AddImagesState extends AddPropertyStates {}
+
+class SelectTypeState extends AddPropertyStates {}

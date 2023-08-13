@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/models/governorate_model.dart';
 import '../../../shared/models/region_model.dart';
@@ -16,12 +20,39 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
   RegionModel? selectedRegion;
   bool governoratesLoading = false;
   bool regionsLoading = false;
-  List<RegionModel> locations = [
-    RegionModel(id: 1, x: 1.3213613636, y: 1.654643, name: "a"),
-    RegionModel(id: 2, x: 1.357575, y: 1.6798724123, name: "b"),
-    RegionModel(id: 3, x: 1.3213613636, y: 1.12354643, name: "c"),
-    RegionModel(id: 4, x: 1.3213613636, y: 1.5758743, name: "d"),
-  ];
+
+  List<XFile> selectedImagesList = [];
+
+  // List<RegionModel> locations = [
+  //   RegionModel(id: 1, x: 1.3213613636, y: 1.654643, name: "a"),
+  //   RegionModel(id: 2, x: 1.357575, y: 1.6798724123, name: "b"),
+  //   RegionModel(id: 3, x: 1.3213613636, y: 1.12354643, name: "c"),
+  //   RegionModel(id: 4, x: 1.3213613636, y: 1.5758743, name: "d"),
+  // ];
+
+  List<String> types = ['House', 'Farm', 'Market'];
+  int selectedTypeIndex = 0;
+
+  void selectPropertyType(String index) {
+    emit(AddPropertyInitial());
+    selectedTypeIndex = types.indexOf(index);
+    emit(SelectTypeState());
+  }
+
+  Future<void> selectimage() async {
+    final ImagePicker imagePicker = ImagePicker();
+    final List<XFile> selectedimage = await imagePicker.pickMultiImage();
+    try {
+      if (selectedimage.isNotEmpty) {
+        selectedImagesList.addAll(selectedimage);
+      } else {
+        selectedImagesList.clear();
+      }
+      emit(AddImagesState());
+    } on PlatformException catch (ex) {
+      log(ex.toString());
+    }
+  }
 
   Future<void> getGovernorates() async {
     emit(FetchItemsLoading());

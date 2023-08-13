@@ -19,6 +19,9 @@ class RegisterCubit extends Cubit<RegisterStates> {
         .then(
       (value) async {
         if (value != null) {
+          if (await FirebaseAPIs.userExists() == false) {
+            await FirebaseAPIs.createUser(userName: name);
+          }
           (await RegisterService.register(
                   name: name!,
                   email: email!,

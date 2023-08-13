@@ -395,14 +395,4 @@ class FirebaseAPIs {
     }
     return null;
   }
-
-//   static Future<void> signOut()async{
-//     auth.signOut();
-// // const auth = getAuth();
-// // signOut(auth).then(() => {
-// //   // Sign-out successful.
-// // }).catch((error) => {
-// //   // An error happened.
-// // });
-//   }
 }

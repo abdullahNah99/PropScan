@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:untitled/modules/conversations_screen/conversations_screen.dart';
+import 'package:untitled/modules/profile_screen/profile_screen.dart';
 import 'package:untitled/modules/properties_screen/properties_screen.dart';
 import 'package:untitled/modules/register_screen/register_screen.dart';
+import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import '../../modules/add_property_screen/add_property_screen.dart';
 import '../../modules/login_screen/login_screen.dart';
 import '../../modules/splash_screen/splash_screen.dart';
@@ -12,6 +15,8 @@ abstract class AppRouter {
     PropertiesView.route: (context) => const PropertiesView(),
     RegisterView.route: (context) => const RegisterView(),
     SplashView.route: (context) => const SplashView(),
+    ProfileView.route: (context) => ProfileView(user: FirebaseAPIs.me),
+    ConversationsView.route: (context) => const ConversationsView(),
     // RegisterView.route: (context) => const RegisterView(),
     // GoogleMapView.route: (context) =>  GoogleMapView(),
   };
