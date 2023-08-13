@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/add_property_detail.dart';
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/dio_helper.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          initialRoute: SplashView.route,
+          home: Add_property_detail(),
+          // initialRoute: SplashView.route,
           routes: AppRouter.router,
         );
       },
