@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/conversations_screen/conversations_screen.dart';
+import 'package:untitled/modules/profile_screen/profile_screen.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/widgets/custom_drawer_button.dart';
 import 'package:untitled/shared/models/user_model.dart';
+import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
 import '../../../shared/widgets/custome_image.dart';
 
@@ -14,10 +17,16 @@ abstract class CustomDrawer {
     required UserModel userModel,
   }) {
     return Drawer(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30.r),
+          bottomRight: Radius.circular(30.r),
+        ),
+      ),
       width: 250.w,
       child: Column(
         children: [
-          const SizedBox(height: 15),
+          SizedBox(height: 30.h),
           Center(
             child: CustomeImage(
               height: 75.h,
@@ -31,20 +40,38 @@ abstract class CustomDrawer {
           ),
           Center(
             child: Text(
-              userModel.name,
+              FirebaseAPIs.me.name,
               style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
             ),
           ),
+          SizedBox(height: 60.h),
+          CustomDrawerButton(
+            text: 'Profile',
+            icon: Icons.account_circle,
+            onPressed: () {
+              Navigator.pushNamed(context, ProfileView.route);
+            },
+          ),
+          SizedBox(height: 15.h),
           CustomDrawerButton(
             text: 'Favorite',
             icon: Icons.favorite,
             onPressed: () {},
           ),
           SizedBox(height: 15.h),
+          CustomDrawerButton(
+            text: 'Conversations',
+            icon: Icons.chat,
+            onPressed: () {
+              Navigator.pushNamed(context, ConversationsView.route);
+            },
+          ),
+          SizedBox(height: 15.h),
           const Expanded(child: SizedBox(height: 10)),
           CustomDrawerButton(
             text: 'Logout',
             icon: Icons.logout,
+            iconColor: Colors.red,
             onPressed: () async {
               await propertiesCubit.logOut(context);
             },

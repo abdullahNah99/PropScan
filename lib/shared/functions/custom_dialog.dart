@@ -25,4 +25,11 @@ abstract class CustomDialog {
       },
     );
   }
+
+  static void showProgressBar(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+  }
 }

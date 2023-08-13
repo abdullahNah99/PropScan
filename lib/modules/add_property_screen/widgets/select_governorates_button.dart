@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../shared/functions/custom_dialog.dart';
 import '../../../shared/styles/app_colors.dart';
 import '../../../shared/widgets/custome_dialog_button.dart';
@@ -14,8 +15,9 @@ class SelectGovernoratesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomeTextField(
+      width: 160.w,
       hintText: addPropertyCubit.selctedGovernorate == null
-          ? 'Select Governorate ...'
+          ? 'Governorate...'
           : addPropertyCubit.selctedGovernorate!.name,
       hintStyle: addPropertyCubit.selctedGovernorate == null
           ? null

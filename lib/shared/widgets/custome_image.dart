@@ -27,7 +27,7 @@ class CustomeImage extends StatelessWidget {
       width: width ?? 150.w,
       margin: margin,
       decoration: BoxDecoration(
-        color: color ?? Colors.grey.shade200,
+        color: color ?? Colors.transparent,
         borderRadius: borderRadius,
         image: image != null
             ? DecorationImage(fit: BoxFit.cover, image: AssetImage(image!))
