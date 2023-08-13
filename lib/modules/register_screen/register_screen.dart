@@ -7,7 +7,6 @@ import 'package:untitled/modules/register_screen/cubit/register_states.dart';
 import 'package:untitled/shared/functions/custom_snack_bar.dart';
 import 'package:untitled/shared/widgets/custome_button.dart';
 import 'package:untitled/shared/widgets/custome_progress_indicator.dart';
-
 import '../../shared/styles/app_colors.dart';
 import '../../shared/utils/app_assets.dart';
 import '../../shared/widgets/custome_image.dart';
@@ -73,7 +72,9 @@ class _Body extends StatelessWidget {
               width: 500.w,
               height: 95.w,
             ),
-            const CustomeImage(image: AppAssets.logo),
+            const CustomeImage(
+              image: AppAssets.logo,
+            ),
             SizedBox(height: 20.h),
             Text(
               'Create Your Account',
@@ -98,6 +99,7 @@ class _Body extends StatelessWidget {
                 color: AppColors.defaultColor,
                 size: 27,
               ),
+              textCapitalization: TextCapitalization.sentences,
               onChanged: (value) => registerCubit.name = value,
             ),
             SizedBox(height: 20.h),

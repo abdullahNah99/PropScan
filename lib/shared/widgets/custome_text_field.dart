@@ -93,6 +93,7 @@ import '../styles/app_colors.dart';
 // }
 
 class CustomeTextField extends StatelessWidget {
+  final double? width;
   final String? hintText;
   final IconData? iconData;
   final Function(String)? onChanged;
@@ -125,12 +126,13 @@ class CustomeTextField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.labelText,
     this.labelStyle,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 340.w,
+      width: width ?? 340.w,
       child: TextFormField(
         validator: validator ??
             (value) {
@@ -152,7 +154,7 @@ class CustomeTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle: hintStyle ??
               TextStyle(
-                  fontSize: 20, color: AppColors.defaultColor.withOpacity(.6)),
+                  fontSize: 17, color: AppColors.defaultColor.withOpacity(.6)),
           labelText: labelText,
           labelStyle: labelStyle ??
               const TextStyle(

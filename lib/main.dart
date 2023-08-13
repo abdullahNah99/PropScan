@@ -1,14 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:untitled/modules/add_property_detail.dart';
+
+import 'package:untitled/modules/add_property_screen/add_property_screen.dart';
+
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/dio_helper.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_router.dart';
-
 import 'firebase_options.dart';
-import 'modules/splash_screen/splash_screen.dart';
+
+late Size screenSize;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +27,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    screenSize = MediaQuery.of(context).size;
     return ScreenUtilInit(
       builder: (context, child) {
         return MaterialApp(
@@ -29,14 +35,19 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             useMaterial3: true,
-            primarySwatch: Colors.blueGrey,
+            primarySwatch:
+                AppColors.createMaterialColor(AppColors.defaultColor),
             appBarTheme: AppBarTheme(
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: AppColors.defaultColor,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(22.r),
                 ),
               ),
-              color: AppColors.color2,
+              color: AppColors.defaultColor,
+              centerTitle: true,
               iconTheme: const IconThemeData(
                 color: Colors.white,
                 size: 30,
@@ -47,7 +58,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: Add_property_detail(),
+
+          home: const AddPropertyView(),
+
           // initialRoute: SplashView.route,
           routes: AppRouter.router,
         );
