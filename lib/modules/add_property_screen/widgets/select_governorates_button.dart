@@ -14,49 +14,73 @@ class SelectGovernoratesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomeTextField(
-      width: 160.w,
-      hintText: addPropertyCubit.selctedGovernorate == null
-          ? 'Governorate...'
-          : addPropertyCubit.selctedGovernorate!.name,
-      hintStyle: addPropertyCubit.selctedGovernorate == null
-          ? null
-          : const TextStyle(color: Colors.black),
-      iconData: Icons.place,
-      disableFocusNode: true,
-      suffixIcon: addPropertyCubit.governoratesLoading
-          ? SizedBox(
-              width: 5,
-              child: Transform.scale(
-                scale: .5,
-                child: const CustomeProgressIndicator(strokeWidth: 2),
-              ),
-            )
-          : const Icon(
-              Icons.expand_more_sharp,
-              size: 40,
-              color: AppColors.defaultColor,
-            ),
-      onTap: () async {
-        await addPropertyCubit.getGovernorates();
-        // ignore: use_build_context_synchronously
-        CustomDialog.showCustomDialog(
-          context,
-          children: List.generate(
-            addPropertyCubit.governorates.length,
-            (index) {
-              return CustomDialogButton(
-                onTap: () {
-                  addPropertyCubit.selectGovernorate(index: index);
-                  Navigator.pop(context);
-                  log(addPropertyCubit.selctedGovernorate?.name ?? '');
-                },
-                text: addPropertyCubit.governorates[index].name,
-              );
-            },
+    return Stack(
+      children: [
+        Container(
+          width: 160.w,
+          height: 55.h,
+          decoration: BoxDecoration(
+            color: AppColors.color2,
+            borderRadius: BorderRadius.circular(25.r),
           ),
-        );
-      },
+        ),
+        CustomeTextField(
+          width: 160.w,
+          noOutlineBorder: true,
+          hintText: addPropertyCubit.selctedGovernorate == null
+              ? 'Governorate...'
+              : addPropertyCubit.selctedGovernorate!.name,
+          hintStyle: const TextStyle(fontSize: 17, color: Colors.white),
+          iconData: Icons.place,
+          disableFocusNode: true,
+          suffixIcon: addPropertyCubit.governoratesLoading
+              ? SizedBox(
+                  width: 5,
+                  child: Transform.scale(
+                    scale: .5,
+                    child: const CustomeProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : addPropertyCubit.selctedGovernorate == null
+                  ? const Icon(
+                      Icons.expand_more_sharp,
+                      size: 40,
+                      color: Colors.white,
+                    )
+                  : const Icon(
+                      Icons.playlist_remove_sharp,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+          onTap: () async {
+            if (addPropertyCubit.selctedGovernorate != null) {
+              addPropertyCubit.removeSelectedItem(helper: 'G');
+            } else {
+              await addPropertyCubit.getGovernorates();
+              // ignore: use_build_context_synchronously
+              CustomDialog.showCustomDialog(
+                context,
+                children: List.generate(
+                  addPropertyCubit.governorates.length,
+                  (index) {
+                    return CustomDialogButton(
+                      onTap: () {
+                        addPropertyCubit.selectGovernorate(index: index);
+                        Navigator.pop(context);
+                        log(addPropertyCubit.selctedGovernorate?.name ?? '');
+                      },
+                      text: addPropertyCubit.governorates[index].name,
+                    );
+                  },
+                ),
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }

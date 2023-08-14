@@ -29,7 +29,8 @@ abstract class StorePropertyService {
             'direction': storePropertyModel.direction,
           },
           imagesPaths: images,
-          token: CacheHelper.getData(key: 'Token'),
+          token:
+              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTkyLjE2OC40My4zNzo4MDAwL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkyMDExNDEyLCJleHAiOjE2OTIwMTUwMTIsIm5iZiI6MTY5MjAxMTQxMiwianRpIjoiMndmUGNKYUhuNzhOS2FMQyIsInN1YiI6IjUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.WVifg_WPfPvOPOdHtvX3LgpG_Nxr9Gy4fxkPRVNF1ic',
         );
       } else if (storePropertyModel is StoreFarmModel) {
         await DioHelper.postWithImage(
@@ -46,6 +47,21 @@ abstract class StorePropertyService {
             'is_baby_pool': storePropertyModel.isBabyPool.toString(),
             'is_bar': storePropertyModel.isBar.toString(),
             'is_garden': storePropertyModel.isGarden.toString(),
+            'description': storePropertyModel.description,
+          },
+          imagesPaths: images,
+          token: CacheHelper.getData(key: 'Token'),
+        );
+      } else if (storePropertyModel is StoreMarketModel) {
+        await DioHelper.postWithImage(
+          endPoint: 'properties/',
+          body: {
+            'price': storePropertyModel.price.toString(),
+            'space': storePropertyModel.space.toString(),
+            'region_id': storePropertyModel.regionID.toString(),
+            'x': storePropertyModel.x.toString(),
+            'y': storePropertyModel.y.toString(),
+            'property_type_id': 3.toString(),
             'description': storePropertyModel.description,
           },
           imagesPaths: images,

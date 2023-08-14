@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
@@ -88,6 +90,44 @@ class CustomeNetworkImage extends StatelessWidget {
               size: iconSize ?? 35.sp,
               color: AppColors.defaultColor,
             ),
+    );
+  }
+}
+
+class CustomeFileImage extends StatelessWidget {
+  final String filePath;
+  final double? height, width;
+  final double? iconSize;
+  final BorderRadiusGeometry? borderRadius;
+  final EdgeInsetsGeometry? margin;
+  final Color? color;
+  const CustomeFileImage({
+    super.key,
+    required this.filePath,
+    this.height,
+    this.width,
+    this.borderRadius,
+    this.iconSize,
+    this.margin,
+    this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height ?? 200.h,
+      width: width ?? 160.w,
+      margin: margin,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        color: color ?? Colors.transparent,
+        borderRadius: borderRadius ?? BorderRadius.circular(25.r),
+        image: DecorationImage(
+            fit: BoxFit.cover,
+            image: FileImage(
+              File(filePath),
+            )),
+      ),
     );
   }
 }

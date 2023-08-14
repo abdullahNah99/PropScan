@@ -1,16 +1,16 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:untitled/modules/add_property_screen/widgets/custom_page_view.dart';
 import 'package:untitled/modules/add_property_screen/widgets/select_governorates_button.dart';
 import 'package:untitled/modules/add_property_screen/widgets/select_regions_button.dart';
 import 'package:untitled/modules/add_property_screen/widgets/select_type_buttons.dart';
 import 'package:untitled/modules/add_property_screen/widgets/selected_images_list.dart';
+import 'package:untitled/shared/styles/app_colors.dart';
+import 'package:untitled/shared/widgets/custome_button.dart';
 import '../../shared/constant/const.dart';
 import '../../shared/functions/custom_snack_bar.dart';
-import '../../shared/styles/app_colors.dart';
 import '../../shared/widgets/custome_progress_indicator.dart';
 import 'cubit/add_property_cubit.dart';
 import 'cubit/add_property_states.dart';
@@ -21,50 +21,18 @@ class AddPropertyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('scaffolddddddd');
     return BlocProvider(
       create: (context) => AddPropertyCubit(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            title: const Text('Add Property'),
             backgroundColor: AppColors.defaultColor,
-            centerTitle: true,
-            // title: TextButton(
-            //   style: TextButton.styleFrom(
-            //     side: const BorderSide(color: Colors.white),
-            //   ),
-            //   onPressed: () async {
-            //     await FirebaseAPIs.auth.signOut().then(
-            //       (value) async {
-            //         (await LogOutService.logout(
-            //           token: await CacheHelper.getData(key: 'Token'),
-            //         ))
-            //             .fold(
-            //           (failure) {
-            //             CustomeSnackBar.showSnackBar(
-            //               context,
-            //               msg: 'Something Went Wrong, Please Try Again',
-            //               color: Colors.red,
-            //             );
-            //           },
-            //           (success) async {
-            //             await CacheHelper.deletData(key: 'Token');
-            //             // ignore: use_build_context_synchronously
-            //             Navigator.popAndPushNamed(context, LoginView.route);
-            //           },
-            //         );
-            //       },
-            //     );
-            //   },
-            //   child: const Text(
-            //     'LogOut',
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //       fontSize: 20,
-            //     ),
-            //   ),
-            // ),
+            actions: const [
+              Icon(Icons.add_business_outlined),
+              SizedBox(width: 5),
+            ],
           ),
           body: const AddPropertyViewBody(),
         ),
@@ -84,6 +52,12 @@ class AddPropertyViewBody extends StatelessWidget {
       listener: (context, state) {
         if (state is AddPropertyFailure) {
           CustomeSnackBar.showErrorSnackBar(context, msg: state.failureMsg);
+        } else if (state is AddPropertySuccess) {
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: 'Property Added Successfully',
+            color: Colors.green,
+          );
         }
       },
       builder: (context, state) {
@@ -108,7 +82,7 @@ class _AddPropertyBody extends StatelessWidget {
         AddPropertyCubit cubit = BlocProvider.of<AddPropertyCubit>(context);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
+          child: ListView(
             children: [
               const SizedBox(height: 20),
               SelectedImagesList(cubit: cubit),
@@ -117,7 +91,7 @@ class _AddPropertyBody extends StatelessWidget {
               ),
               MaterialButton(
                 onPressed: () {
-                  cubit.selectimage();
+                  cubit.selectimages();
                 },
                 child: Text(
                   'Choose Images ',
@@ -129,6 +103,8 @@ class _AddPropertyBody extends StatelessWidget {
                 child: SelectTypeButtons(cubit: cubit),
               ),
               SizedBox(height: 20.h),
+              CustomPageView(addPropertyCubit: cubit),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -136,6 +112,38 @@ class _AddPropertyBody extends StatelessWidget {
                   SelectRegionsButton(addPropertyCubit: addPropertyCubit),
                 ],
               ),
+              SizedBox(height: 30.h),
+              CustomeButton(
+                color: AppColors.defaultColor,
+                text: 'Continue',
+                onPressed: () async {
+                  if (cubit.formKey.currentState!.validate()) {
+                    if (cubit.selectedRegion == null) {
+                      CustomeSnackBar.showSnackBar(
+                        context,
+                        msg: 'Please Select Region',
+                        color: Colors.red,
+                      );
+                    } else if (cubit.selectedImagesList.isEmpty) {
+                      CustomeSnackBar.showSnackBar(
+                        context,
+                        msg: 'Please Select Images',
+                        color: Colors.red,
+                      );
+                    } else if (cubit.selectedTypeIndex == 0 &&
+                        !(cubit.chackDirections())) {
+                      CustomeSnackBar.showSnackBar(
+                        context,
+                        msg: 'Please Select Direction',
+                        color: Colors.red,
+                      );
+                    } else {
+                      await cubit.storeProperty();
+                    }
+                  }
+                },
+              ),
+              SizedBox(height: 30.h),
             ],
           ),
         );
@@ -143,48 +151,3 @@ class _AddPropertyBody extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-// Padding(
-//       padding: EdgeInsets.symmetric(horizontal: 12.w),
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           SelectGovernoratesButton(addPropertyCubit: addPropertyCubit),
-//           SizedBox(height: 20.h),
-//           SelectRegionsButton(addPropertyCubit: addPropertyCubit),
-//           SizedBox(height: 20.h),
-//           CustomeButton(
-//             text: 'Continue',
-//             onPressed: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) {
-//                     return GoogleMapView(
-//                       select: true,
-//                       lat: addPropertyCubit.selectedRegion != null
-//                           ? addPropertyCubit.selectedRegion!.x
-//                           : null,
-//                       lon: addPropertyCubit.selectedRegion != null
-//                           ? addPropertyCubit.selectedRegion!.y
-//                           : null,
-//                       locations: const [],
-//                     );
-//                   },
-//                 ),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
