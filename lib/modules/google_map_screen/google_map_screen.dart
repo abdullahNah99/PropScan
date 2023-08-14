@@ -60,6 +60,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     widget.lon = cl!.longitude;
     location['lat'] = widget.lat;
     location['long'] = widget.lon;
+    // _markers.clear();
     _markers.add(Marker(
       markerId: const MarkerId('1'),
       position: LatLng(cl!.latitude, cl!.longitude),
@@ -67,7 +68,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     ));
 
     _kGooglePlex = CameraPosition(
-      target: LatLng(widget.lat, widget.lon),
+      target: LatLng(cl!.latitude, cl!.longitude),
       zoom: 16.4746,
     );
     setState(() {});
@@ -182,7 +183,12 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                       Container(
                         margin: const EdgeInsets.all(20),
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              widget.lat = null;
+                              widget.lon = null;
+                              getPosition();
+                              getLatAndLong();
+                            },
                             child:
                                 const Icon(Icons.location_searching_rounded)),
                       )
