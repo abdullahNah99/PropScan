@@ -150,32 +150,43 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                   ),
                 )
               : Expanded(
-                  child: GoogleMap(
-                    onTap: (val) {
-                      if (widget.select == true) {
-                        widget.lat = val.latitude;
-                        location['lat'] = widget.lat;
+                  child: Stack(
+                    children: [
+                      GoogleMap(
+                        onTap: (val) {
+                          if (widget.select == true) {
+                            widget.lat = val.latitude;
+                            location['lat'] = widget.lat;
 
-                        widget.lon = val.longitude;
-                        location['long'] = widget.lon;
+                            widget.lon = val.longitude;
+                            location['long'] = widget.lon;
 
-                        setState(() {
-                          _markers.clear();
-                          _markers.add(Marker(
-                              markerId: const MarkerId('1'),
-                              position: LatLng(widget.lat!, widget.lon!),
-                              onTap: () {},
-                              draggable: true));
-                        });
-                      }
-                      // }
-                    },
-                    mapType: MapType.normal,
-                    markers: _markers,
-                    initialCameraPosition: _kGooglePlex as CameraPosition,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
+                            setState(() {
+                              _markers.clear();
+                              _markers.add(Marker(
+                                  markerId: const MarkerId('1'),
+                                  position: LatLng(widget.lat!, widget.lon!),
+                                  onTap: () {},
+                                  draggable: true));
+                            });
+                          }
+                          // }
+                        },
+                        mapType: MapType.normal,
+                        markers: _markers,
+                        initialCameraPosition: _kGooglePlex as CameraPosition,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(20),
+                        child: TextButton(
+                            onPressed: () {},
+                            child:
+                                const Icon(Icons.location_searching_rounded)),
+                      )
+                    ],
                   ),
                 ),
           // if (widget.select == true)

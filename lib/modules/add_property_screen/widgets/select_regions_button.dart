@@ -77,6 +77,8 @@ class SelectRegionsButton extends StatelessWidget {
                               builder: (context) => GoogleMapView(
                                 select: true,
                                 locations: const [],
+                                lat: addPropertyCubit.regions[index].x,
+                                lon: addPropertyCubit.regions[index].y,
                                 addPropertyCubit: addPropertyCubit,
                               ),
                             ),
