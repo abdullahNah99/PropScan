@@ -35,14 +35,14 @@ class MyApp extends StatelessWidget {
                 AppColors.createMaterialColor(AppColors.defaultColor),
             appBarTheme: AppBarTheme(
               systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor: AppColors.defaultColor,
+                statusBarColor: AppColors.color2,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(22.r),
                 ),
               ),
-              color: AppColors.defaultColor,
+              color: AppColors.color2,
               centerTitle: true,
               iconTheme: const IconThemeData(
                 color: Colors.white,

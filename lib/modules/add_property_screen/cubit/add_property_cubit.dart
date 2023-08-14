@@ -1,9 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:untitled/shared/models/store_property_model.dart';
+import 'package:untitled/shared/network/remote/services/properties/store_property_service.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/models/governorate_model.dart';
 import '../../../shared/models/region_model.dart';
@@ -14,6 +15,9 @@ import 'add_property_states.dart';
 class AddPropertyCubit extends Cubit<AddPropertyStates> {
   AddPropertyCubit() : super(AddPropertyInitial());
 
+  StorePropertyModel? storePropertyModel;
+  final formKey = GlobalKey<FormState>();
+
   List<GovernorateModel> governorates = [];
   List<RegionModel> regions = [];
   GovernorateModel? selctedGovernorate;
@@ -21,7 +25,15 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
   bool governoratesLoading = false;
   bool regionsLoading = false;
 
-  List<XFile> selectedImagesList = [];
+  List<String> selectedImagesList = [];
+  int selectedTypeIndex = 0;
+  PageController controller = PageController(initialPage: 0);
+
+  Map<String, bool> farm = {
+    'isGarden': false,
+    'isBabyPool': false,
+    'isBar': false,
+  };
 
   // List<RegionModel> locations = [
   //   RegionModel(id: 1, x: 1.3213613636, y: 1.654643, name: "a"),
@@ -31,20 +43,94 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
   // ];
 
   List<String> types = ['House', 'Farm', 'Market'];
-  int selectedTypeIndex = 0;
+  Map<String, bool> directions = {
+    'North': false,
+    'South': false,
+    'West': false,
+    'East': false,
+  };
 
-  void selectPropertyType(String index) {
+  void selectDirections(int index) {
+    // log(directions[directions.keys.elementAt(index)].toString());
     emit(AddPropertyInitial());
-    selectedTypeIndex = types.indexOf(index);
+    if (directions[directions.keys.elementAt(index)] == true) {
+      directions[directions.keys.elementAt(index)] = false;
+      // // if (direction.trim().isEmpty) {
+      // //   direction = '';
+      // } else {
+      //   direction = direction.replaceAll(
+      //     directions.keys.elementAt(index),
+      //     '',
+      //   );
+      // }
+    } else {
+      directions[directions.keys.elementAt(index)] = true;
+      // if (direction == '') {
+      //   direction = directions.keys.elementAt(index);
+      // } else {
+      //   direction = '$direction ${directions.keys.elementAt(index)}';
+      // }
+    }
     emit(SelectTypeState());
   }
 
-  Future<void> selectimage() async {
+  bool chackDirections() {
+    bool val = false;
+    directions.forEach((key, value) {
+      if (value) {
+        val = true;
+      }
+    });
+    return val;
+  }
+
+  void selectFarmDetails(int index) {
+    // log(farm[farm.keys.elementAt(index)].toString());
+    emit(AddPropertyInitial());
+    if (farm[farm.keys.elementAt(index)] == true) {
+      farm[farm.keys.elementAt(index)] = false;
+    } else {
+      farm[farm.keys.elementAt(index)] = true;
+    }
+    emit(SelectTypeState());
+  }
+
+  void removeSelectedItem({required String helper}) {
+    emit(AddPropertyInitial());
+    if (helper == 'G') {
+      selctedGovernorate = null;
+    } else {
+      selectedRegion = null;
+    }
+    emit(SelectItemState());
+  }
+
+  void deleteImageFromList({required int imageIndex}) {
+    emit(AddPropertyInitial());
+    selectedImagesList.removeAt(imageIndex);
+    emit(AddImagesState());
+  }
+
+  void selectPropertyType(int index) {
+    controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeIn,
+    );
+    emit(AddPropertyInitial());
+    selectedTypeIndex = index;
+    emit(SelectTypeState());
+  }
+
+  Future<void> selectimages() async {
     final ImagePicker imagePicker = ImagePicker();
-    final List<XFile> selectedimage = await imagePicker.pickMultiImage();
+    final List<XFile> selectedimages = await imagePicker.pickMultiImage();
     try {
-      if (selectedimage.isNotEmpty) {
-        selectedImagesList.addAll(selectedimage);
+      emit(AddPropertyInitial());
+      if (selectedimages.isNotEmpty) {
+        for (var element in selectedimages) {
+          selectedImagesList.add(element.path);
+        }
       } else {
         selectedImagesList.clear();
       }
@@ -109,5 +195,75 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
       selectedRegion = regions[index];
       emit(SelectItemState());
     }
+  }
+
+  int? numOfRooms, numOfBathrooms, numOfBalcony, price, space, numOfPools;
+  double? x, y;
+  String? description;
+  String direction = '';
+
+  Future<void> storeProperty() async {
+    emit(AddPropertyLoading());
+    if (selectedTypeIndex == 0) {
+      directions.forEach((key, value) {
+        if (value) {
+          if (direction.isNotEmpty) {
+            direction = '$direction - $key';
+          } else {
+            direction = key;
+          }
+        }
+      });
+      storePropertyModel = StoreHouseModel(
+        numOfRooms: numOfRooms!,
+        numOfBathrooms: numOfBathrooms!,
+        numOfBalcony: numOfBalcony!,
+        direction: direction,
+        description: description!,
+        price: price!,
+        space: space!,
+        regionID: selectedRegion!.id,
+        propertyTypeID: selectedTypeIndex + 1,
+        x: x!,
+        y: y!,
+      );
+    } else if (selectedTypeIndex == 1) {
+      storePropertyModel = StoreFarmModel(
+        numOfRooms: numOfRooms!,
+        numOfPools: numOfPools!,
+        isGarden: farm['isGarden']!,
+        isBar: farm['isBar']!,
+        isBabyPool: farm['isBabyPool']!,
+        description: description!,
+        price: price!,
+        space: space!,
+        regionID: selectedRegion!.id,
+        propertyTypeID: selectedTypeIndex + 1,
+        x: x!,
+        y: y!,
+      );
+    } else {
+      storePropertyModel = StoreMarketModel(
+        price: price!,
+        space: space!,
+        regionID: selectedRegion!.id,
+        propertyTypeID: selectedTypeIndex + 1,
+        x: x!,
+        y: y!,
+        description: description!,
+      );
+    }
+    (await StorePropertyService.storeProperty(
+      storePropertyModel: storePropertyModel!,
+      images: selectedImagesList,
+    ))
+        .fold(
+      (failure) {
+        emit(AddPropertyFailure(failureMsg: failure.errorMessege));
+      },
+      (success) {
+        emit(AddPropertySuccess());
+      },
+    );
   }
 }

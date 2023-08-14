@@ -2,12 +2,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
 import 'dart:async';
 import '../../shared/models/region_model.dart';
 
 class GoogleMapView extends StatefulWidget {
   static const route = 'GoogleMapView';
   final bool select;
+  final AddPropertyCubit addPropertyCubit;
   var lat;
   var lon;
   List<RegionModel> locations = [];
@@ -15,9 +17,10 @@ class GoogleMapView extends StatefulWidget {
   GoogleMapView({
     super.key,
     required this.select,
+    required this.locations,
+    required this.addPropertyCubit,
     this.lat,
     this.lon,
-    required this.locations,
   });
 
   @override
@@ -186,6 +189,8 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               onPressed: () async {
+                widget.addPropertyCubit.x = widget.lat;
+                widget.addPropertyCubit.y = widget.lon;
                 Navigator.pop(context, location);
               },
             ),

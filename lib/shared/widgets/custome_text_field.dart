@@ -109,6 +109,7 @@ class CustomeTextField extends StatelessWidget {
   final String? labelText;
   final TextStyle? labelStyle;
   final EdgeInsetsGeometry? contentPadding;
+  final bool noOutlineBorder;
   const CustomeTextField({
     super.key,
     this.hintText,
@@ -127,6 +128,7 @@ class CustomeTextField extends StatelessWidget {
     this.labelText,
     this.labelStyle,
     this.width,
+    this.noOutlineBorder = false,
   });
 
   @override
@@ -163,6 +165,7 @@ class CustomeTextField extends StatelessWidget {
               ),
           suffixIcon: suffixIcon,
           focusedBorder: getOutLineInputBorder(),
+          enabledBorder: noOutlineBorder ? getOutLineInputBorder() : null,
           border: getOutLineInputBorder(),
         ),
       ),
@@ -182,7 +185,7 @@ class CustomeTextField extends StatelessWidget {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(20.r),
       borderSide: const BorderSide(
-        color: AppColors.defaultColor,
+        color: Colors.transparent,
         style: BorderStyle.solid,
       ),
     );

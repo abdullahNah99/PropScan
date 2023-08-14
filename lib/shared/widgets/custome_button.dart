@@ -6,12 +6,14 @@ class CustomeButton extends StatelessWidget {
   final void Function() onPressed;
   final BorderRadiusGeometry? borderRadius;
   final double? width;
+  final Color? color;
   const CustomeButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.borderRadius,
     this.width,
+    this.color,
   });
 
   @override
@@ -24,7 +26,7 @@ class CustomeButton extends StatelessWidget {
       ),
       child: MaterialButton(
         onPressed: onPressed,
-        color: AppColors.defaultColor,
+        color: color ?? AppColors.defaultColor,
         shape: RoundedRectangleBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(26)),
         child: Text(

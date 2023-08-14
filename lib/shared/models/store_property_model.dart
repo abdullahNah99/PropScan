@@ -5,6 +5,7 @@ abstract class StorePropertyModel {
   final int propertyTypeID;
   final double x;
   final double y;
+  final String description;
 
   StorePropertyModel({
     required this.price,
@@ -13,6 +14,7 @@ abstract class StorePropertyModel {
     required this.propertyTypeID,
     required this.x,
     required this.y,
+    required this.description,
   });
 }
 
@@ -21,13 +23,13 @@ class StoreHouseModel extends StorePropertyModel {
   final int numOfBathrooms;
   final int numOfBalcony;
   final String direction;
-  final String description;
+
   StoreHouseModel({
     required this.numOfRooms,
     required this.numOfBathrooms,
     required this.numOfBalcony,
     required this.direction,
-    required this.description,
+    required super.description,
     required super.price,
     required super.space,
     required super.regionID,
@@ -43,19 +45,31 @@ class StoreFarmModel extends StorePropertyModel {
   final bool isGarden;
   final bool isBar;
   final bool isBabyPool;
-  final String description;
+
   StoreFarmModel({
     required this.numOfRooms,
-    required this.description,
     required this.numOfPools,
     required this.isGarden,
     required this.isBar,
     required this.isBabyPool,
+    required super.description,
     required super.price,
     required super.space,
     required super.regionID,
     required super.propertyTypeID,
     required super.x,
     required super.y,
+  });
+}
+
+class StoreMarketModel extends StorePropertyModel {
+  StoreMarketModel({
+    required super.price,
+    required super.space,
+    required super.regionID,
+    required super.propertyTypeID,
+    required super.x,
+    required super.y,
+    required super.description,
   });
 }

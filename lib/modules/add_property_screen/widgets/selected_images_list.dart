@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
+import 'package:untitled/shared/widgets/custome_image.dart';
 
 class SelectedImagesList extends StatelessWidget {
   final AddPropertyCubit cubit;
@@ -19,18 +18,32 @@ class SelectedImagesList extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: cubit.selectedImagesList.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  width: 160,
-                  height: 160,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.r),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(
-                        File(cubit.selectedImagesList[index].path),
+                return Stack(
+                  children: [
+                    CustomeFileImage(filePath: cubit.selectedImagesList[index]),
+                    Positioned(
+                      left: 120.w,
+                      top: 10.h,
+                      child: Container(
+                        width: 30.w,
+                        height: 30.w,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            cubit.deleteImageFromList(imageIndex: index);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 );
               },
             )
