@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
-import 'package:untitled/shared/widgets/custome_image.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
+import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
+import 'package:untitled/shared/widgets/custome_image.dart';
 
 class SelectedImagesList extends StatelessWidget {
   final AddPropertyCubit cubit;
@@ -20,11 +21,77 @@ class SelectedImagesList extends StatelessWidget {
               separatorBuilder: (context, index) => const SizedBox(width: 10),
               scrollDirection: Axis.horizontal,
               itemCount: cubit.selectedImagesList.length,
-              itemBuilder: (BuildContext context, int index) {
-
+              itemBuilder: (BuildContext context, int indexS) {
                 return Stack(
                   children: [
-                    CustomeFileImage(filePath: cubit.selectedImagesList[index]),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Stack(
+                              children: [
+                                PhotoViewGallery.builder(
+                                  backgroundDecoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(.85)),
+                                  pageController:
+                                      PageController(initialPage: indexS),
+                                  builder: (BuildContext context, int index) {
+                                    return PhotoViewGalleryPageOptions(
+                                      minScale:
+                                          PhotoViewComputedScale.contained,
+                                      maxScale:
+                                          PhotoViewComputedScale.covered * 4,
+                                      imageProvider: FileImage(
+                                        File(cubit.selectedImagesList[index]),
+                                      ),
+                                      initialScale:
+                                          PhotoViewComputedScale.contained,
+                                    );
+                                  },
+                                  itemCount: cubit.selectedImagesList.length,
+                                  loadingBuilder: (context, event) => Center(
+                                    child: SizedBox(
+                                      width: 20.0,
+                                      height: 20.0,
+                                      child: CircularProgressIndicator(
+                                        value: event == null
+                                            ? 0
+                                            : event.cumulativeBytesLoaded /
+                                                event.expectedTotalBytes!
+                                                    .toInt(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    margin: const EdgeInsets.all(10),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Colors.red,
+                                          size: 50,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: CustomeFileImage(
+                        filePath: cubit.selectedImagesList[indexS],
+                      ),
+                    ),
                     Positioned(
                       left: 120.w,
                       top: 10.h,
@@ -38,60 +105,12 @@ class SelectedImagesList extends StatelessWidget {
                         child: IconButton(
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            cubit.deleteImageFromList(imageIndex: index);
+                            cubit.deleteImageFromList(imageIndex: indexS);
                           },
                           icon: const Icon(
                             Icons.delete,
                             color: Colors.red,
                           ),
-
-//                 return InkWell(
-//                   onTap: () {
-//                     showDialog(
-//                       context: context,
-//                       builder: (context) {
-//                         return Container(
-//                           child: PhotoViewGallery.builder(
-//                             scrollPhysics: const BouncingScrollPhysics(),
-//                             builder: (BuildContext context, int index) {
-//                               return PhotoViewGalleryPageOptions(
-//                                 imageProvider: FileImage(
-//                                   File(cubit.selectedImagesList[index].path),
-//                                 ),
-
-//                                 initialScale:
-//                                     PhotoViewComputedScale.contained * 0.8,
-//                                 // heroAttributes: PhotoViewHeroAttributes(tag: galleryItems[index].id),
-//                               );
-//                             },
-//                             itemCount: cubit.selectedImagesList.length,
-//                             loadingBuilder: (context, event) => Center(
-//                               child: Container(
-//                                 width: 20.0,
-//                                 height: 20.0,
-//                                 child: CircularProgressIndicator(
-//                                   value: event == null
-//                                       ? 0
-//                                       : event.cumulativeBytesLoaded /
-//                                           event.expectedTotalBytes!.toInt(),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         );
-//                       },
-//                     );
-//                   },
-//                   child: Container(
-//                     width: 160,
-//                     height: 160,
-//                     decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(25.r),
-//                       image: DecorationImage(
-//                         fit: BoxFit.cover,
-//                         image: FileImage(
-//                           File(cubit.selectedImagesList[index].path),
-
                         ),
                       ),
                     ),
