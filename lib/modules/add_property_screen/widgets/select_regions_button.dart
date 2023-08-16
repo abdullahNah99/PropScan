@@ -28,6 +28,7 @@ class SelectRegionsButton extends StatelessWidget {
         CustomeTextField(
           width: 160.w,
           noOutlineBorder: true,
+          outLineBorderColor: Colors.transparent,
           hintText: addPropertyCubit.selectedRegion == null
               ? 'Region...'
               : addPropertyCubit.selectedRegion!.name,

@@ -76,7 +76,7 @@ class SelectedImagesList extends StatelessWidget {
                                         },
                                         child: const Icon(
                                           Icons.close,
-                                          color: Colors.red,
+                                          color: Colors.white,
                                           size: 50,
                                         ),
                                       ),

@@ -7,12 +7,14 @@ class CustomDrawerButton extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
   final void Function() onPressed;
+  final double? fontSize;
   const CustomDrawerButton({
     super.key,
     required this.text,
     required this.icon,
     required this.onPressed,
     this.iconColor,
+    this.fontSize,
   });
 
   @override
@@ -38,7 +40,10 @@ class CustomDrawerButton extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20.w, color: Colors.black54),
+              style: TextStyle(
+                fontSize: fontSize ?? 20.w,
+                color: Colors.black54,
+              ),
             ),
           ),
         ],
