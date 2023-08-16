@@ -208,6 +208,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
               onPressed: () async {
                 widget.addPropertyCubit.x = widget.lat;
                 widget.addPropertyCubit.y = widget.lon;
+                log(location.toString());
+                log(widget.lat.toString());
+                log(widget.lon.toString());
                 Navigator.pop(context, location);
               },
             ),

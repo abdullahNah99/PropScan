@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:untitled/modules/add_property_screen/add_property_screen.dart';
 import 'package:untitled/modules/splash_screen/splash_screen.dart';
 
 import 'package:untitled/shared/network/local/cache_helper.dart';
@@ -54,10 +53,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-
-          // home: const AddPropertyView(),
-          home: AddPropertyView(),
-          // initialRoute: SplashView.route,
+          initialRoute: SplashView.route,
           routes: AppRouter.router,
         );
       },
