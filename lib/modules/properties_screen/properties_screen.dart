@@ -7,12 +7,24 @@ import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
 import 'package:untitled/modules/properties_screen/widgets/custom_drawer.dart';
 import 'package:untitled/shared/models/user_model.dart';
+import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import '../../shared/styles/app_colors.dart';
 
-class PropertiesView extends StatelessWidget {
+class PropertiesView extends StatefulWidget {
   static const route = 'PropertiesView';
   final UserModel? userModel;
   const PropertiesView({super.key, this.userModel});
+
+  @override
+  State<PropertiesView> createState() => _PropertiesViewState();
+}
+
+class _PropertiesViewState extends State<PropertiesView> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAPIs.getSelfInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,33 +32,36 @@ class PropertiesView extends StatelessWidget {
       create: (context) => PropertiesCubit(),
       child: BlocBuilder<PropertiesCubit, PropertiesStates>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColors.defaultColor,
-              title: const Text('PropScan'),
-              centerTitle: true,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image(
-                    image: const AssetImage(
-                      'assets/images/a8.png',
+          return SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: AppColors.defaultColor,
+                title: const Text('PropScan'),
+                centerTitle: true,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image(
+                      image: const AssetImage(
+                        'assets/images/a8.png',
+                      ),
+                      height: 50.h,
                     ),
-                    height: 50.h,
                   ),
-                ),
-              ],
+                ],
+              ),
+              body: const PropertiesViewBody(),
+              drawer: widget.userModel != null
+                  ? CustomDrawer.getCustomDrawer(
+                      context,
+                      propertiesCubit:
+                          BlocProvider.of<PropertiesCubit>(context),
+                      scaffoldKey:
+                          BlocProvider.of<PropertiesCubit>(context).scaffoldKey,
+                      userModel: widget.userModel!,
+                    )
+                  : null,
             ),
-            body: const PropertiesViewBody(),
-            drawer: userModel != null
-                ? CustomDrawer.getCustomDrawer(
-                    context,
-                    propertiesCubit: BlocProvider.of<PropertiesCubit>(context),
-                    scaffoldKey:
-                        BlocProvider.of<PropertiesCubit>(context).scaffoldKey,
-                    userModel: userModel!,
-                  )
-                : null,
           );
         },
       ),

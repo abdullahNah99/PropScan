@@ -25,16 +25,18 @@ class AddPropertyView extends StatelessWidget {
       create: (context) => AddPropertyCubit(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Add Property'),
-            backgroundColor: AppColors.defaultColor,
-            actions: const [
-              Icon(Icons.add_business_outlined),
-              SizedBox(width: 5),
-            ],
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Add Property'),
+              backgroundColor: AppColors.defaultColor,
+              actions: const [
+                Icon(Icons.add_business_outlined),
+                SizedBox(width: 5),
+              ],
+            ),
+            body: const AddPropertyViewBody(),
           ),
-          body: const AddPropertyViewBody(),
         ),
       ),
     );

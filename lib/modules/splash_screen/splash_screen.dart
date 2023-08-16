@@ -1,53 +1,6 @@
-// import 'dart:async';
-
-// import 'package:flutter/material.dart';
-
-// import '../LoginPage/login.dart';
-
-// class SplashScreen extends StatefulWidget {
-//   const SplashScreen({Key? key}) : super(key: key);
-
-//   @override
-//   State<SplashScreen> createState() => _SplashScreenState();
-// }
-
-// @override
-// class _SplashScreenState extends State<SplashScreen> {
-//   void initState() {
-//     super.initState();
-//     Timer(
-//       Duration(seconds: 3),
-//       () {
-//         Navigator.pushReplacement(context,
-//             MaterialPageRoute(builder: (context) {
-//           return login();
-//         }));
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       child: Scaffold(
-//           body: Stack(
-//         children: [
-//           Center(
-//             child: Image(
-//                 image: AssetImage('assets/images/icon.png'),
-//                 height: 100,
-//                 width: 100),
-//           ),
-//         ],
-//       )),
-//     );
-//   }
-// }
-
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:untitled/modules/properties_screen/properties_screen.dart';
 import 'package:untitled/modules/splash_screen/widgets/sliding_text.dart';
 import 'package:untitled/shared/functions/custom_snack_bar.dart';
@@ -71,7 +24,7 @@ class _SplashViewState extends State<SplashView>
   @override
   void initState() {
     super.initState();
-    // FirebaseAPIs.getSelfInfo();
+    FirebaseAPIs.getSelfInfo();
     _initSlidingAnimation();
     _navigateToHomeView();
   }
@@ -85,13 +38,15 @@ class _SplashViewState extends State<SplashView>
   @override
   Widget build(BuildContext context) {
     // mq = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SlidingText(slidingAnimation: slidingAnimation),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SlidingText(slidingAnimation: slidingAnimation),
+          ],
+        ),
       ),
     );
   }
@@ -113,12 +68,12 @@ class _SplashViewState extends State<SplashView>
     Future.delayed(
       const Duration(seconds: 3),
       () async {
-        SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(
-              // systemNavigationBarColor: Colors.black,
-              // statusBarColor: Colors.black,
-              ),
-        );
+        // SystemChrome.setSystemUIOverlayStyle(
+        //   const SystemUiOverlayStyle(
+        //       systemNavigationBarColor: Colors.black,
+        //       statusBarColor: Colors.black,
+        //       ),
+        // );
         if (FirebaseAPIs.auth.currentUser != null &&
             CacheHelper.getData(key: 'Token') != null) {
           log('\n User : ${FirebaseAuth.instance.currentUser}');

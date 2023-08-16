@@ -69,21 +69,12 @@ class LoginCubit extends Cubit<LoginStates> {
             email: email, password: password)
         .then(
       (value) async {
-        await FirebaseAPIs.getSelfInfo().then(
-          (value) async {
-            (await LoginService.login(email: email, password: password)).fold(
-              (failure) {
-                emit(LoginFailure(failureMsg: failure.errorMessege));
-              },
-              (userModel) {
-                emit(LoginSuccess(userModel: userModel));
-              },
-            );
+        (await LoginService.login(email: email, password: password)).fold(
+          (failure) {
+            emit(LoginFailure(failureMsg: failure.errorMessege));
           },
-        ).catchError(
-          () {
-            emit(LoginFailure(
-                failureMsg: 'Something Went Wrong, Please Try Again'));
+          (userModel) {
+            emit(LoginSuccess(userModel: userModel));
           },
         );
       },

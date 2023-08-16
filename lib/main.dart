@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/add_property_screen/add_property_screen.dart';
 import 'package:untitled/modules/splash_screen/splash_screen.dart';
@@ -33,12 +32,11 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             useMaterial3: true,
-            primarySwatch:
-                AppColors.createMaterialColor(AppColors.defaultColor),
+            primaryColor: AppColors.createMaterialColor(AppColors.defaultColor),
             appBarTheme: AppBarTheme(
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor: AppColors.color2,
-              ),
+              // systemOverlayStyle: const SystemUiOverlayStyle(
+              //   statusBarColor: AppColors.color2,
+              // ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(22.r),

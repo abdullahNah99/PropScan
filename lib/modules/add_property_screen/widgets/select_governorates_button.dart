@@ -27,6 +27,7 @@ class SelectGovernoratesButton extends StatelessWidget {
         CustomeTextField(
           width: 160.w,
           noOutlineBorder: true,
+          outLineBorderColor: Colors.transparent,
           hintText: addPropertyCubit.selctedGovernorate == null
               ? 'Governorate...'
               : addPropertyCubit.selctedGovernorate!.name,

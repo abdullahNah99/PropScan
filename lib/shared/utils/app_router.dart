@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:untitled/modules/conversations_screen/conversations_screen.dart';
+import 'package:untitled/modules/my_advertisements_screen/my_advertisements_screen.dart';
 import 'package:untitled/modules/profile_screen/profile_screen.dart';
 import 'package:untitled/modules/properties_screen/properties_screen.dart';
 import 'package:untitled/modules/register_screen/register_screen.dart';
@@ -17,6 +18,7 @@ abstract class AppRouter {
     SplashView.route: (context) => const SplashView(),
     ProfileView.route: (context) => ProfileView(user: FirebaseAPIs.me),
     ConversationsView.route: (context) => const ConversationsView(),
+    MyAdvertisementsView.route: (context) => const MyAdvertisementsView(),
     // RegisterView.route: (context) => const RegisterView(),
     // GoogleMapView.route: (context) =>  GoogleMapView(),
   };

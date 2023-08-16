@@ -110,6 +110,7 @@ class CustomeTextField extends StatelessWidget {
   final TextStyle? labelStyle;
   final EdgeInsetsGeometry? contentPadding;
   final bool noOutlineBorder;
+  final Color? outLineBorderColor;
   const CustomeTextField({
     super.key,
     this.hintText,
@@ -129,6 +130,7 @@ class CustomeTextField extends StatelessWidget {
     this.labelStyle,
     this.width,
     this.noOutlineBorder = false,
+    this.outLineBorderColor,
   });
 
   @override
@@ -184,8 +186,8 @@ class CustomeTextField extends StatelessWidget {
   OutlineInputBorder getOutLineInputBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(20.r),
-      borderSide: const BorderSide(
-        // color: Colors.transparent,
+      borderSide: BorderSide(
+        color: outLineBorderColor ?? const Color(0xFF000000),
         style: BorderStyle.solid,
       ),
     );

@@ -115,25 +115,27 @@ class FirebaseAPIs {
 
   //for getting current user info
   static Future<void> getSelfInfo() async {
-    await firesotre.collection('users').doc(auth.currentUser!.uid).get().then(
-      (user) async {
-        if (user.exists) {
-          me = ChatUser.fromJson(user.data()!);
-          await getFirebaseMessagingToken();
+    if (auth.currentUser != null) {
+      await firesotre.collection('users').doc(auth.currentUser!.uid).get().then(
+        (user) async {
+          if (user.exists) {
+            me = ChatUser.fromJson(user.data()!);
+            await getFirebaseMessagingToken();
 
-          //for setting user status to active
-          updateActiveStatus(true);
+            //for setting user status to active
+            updateActiveStatus(true);
 
-          log('MY Data : ${user.data()}');
-        } else {
-          await createUser().then((value) => getSelfInfo());
-        }
-      },
-    );
+            log('MY Data : ${user.data()}');
+          } else {
+            await createUser().then((value) => getSelfInfo());
+          }
+        },
+      );
+    }
   }
 
   //for creating a new user
-  static Future<void> createUser({String? userName}) async {
+  static Future<void> createUser({String? userName, int? localUserID}) async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     final chatUser = ChatUser(
@@ -146,6 +148,7 @@ class FirebaseAPIs {
       isOnline: false,
       pushToken: '',
       email: user.email.toString(),
+      localUserID: localUserID ?? -1,
     );
     return await firesotre
         .collection('users')

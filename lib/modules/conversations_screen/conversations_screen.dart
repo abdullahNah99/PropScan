@@ -96,7 +96,7 @@ class _ConversationsViewState extends State<ConversationsView> {
                     },
                   )
                 : const Text('We Chat'),
-            leading: const Icon(CupertinoIcons.home),
+            // leading: const Icon(CupertinoIcons.home),
             actions: [
               IconButton(
                 icon: Icon(

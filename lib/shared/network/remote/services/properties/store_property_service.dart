@@ -29,8 +29,7 @@ abstract class StorePropertyService {
             'direction': storePropertyModel.direction,
           },
           imagesPaths: images,
-          token:
-              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTkyLjE2OC40My4zNzo4MDAwL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkyMDExNDEyLCJleHAiOjE2OTIwMTUwMTIsIm5iZiI6MTY5MjAxMTQxMiwianRpIjoiMndmUGNKYUhuNzhOS2FMQyIsInN1YiI6IjUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.WVifg_WPfPvOPOdHtvX3LgpG_Nxr9Gy4fxkPRVNF1ic',
+          token: await CacheHelper.getData(key: 'Token'),
         );
       } else if (storePropertyModel is StoreFarmModel) {
         await DioHelper.postWithImage(
@@ -50,7 +49,7 @@ abstract class StorePropertyService {
             'description': storePropertyModel.description,
           },
           imagesPaths: images,
-          token: CacheHelper.getData(key: 'Token'),
+          token: await CacheHelper.getData(key: 'Token'),
         );
       } else if (storePropertyModel is StoreMarketModel) {
         await DioHelper.postWithImage(
@@ -65,7 +64,7 @@ abstract class StorePropertyService {
             'description': storePropertyModel.description,
           },
           imagesPaths: images,
-          token: CacheHelper.getData(key: 'Token'),
+          token: await CacheHelper.getData(key: 'Token'),
         );
       }
 

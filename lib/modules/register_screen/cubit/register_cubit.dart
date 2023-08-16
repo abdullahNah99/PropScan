@@ -14,39 +14,72 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
   Future<void> register() async {
     emit(RegisterLoading());
-    await FirebaseAPIs.createUserWithEmailAndPassword(
-            email: email!, password: password!)
-        .then(
-      (value) async {
-        if (value != null) {
-          if (await FirebaseAPIs.userExists() == false) {
-            await FirebaseAPIs.createUser(userName: name);
-          }
-          (await RegisterService.register(
-                  name: name!,
-                  email: email!,
-                  password: password!,
-                  confirmPass: confirmPassword!))
-              .fold(
-            (failure) {
-              emit(RegisterFailure(failureMsg: failure.errorMessege));
-            },
-            (userModel) {
-              emit(RegisterSuccess(userModel: userModel));
-            },
-          );
-        } else {
-          emit(RegisterFailure(
-              failureMsg: 'Something Went Wrong, Please Try Again'));
-        }
+    (await RegisterService.register(
+            name: name!,
+            email: email!,
+            password: password!,
+            confirmPass: confirmPassword!))
+        .fold(
+      (failure) {
+        emit(RegisterFailure(failureMsg: failure.errorMessege));
       },
-    ).catchError(
-      // ignore: argument_type_not_assignable_to_error_handler
-      () {
-        emit(RegisterFailure(
-            failureMsg: 'Something Went Wrong, Please Try Again'));
+      (userModel) async {
+        await FirebaseAPIs.createUserWithEmailAndPassword(
+          email: email!,
+          password: password!,
+        ).then(
+          (value) async {
+            if (value != null) {
+              if (await FirebaseAPIs.userExists() == false) {
+                await FirebaseAPIs.createUser(
+                  userName: name,
+                  localUserID: userModel.id,
+                ).then((value) {
+                  emit(RegisterSuccess(userModel: userModel));
+                }).catchError(
+                  (ex) {
+                    emit(RegisterFailure(failureMsg: ex.toString()));
+                  },
+                );
+              }
+            }
+          },
+        );
       },
     );
+    // await FirebaseAPIs.createUserWithEmailAndPassword(
+    //         email: email!, password: password!)
+    //     .then(
+    //   (value) async {
+    //     if (value != null) {
+    //       if (await FirebaseAPIs.userExists() == false) {
+    //         await FirebaseAPIs.createUser(userName: name);
+    //       }
+    //       (await RegisterService.register(
+    //               name: name!,
+    //               email: email!,
+    //               password: password!,
+    //               confirmPass: confirmPassword!))
+    //           .fold(
+    //         (failure) {
+    //           emit(RegisterFailure(failureMsg: failure.errorMessege));
+    //         },
+    //         (userModel) {
+    //           emit(RegisterSuccess(userModel: userModel));
+    //         },
+    //       );
+    //     } else {
+    //       emit(RegisterFailure(
+    //           failureMsg: 'Something Went Wrong, Please Try Again'));
+    //     }
+    //   },
+    // ).catchError(
+    //   // ignore: argument_type_not_assignable_to_error_handler
+    //   () {
+    //     emit(RegisterFailure(
+    //         failureMsg: 'Something Went Wrong, Please Try Again'));
+    //   },
+    // );
   }
 
   // void changePasswordState() {
