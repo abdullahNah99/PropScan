@@ -43,7 +43,7 @@ abstract class CustomDrawer {
                     height: 75.h,
                     width: 80.w,
                     image: AppAssets.logo,
-                    color: Colors.transparent,
+                    backgroundColor: Colors.transparent,
                   ),
                 ),
                 SizedBox(

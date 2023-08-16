@@ -2,6 +2,9 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/shared/styles/app_colors.dart';
+import 'package:untitled/shared/widgets/custome_image.dart';
 import '../../main.dart';
 import '../../shared/helper/my_date_util.dart';
 import '../../shared/models/firebase_models/chat_user.dart';
@@ -56,15 +59,25 @@ class _UserProfileViewState extends State<UserProfileView> {
                 ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(screenSize.height * .2),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    width: screenSize.height * .2,
-                    height: screenSize.height * .2,
-                    imageUrl: widget.user.image,
-                    errorWidget: (context, url, error) => const CircleAvatar(
-                      child: Icon(Icons.person),
-                    ),
-                  ),
+                  child: widget.user.image != 'null'
+                      ? CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          width: screenSize.height * .2,
+                          height: screenSize.height * .2,
+                          imageUrl: widget.user.image,
+                          errorWidget: (context, url, error) =>
+                              const CircleAvatar(
+                            child: Icon(Icons.person),
+                          ),
+                        )
+                      : CustomeImage(
+                          width: screenSize.height * .2,
+                          height: screenSize.height * .2,
+                          backgroundColor:
+                              AppColors.defaultColor.withOpacity(.5),
+                          iconColor: Colors.white,
+                          iconSize: 40.sp,
+                        ),
                 ),
                 SizedBox(height: screenSize.height * .05),
                 Text(

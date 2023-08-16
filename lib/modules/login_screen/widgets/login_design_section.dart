@@ -18,7 +18,7 @@ class LoginDesignSection extends StatelessWidget {
         ),
         const CustomeImage(
           image: AppAssets.logo,
-          color: Colors.transparent,
+          backgroundColor: Colors.transparent,
         ),
         const SizedBox(height: 10),
         Text(

@@ -35,6 +35,21 @@ class ChatUser {
     localUserID = json['local_user_id'] ?? -1;
   }
 
+  factory ChatUser.factory(Map<String, dynamic> jsonData) {
+    return ChatUser(
+      image: jsonData['image'] ?? '',
+      about: jsonData['about'] ?? '',
+      name: jsonData['name'] ?? '',
+      createdAt: jsonData['created_at'] ?? '',
+      id: jsonData['id'] ?? '',
+      lastActive: jsonData['last_active'] ?? '',
+      isOnline: jsonData['is_online'] ?? false,
+      pushToken: jsonData['push_token'] ?? '',
+      email: jsonData['email'] ?? '',
+      localUserID: jsonData['local_user_id'] ?? -1,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['image'] = image;
