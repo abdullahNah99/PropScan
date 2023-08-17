@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../shared/cubit/App_state.dart';
 import '../shared/cubit/app_cubit.dart';
 import 'add_property_detail.dart';
@@ -87,8 +88,8 @@ class Search extends StatelessWidget {
                                                   ),
                                                 ),
                                               ]),
-                                              const SizedBox(
-                                                width: 50,
+                                              SizedBox(
+                                                width: 40.w,
                                               ),
                                               Column(children: [
                                                 const Text(
@@ -230,8 +231,8 @@ class Search extends StatelessWidget {
                                                       onPressed: () {},
                                                     ),
                                                   ]),
-                                              const SizedBox(
-                                                width: 100,
+                                              SizedBox(
+                                                width: 60.w,
                                               ),
                                               Column(
                                                   crossAxisAlignment:

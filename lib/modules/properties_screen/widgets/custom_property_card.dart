@@ -18,7 +18,7 @@ class PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await propertiesCubit.getPropertyChatUser(localUserID: 3);
+        await propertiesCubit.getPropertyChatUser(localUserID: 7);
       },
       child: Card(
         key: key,
