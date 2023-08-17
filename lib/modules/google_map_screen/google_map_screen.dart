@@ -9,7 +9,7 @@ import '../../shared/models/region_model.dart';
 class GoogleMapView extends StatefulWidget {
   static const route = 'GoogleMapView';
   final bool select;
-  final AddPropertyCubit addPropertyCubit;
+  final AddPropertyCubit? addPropertyCubit;
   var lat;
   var lon;
   List<RegionModel> locations = [];
@@ -18,7 +18,7 @@ class GoogleMapView extends StatefulWidget {
     super.key,
     required this.select,
     required this.locations,
-    required this.addPropertyCubit,
+    this.addPropertyCubit,
     this.lat,
     this.lon,
   });
@@ -206,8 +206,11 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               onPressed: () async {
-                widget.addPropertyCubit.x = widget.lat;
-                widget.addPropertyCubit.y = widget.lon;
+                if (widget.addPropertyCubit != null) {
+                  widget.addPropertyCubit!.x = widget.lat;
+                  widget.addPropertyCubit!.y = widget.lon;
+                }
+
                 log(location.toString());
                 log(widget.lat.toString());
                 log(widget.lon.toString());

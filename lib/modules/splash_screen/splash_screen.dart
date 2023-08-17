@@ -81,8 +81,16 @@ class _SplashViewState extends State<SplashView>
                   token: CacheHelper.getData(key: 'Token')))
               .fold(
             (failure) {
-              CustomeSnackBar.showErrorSnackBar(context,
-                  msg: failure.errorMessege);
+              // CustomeSnackBar.showErrorSnackBar(context,
+              //     msg: failure.errorMessege);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const LoginView();
+                  },
+                ),
+              );
             },
             (userModel) {
               Navigator.pushReplacement(

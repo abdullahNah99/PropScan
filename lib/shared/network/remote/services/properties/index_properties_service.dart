@@ -1,21 +1,22 @@
 // import 'dart:developer';
 // import 'package:dartz/dartz.dart';
 // import 'package:dio/dio.dart';
+// import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 // import '../../../../errors/failure.dart';
 // import '../../../../models/region_model.dart';
 // import '../../dio_helper.dart';
 
-// abstract class GetGovernoratesRegionsService {
-//   static Future<Either<Failure, List<RegionModel>>> getGovernoratesRegions(
-//       {required int governorateID}) async {
+// abstract class IndexPropertiesService {
+//   static Future<Either<Failure, List<RegionModel>>> indexProperties(
+//       {required String token}) async {
 //     try {
 //       var response = await DioHelper.getData(
-//         url: 'governorates/$governorateID/regions',
+//         url: 'properties/?page=&per_page=',
 //       );
 //       log(response.toString());
-//       List<RegionModel> regions = [];
+//       List<PropertyModel> properties = [];
 //       for (var item in response.data['regions']) {
-//         regions.add(RegionModel.fromJson(item));
+//         properties.add(PropertyModel.fromJson(item));
 //       }
 //       return right(regions);
 //     } catch (ex) {
