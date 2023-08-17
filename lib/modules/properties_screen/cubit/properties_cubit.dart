@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
 import 'package:untitled/shared/models/firebase_models/chat_user.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import 'package:untitled/shared/network/remote/services/auth/logout_service.dart';
+import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/network/local/cache_helper.dart';
 import '../../login_screen/login_screen.dart';
@@ -12,6 +15,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   ChatUser? chatUser;
   PropertiesCubit() : super(PropertiesInitial());
+  List<PropertyModel> properties = [];
 
   Future<void> logOut(BuildContext context) async {
     emit(PropertiesLoading());
@@ -65,5 +69,33 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     } catch (ex) {
       emit(PropertiesFailure(errorMessage: ex.toString()));
     }
+  }
+
+  // List<PropertyModel> properties = [];
+  Future<void> getAllProperties() async {
+    emit(PropertiesLoading());
+
+    (await ShowAllPropertiesService.showAll(
+      token: await CacheHelper.getData(key: "Token"),
+    ))
+        .fold(
+      (failure) {
+        emit(
+          PropertiesFailure(errorMessage: failure.errorMessege),
+        );
+      },
+      (properties1) {
+        // properties = properties1;
+        emit(
+          PropertiesSuccess(properties: properties1),
+        );
+      },
+    );
+  }
+
+  void changeIsFoveate({required PropertyModel properties}) {
+    emit(PropertiesInitial());
+    properties.isFoveate = !properties.isFoveate;
+    emit(ChangeIsFoveateSuccess(isFoveate: properties.isFoveate));
   }
 }

@@ -10,6 +10,7 @@ abstract class ShowAllPropertiesService {
     try {
       var response = await DioHelper.getData(
         url: 'properties/show/all',
+        token: token,
       );
       log(response.toString());
       List<PropertyModel> properties = [];
@@ -23,6 +24,7 @@ abstract class ShowAllPropertiesService {
       if (ex is DioException) {
         return left(ServerFailure.fromDioError(ex));
       }
+      log(ex.toString());
       return left(ServerFailure(ex.toString()));
     }
   }
@@ -38,7 +40,8 @@ class PropertyModel {
   final String type;
   final double x;
   final double y;
-  final List<String> images;
+  final List<dynamic> images;
+  bool isFoveate;
 
   PropertyModel({
     required this.id,
@@ -51,6 +54,7 @@ class PropertyModel {
     required this.x,
     required this.y,
     required this.images,
+    required this.isFoveate,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> jsonData) {
@@ -65,6 +69,7 @@ class PropertyModel {
       x: jsonData['x'],
       y: jsonData['y'],
       images: jsonData['images'],
+      isFoveate: false,
     );
   }
 }
