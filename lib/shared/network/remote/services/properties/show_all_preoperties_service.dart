@@ -5,12 +5,12 @@
 // import '../../../../models/region_model.dart';
 // import '../../dio_helper.dart';
 
-// abstract class GetGovernoratesRegionsService {
-//   static Future<Either<Failure, List<RegionModel>>> getGovernoratesRegions(
-//       {required int governorateID}) async {
+// abstract class ShowAllPropertiesService {
+//   static Future<Either<Failure, List<RegionModel>>> showAll(
+//       {required String token}) async {
 //     try {
 //       var response = await DioHelper.getData(
-//         url: 'governorates/$governorateID/regions',
+//         url: 'properties/show/all',
 //       );
 //       log(response.toString());
 //       List<RegionModel> regions = [];
@@ -28,3 +28,6 @@
 //     }
 //   }
 // }
+
+
+// PropertyModel
