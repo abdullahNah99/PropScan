@@ -37,36 +37,33 @@ class _PropertiesViewState extends State<PropertiesView> {
       create: (context) => PropertiesCubit()..getAllProperties(),
       child: BlocBuilder<PropertiesCubit, PropertiesStates>(
         builder: (context, state) {
-          return SafeArea(
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: AppColors.defaultColor,
-                title: const Text('PropScan'),
-                centerTitle: true,
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image(
-                      image: const AssetImage(
-                        'assets/images/a8.png',
-                      ),
-                      height: 50.h,
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: AppColors.defaultColor,
+              title: const Text('PropScan'),
+              centerTitle: true,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image(
+                    image: const AssetImage(
+                      'assets/images/a8.png',
                     ),
+                    height: 50.h,
                   ),
-                ],
-              ),
-              body: const PropertiesViewBody(),
-              drawer: widget.userModel != null
-                  ? CustomDrawer.getCustomDrawer(
-                      context,
-                      propertiesCubit:
-                          BlocProvider.of<PropertiesCubit>(context),
-                      scaffoldKey:
-                          BlocProvider.of<PropertiesCubit>(context).scaffoldKey,
-                      userModel: widget.userModel!,
-                    )
-                  : null,
+                ),
+              ],
             ),
+            body: const PropertiesViewBody(),
+            drawer: widget.userModel != null
+                ? CustomDrawer.getCustomDrawer(
+                    context,
+                    propertiesCubit: BlocProvider.of<PropertiesCubit>(context),
+                    scaffoldKey:
+                        BlocProvider.of<PropertiesCubit>(context).scaffoldKey,
+                    userModel: widget.userModel!,
+                  )
+                : null,
           );
         },
       ),
