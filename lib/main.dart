@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/home/home.dart';
 import 'package:untitled/modules/splash_screen/splash_screen.dart';
 
 import 'package:untitled/shared/network/local/cache_helper.dart';
@@ -57,8 +58,8 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          // home: Search(),
-          initialRoute: SplashView.route,
+          home: HomeView(),
+          // initialRoute: SplashView.route,
           routes: AppRouter.router,
         );
       },

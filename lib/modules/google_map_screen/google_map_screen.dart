@@ -137,7 +137,17 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     }
 
     // setState(() {});
-
+    Set<Circle> circles = {
+      Circle(
+        circleId: CircleId('1'),
+        center: LatLng(widget.lat, widget.lon),
+        radius: 4000,
+        fillColor: Colors.blue.withOpacity(.3),
+        strokeWidth: 2,
+        strokeColor: Colors.blue,
+        visible: !widget.select,
+      )
+    };
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -179,6 +189,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                         onMapCreated: (GoogleMapController controller) {
                           _controller.complete(controller);
                         },
+                        circles: circles,
                       ),
                       Container(
                         margin: const EdgeInsets.all(20),
@@ -195,29 +206,29 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                     ],
                   ),
                 ),
-          // if (widget.select == true)
-          Container(
-            padding: const EdgeInsets.all(6),
-            width: double.infinity,
-            child: ElevatedButton(
-              //  style: ButtonStyle(alignment: Alignment.),
-              child: const Text(
-                'Save Location',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              onPressed: () async {
-                if (widget.addPropertyCubit != null) {
-                  widget.addPropertyCubit!.x = widget.lat;
-                  widget.addPropertyCubit!.y = widget.lon;
-                }
+          if (widget.select == true)
+            Container(
+              padding: const EdgeInsets.all(6),
+              width: double.infinity,
+              child: ElevatedButton(
+                //  style: ButtonStyle(alignment: Alignment.),
+                child: const Text(
+                  'Save Location',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () async {
+                  if (widget.addPropertyCubit != null) {
+                    widget.addPropertyCubit!.x = widget.lat;
+                    widget.addPropertyCubit!.y = widget.lon;
+                  }
 
-                log(location.toString());
-                log(widget.lat.toString());
-                log(widget.lon.toString());
-                Navigator.pop(context, location);
-              },
+                  log(location.toString());
+                  log(widget.lat.toString());
+                  log(widget.lon.toString());
+                  Navigator.pop(context, location);
+                },
+              ),
             ),
-          ),
         ],
       ),
     );

@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
+import 'package:untitled/shared/models/region_model.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 
 class PropertyCard extends StatelessWidget {
@@ -21,7 +23,16 @@ class PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        // await propertiesCubit.getPropertyChatUser(localUserID: 7);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return GoogleMapView(select: false, locations: [
+        //         RegionModel(id: 1, name: 'manar', x: 12.4543, y: 21.054656)
+        //       ]);
+        //     },
+        //   ),
+        // );
       },
       child: Card(
         key: key,

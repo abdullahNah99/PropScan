@@ -20,7 +20,7 @@ abstract class AppRouter {
     ProfileView.route: (context) => ProfileView(user: FirebaseAPIs.me),
     ConversationsView.route: (context) => const ConversationsView(),
     MyAdvertisementsView.route: (context) => const MyAdvertisementsView(),
-    TestMaps.route: (context) => const TestMaps(),
+    // TestMaps.route: (context) => const TestMaps(),
     // RegisterView.route: (context) => const RegisterView(),
     // GoogleMapView.route: (context) =>  GoogleMapView(),
   };
