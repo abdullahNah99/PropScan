@@ -10,6 +10,7 @@ abstract class ShowAllPropertiesService {
     try {
       var response = await DioHelper.getData(
         url: 'properties/show/all',
+        token: token,
       );
       log(response.toString());
       List<PropertyModel> properties = [];
@@ -38,7 +39,7 @@ class PropertyModel {
   final String type;
   final double x;
   final double y;
-  final List<String> images;
+  final List<dynamic> images;
 
   PropertyModel({
     required this.id,

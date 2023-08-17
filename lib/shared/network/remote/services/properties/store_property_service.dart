@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:untitled/shared/models/store_property_model.dart';
-import 'package:untitled/shared/network/local/cache_helper.dart';
 import '../../../../errors/failure.dart';
 import '../../dio_helper.dart';
 
@@ -10,6 +9,7 @@ abstract class StorePropertyService {
   static Future<Either<Failure, void>> storeProperty({
     required StorePropertyModel storePropertyModel,
     required List<String> images,
+    required String token,
   }) async {
     try {
       if (storePropertyModel is StoreHouseModel) {
@@ -29,7 +29,7 @@ abstract class StorePropertyService {
             'direction': storePropertyModel.direction,
           },
           imagesPaths: images,
-          token: await CacheHelper.getData(key: 'Token'),
+          token: token,
         );
       } else if (storePropertyModel is StoreFarmModel) {
         await DioHelper.postWithImage(
@@ -49,7 +49,7 @@ abstract class StorePropertyService {
             'description': storePropertyModel.description,
           },
           imagesPaths: images,
-          token: await CacheHelper.getData(key: 'Token'),
+          token: token,
         );
       } else if (storePropertyModel is StoreMarketModel) {
         await DioHelper.postWithImage(
@@ -64,7 +64,7 @@ abstract class StorePropertyService {
             'description': storePropertyModel.description,
           },
           imagesPaths: images,
-          token: await CacheHelper.getData(key: 'Token'),
+          token: token,
         );
       }
 

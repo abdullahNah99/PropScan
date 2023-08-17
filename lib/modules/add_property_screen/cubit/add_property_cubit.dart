@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untitled/shared/models/store_property_model.dart';
+import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/services/properties/store_property_service.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/models/governorate_model.dart';
@@ -256,6 +257,7 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
     (await StorePropertyService.storeProperty(
       storePropertyModel: storePropertyModel!,
       images: selectedImagesList,
+      token: await CacheHelper.getData(key: 'Token'),
     ))
         .fold(
       (failure) {

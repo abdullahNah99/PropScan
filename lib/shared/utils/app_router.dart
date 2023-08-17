@@ -4,6 +4,7 @@ import 'package:untitled/modules/my_advertisements_screen/my_advertisements_scre
 import 'package:untitled/modules/profile_screen/profile_screen.dart';
 import 'package:untitled/modules/properties_screen/properties_screen.dart';
 import 'package:untitled/modules/register_screen/register_screen.dart';
+import 'package:untitled/modules/test_uploads_images/test.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import '../../modules/add_property_screen/add_property_screen.dart';
 import '../../modules/login_screen/login_screen.dart';
@@ -19,6 +20,7 @@ abstract class AppRouter {
     ProfileView.route: (context) => ProfileView(user: FirebaseAPIs.me),
     ConversationsView.route: (context) => const ConversationsView(),
     MyAdvertisementsView.route: (context) => const MyAdvertisementsView(),
+    TestMaps.route: (context) => const TestMaps(),
     // RegisterView.route: (context) => const RegisterView(),
     // GoogleMapView.route: (context) =>  GoogleMapView(),
   };
