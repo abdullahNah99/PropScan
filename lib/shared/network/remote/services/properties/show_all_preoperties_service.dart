@@ -24,6 +24,7 @@ abstract class ShowAllPropertiesService {
       if (ex is DioException) {
         return left(ServerFailure.fromDioError(ex));
       }
+      log(ex.toString());
       return left(ServerFailure(ex.toString()));
     }
   }
@@ -40,6 +41,7 @@ class PropertyModel {
   final double x;
   final double y;
   final List<dynamic> images;
+  bool isFoveate;
 
   PropertyModel({
     required this.id,
@@ -52,6 +54,7 @@ class PropertyModel {
     required this.x,
     required this.y,
     required this.images,
+    required this.isFoveate,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> jsonData) {
@@ -66,6 +69,7 @@ class PropertyModel {
       x: jsonData['x'],
       y: jsonData['y'],
       images: jsonData['images'],
+      isFoveate: false,
     );
   }
 }
