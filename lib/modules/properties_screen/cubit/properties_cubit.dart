@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
@@ -41,19 +39,6 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       },
     );
   }
-
-  // Future<void> getPropertyChatUser({required int localUserID}) async {
-  //   emit(PropertiesLoading());
-  //   (await FirebaseAPIs.getPropertyChatUser(localUserID: localUserID)).fold(
-  //     (failure) {
-  //       emit(PropertiesFailure(errorMessage: failure.errorMessege));
-  //       // getPropertyChatUser(localUserID: localUserID);
-  //     },
-  //     (chatUser) {
-  //       emit(GetPropertyChatUserSuccess(chatUser: chatUser));
-  //     },
-  //   );
-  // }
 
   Future<void> getPropertyChatUser({required int localUserID}) async {
     emit(PropertiesLoading());
