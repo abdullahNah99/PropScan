@@ -10,6 +10,7 @@ import 'package:untitled/modules/properties_screen/widgets/custom_property_card.
 import 'package:untitled/modules/properties_screen/widgets/footer.dart';
 import 'package:untitled/modules/properties_screen/widgets/header.dart';
 import 'package:untitled/shared/functions/custom_snack_bar.dart';
+import 'package:untitled/shared/models/property_model.dart';
 import 'package:untitled/shared/models/user_model.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
