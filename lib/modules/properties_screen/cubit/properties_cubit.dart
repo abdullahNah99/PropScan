@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -37,21 +35,6 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       label: 'Map',
     ),
   ];
-
-  // List<Widget> widgets = [
-  //   const PropertiesViewBody(),
-  //   GoogleMapViewBody(
-  //     select: false,
-  //     locations: nearestProps,
-  //     // const [
-  //       // RegionModel(id: 1, name: 'manar', x: 12.4543, y: 12.054656),
-  //       // RegionModel(id: 2, name: 'manar', x: 11.4543, y: 11.054656),
-  //       // RegionModel(id: 3, name: 'manar', x: 10.4543, y: 10.054656),
-  //       // RegionModel(id: 4, name: 'manar', x: 9.4543, y: 9.054656),
-  //       // RegionModel(id: 5, name: 'manar', x: 8.4543, y: 8.054656),
-  //     // ],
-  //   ),
-  // ];
 
   void changeBottomNavigationBarIndex(int index) {
     emit(PropertiesInitial());
@@ -116,13 +99,12 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
                       lon1: position.longitude,
                       lat2: item.x,
                       lon2: item.y) <
-                  10) {
+                  4) {
                 this.nearestProps.add(item);
               } else {
                 break;
               }
             }
-            log("xxxxxxxxxxxxxxxxxxxxx${this.nearestProps}xxxxxxxxxxxxxxxxxxxxxxxxxxx");
           },
         );
       },
@@ -205,7 +187,9 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   int? dailyRentEndIndex;
 
   Color getDailyRentItemColor({required int index}) {
-    if (dailyRentStartIndex != null) {
+    if (reservedDates.contains(index)) {
+      return Colors.grey.withOpacity(.7);
+    } else if (dailyRentStartIndex != null) {
       if (dailyRentEndIndex != null) {
         if (index >= dailyRentStartIndex! && index <= dailyRentEndIndex!) {
           return AppColors.defaultColor;
@@ -219,14 +203,21 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     return AppColors.color2.withOpacity(.3);
   }
 
+  List<int> reservedDates = [];
+
   void getDailyRentDates() {
     dailyRentDates.clear();
     dailyRentDays.clear();
+    reservedDates.clear();
     Jiffy jiffy = Jiffy.now();
     for (int i = 0; i < 90; i++) {
       jiffy = jiffy.add(days: 1);
       dailyRentDates.add(jiffy.format().substring(0, 10));
       dailyRentDays.add(jiffy.EEEE);
+
+      if (test.contains(jiffy.format().substring(0, 10))) {
+        reservedDates.add(i);
+      }
     }
   }
 
@@ -252,7 +243,9 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     if (dailyRentStartIndex != null) {
       if (dailyRentEndIndex != null) {
         for (int i = dailyRentStartIndex!; i <= dailyRentEndIndex!; i++) {
-          selectedDates.add(dailyRentDates[i]);
+          if (!reservedDates.contains(i)) {
+            selectedDates.add(dailyRentDates[i]);
+          }
         }
       } else {
         selectedDates.add(dailyRentDates[dailyRentStartIndex!]);
@@ -260,4 +253,14 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     }
     return selectedDates;
   }
+
+  List<String> test = [
+    '2023-08-24',
+    '2023-08-25',
+    '2023-08-26',
+    '2023-08-27',
+    '2023-08-28',
+    '2023-08-29',
+    '2023-09-06',
+  ];
 }

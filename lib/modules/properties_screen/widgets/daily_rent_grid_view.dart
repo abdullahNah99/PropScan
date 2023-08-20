@@ -23,16 +23,20 @@ class _DailyRentGridState extends State<DailyRentGrid> {
       ),
       itemBuilder: (context, index) {
         return DailyRentItem(
-          onTap: () {
-            setState(() {
-              widget.propertiesCubit.dailyRentItmeOnTap(index: index);
-            });
-          },
+          onTap: widget.propertiesCubit.reservedDates.contains(index)
+              ? null
+              : () {
+                  setState(() {
+                    widget.propertiesCubit.dailyRentItmeOnTap(index: index);
+                  });
+                },
           propertiesCubit: widget.propertiesCubit,
           index: index,
           date: widget.propertiesCubit.dailyRentDates[index],
           day: widget.propertiesCubit.dailyRentDays[index],
-          status: 'Availabe',
+          status: widget.propertiesCubit.reservedDates.contains(index)
+              ? 'Reserved'
+              : 'Availabe',
         );
       },
     );
