@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/widgets/daily_rent_grid_view.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
+import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
@@ -26,30 +27,14 @@ class PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        // Navigator.push(
+        Navigator.pushNamed(context, PropertyDetailsView.route);
+        // propertiesCubit.getDailyRentDates();
+
+        // CustomDialog.showDailyRentDialog(
         //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) {
-        //       return GoogleMapView(select: false, locations: [
-        //         RegionModel(id: 1, name: 'manar', x: 12.4543, y: 21.054656)
-        //       ]);
-        //     },
-        //   ),
+        //   propertiesCubit: propertiesCubit,
+        //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
         // );
-
-        // log(propertiesCubit.nearestProps.length.toString());
-        // log(propertiesCubit.nearestProps[1].x.toString());
-        // log(propertiesCubit.nearestProps[1].y.toString());
-
-
-        propertiesCubit.getDailyRentDates();
-
-        CustomDialog.showDailyRentDialog(
-          context,
-          propertiesCubit: propertiesCubit,
-          dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
-        );
- 
       },
       child: Card(
         key: key,
