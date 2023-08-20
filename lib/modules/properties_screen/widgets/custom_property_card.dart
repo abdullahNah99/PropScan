@@ -5,8 +5,8 @@ import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/widgets/daily_rent_grid_view.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
+import '../../../shared/models/property_model.dart';
 
 class PropertyCard extends StatelessWidget {
   final int index;
@@ -41,7 +41,6 @@ class PropertyCard extends StatelessWidget {
         // log(propertiesCubit.nearestProps[1].x.toString());
         // log(propertiesCubit.nearestProps[1].y.toString());
 
-
         propertiesCubit.getDailyRentDates();
 
         CustomDialog.showDailyRentDialog(
@@ -49,7 +48,6 @@ class PropertyCard extends StatelessWidget {
           propertiesCubit: propertiesCubit,
           dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
         );
- 
       },
       child: Card(
         key: key,

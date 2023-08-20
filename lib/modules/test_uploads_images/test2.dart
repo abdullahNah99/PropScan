@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/test_uploads_images/cubit/test_cubit.dart';
-import '../../shared/network/remote/services/properties/show_all_preoperties_service.dart';
+import '../../shared/models/property_model.dart';
 
 class Test2 extends StatelessWidget {
   final PropertyModel propertyModel;

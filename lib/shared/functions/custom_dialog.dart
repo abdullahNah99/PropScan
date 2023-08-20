@@ -2,18 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 
 import 'package:untitled/main.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/shared/widgets/custome_button.dart';
 
+import '../models/property_model.dart';
 
 abstract class CustomDialog {
-  static void detailsDialog(PropertyModel element, context) {
+  static void detailsDialog(BuildContext context,
+      {required PropertyModel element}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -22,7 +22,7 @@ abstract class CustomDialog {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 350.h,
+                height: 250.h,
                 child: PhotoViewGallery.builder(
                   backgroundDecoration:
                       BoxDecoration(color: Colors.black.withOpacity(.85)),
