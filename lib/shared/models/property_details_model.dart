@@ -33,21 +33,20 @@ class PropertyDetailsModel {
 
   factory PropertyDetailsModel.fromJson(Map<String, dynamic> jsonData) {
     return PropertyDetailsModel(
-      id: jsonData['id'],
-      price: jsonData['price'],
-      space: jsonData['space'],
-      userID: jsonData['user_id'],
-      regionID: jsonData['region_id'],
-      propertyStateID: jsonData['property_state_id'],
-      state: jsonData['state'],
-      governorate: jsonData['governorate'],
-      region: jsonData['region'],
-      type: jsonData['type'],
-      x: jsonData['x'],
-      y: jsonData['y'],
-      images: jsonData['images'],
-      houseModel: jsonData['house'],
-    );
+        id: jsonData['id'],
+        price: jsonData['price'],
+        space: jsonData['space'],
+        userID: jsonData['user_id'],
+        regionID: jsonData['region_id'],
+        propertyStateID: jsonData['property_state_id'],
+        state: jsonData['state'],
+        governorate: jsonData['governorate'],
+        region: jsonData['region'],
+        type: jsonData['type'],
+        x: jsonData['x'],
+        y: jsonData['y'],
+        images: jsonData['images'],
+        houseModel: HouseModel.fromJson(jsonData['house']));
   }
 }
 

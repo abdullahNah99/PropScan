@@ -27,7 +27,10 @@ class PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        Navigator.pushNamed(context, PropertyDetailsView.route);
+        Navigator.pushNamed(context, PropertyDetailsView.route, arguments: {
+          "propertyID": properties.id,
+        });
+        log(properties.id.toString());
         // propertiesCubit.getDailyRentDates();
 
         // CustomDialog.showDailyRentDialog(
@@ -40,14 +43,13 @@ class PropertyCard extends StatelessWidget {
         // log(propertiesCubit.nearestProps[1].x.toString());
         // log(propertiesCubit.nearestProps[1].y.toString());
 
-        propertiesCubit.getDailyRentDates();
+        // propertiesCubit.getDailyRentDates();
 
-        CustomDialog.showDailyRentDialog(
-          context,
-          propertiesCubit: propertiesCubit,
-          dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
-        );
-
+        // CustomDialog.showDailyRentDialog(
+        //   context,
+        //   propertiesCubit: propertiesCubit,
+        //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
+        // );
       },
       child: Card(
         key: key,
