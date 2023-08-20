@@ -13,6 +13,7 @@ import 'package:untitled/shared/network/remote/services/properties/index_propert
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
+import '../../../shared/models/property_model.dart';
 import '../../../shared/network/local/cache_helper.dart';
 import '../../login_screen/login_screen.dart';
 

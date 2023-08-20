@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
+
+import '../../../shared/models/property_model.dart';
 
 abstract class TestState extends Equatable {
   const TestState();

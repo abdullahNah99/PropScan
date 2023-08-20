@@ -1,15 +1,14 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'dart:async';
+import '../../shared/models/property_model.dart';
 
 class GoogleMapView extends StatelessWidget {
   static const route = 'GoogleMapView';
@@ -127,7 +126,7 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
                   ),
             onTap: () {
               if (element.id != -1) {
-                CustomDialog.detailsDialog(element, context);
+                CustomDialog.detailsDialog(context, element: element);
               }
             }),
       );

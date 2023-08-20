@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:untitled/shared/models/firebase_models/chat_user.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
+
+import '../../../shared/models/property_model.dart';
 
 abstract class PropertiesStates extends Equatable {
   @override

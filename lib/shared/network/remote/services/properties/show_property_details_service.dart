@@ -1,28 +1,21 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:untitled/shared/models/property_details_model.dart';
 import '../../../../errors/failure.dart';
-import '../../../../models/property_model.dart';
 import '../../dio_helper.dart';
 
-abstract class IndexPropertiesService {
-  static Future<Either<Failure, List<PropertyModel>>> indexProperties(
-      {required String token, required double x, required double y}) async {
+abstract class ShowPropertyDetailsService {
+  static Future<Either<Failure, PropertyDetailsModel>> showDetails(
+      {required String token, required int propertyID}) async {
     try {
       var response = await DioHelper.getData(
-        url: 'properties/?page=&per_page=',
+        url: 'properties/$propertyID',
         token: token,
-        query: {
-          'x': x,
-          'y': y,
-        },
       );
       log(response.toString());
-      List<PropertyModel> properties = [];
-      for (var item in response.data['properties']['data']) {
-        properties.add(PropertyModel.fromJson(item));
-      }
-      return right(properties);
+
+      return right(PropertyDetailsModel.fromJson(response.data));
     } catch (ex) {
       log('\nException: there is an error in indexProperties method');
       log('\n${ex.toString()}');
