@@ -1,13 +1,14 @@
-import 'package:awesome_icons/awesome_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
+import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 
 import 'package:untitled/modules/property_details_screen/cubit/property_details_cubit.dart';
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
+import 'package:untitled/shared/utils/app_assets.dart';
+import 'package:untitled/shared/widgets/custome_image.dart';
 import 'package:untitled/shared/widgets/custome_progress_indicator.dart';
 
 class PropertyDetailsView extends StatelessWidget {
@@ -109,33 +110,39 @@ class PropertyDetailsBody extends StatelessWidget {
                       Row(
                         children: [
                           IconText(
-                            icon: Icons.abc,
+                            image: AppAssets.price,
                             text: propertyDetails.price.toString(),
                           ),
                           SizedBox(
                             width: 50.w,
                           ),
                           IconText(
-                            icon: Icons.abc,
+                            image: AppAssets.space,
                             text: propertyDetails.space.toString(),
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: 10.w,
+                      ),
                       IconText(
-                        icon: Icons.abc,
+                        image: AppAssets.price,
                         text: propertyDetails.type.toString(),
+                      ),
+                      SizedBox(
+                        height: 10.w,
                       ),
                       Row(
                         children: [
                           IconText(
-                            icon: Icons.abc,
+                            image: AppAssets.address,
                             text: propertyDetails.governorate.toString(),
                           ),
                           SizedBox(
                             width: 50.w,
                           ),
                           IconText(
-                            icon: Icons.abc,
+                            image: AppAssets.address,
                             text: propertyDetails.region.toString(),
                           ),
                         ],
@@ -152,23 +159,26 @@ class PropertyDetailsBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconText(
-                                icon: Icons.abc,
+                                image: AppAssets.price,
                                 text: propertyDetails.houseModel!.numberOfRooms
                                     .toString()),
                             IconText(
-                                icon: Icons.abc,
+                                image: AppAssets.address,
                                 text: propertyDetails
                                     .houseModel!.numberOfBathrooms
                                     .toString()),
                             IconText(
-                                icon: Icons.abc,
+                                image: AppAssets.address,
                                 text: propertyDetails
                                     .houseModel!.numberOfBalcony
                                     .toString()),
                           ],
                         ),
+                        SizedBox(
+                          height: 10.w,
+                        ),
                         IconText(
-                          icon: Icons.abc,
+                          image: AppAssets.direction,
                           text:
                               propertyDetails.houseModel!.direction.toString(),
                         ),
@@ -179,9 +189,27 @@ class PropertyDetailsBody extends StatelessWidget {
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 300.h,
+                      child: GoogleMapViewBody(
+                        select: false,
+                        locations: [],
+                        lat: propertyDetails.x,
+                        lon: propertyDetails.y,
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        const IconText(icon: Icons.abc, text: 'Description'),
+                        const IconText(
+                          image: AppAssets.direction,
+                          text: 'Description',
+                        ),
                         Text(
                           propertyDetails.houseModel!.description,
                           style: TextStyle(fontSize: 20.sp),
@@ -200,18 +228,18 @@ class PropertyDetailsBody extends StatelessWidget {
 }
 
 class IconText extends StatelessWidget {
-  final IconData icon;
+  final String image;
   final String text;
-  const IconText({super.key, required this.icon, required this.text});
+  const IconText({super.key, required this.image, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 30.sp,
-          color: Colors.green,
+        CustomeImage(
+          image: image,
+          width: 25.w,
+          height: 25.h,
         ),
         SizedBox(
           width: 5.w,
