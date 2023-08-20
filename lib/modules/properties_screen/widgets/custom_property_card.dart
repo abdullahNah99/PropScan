@@ -2,8 +2,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
+import 'package:untitled/modules/properties_screen/widgets/daily_rent_grid_view.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
+import 'package:untitled/shared/functions/custom_dialog.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
+import 'package:untitled/shared/utils/app_assets.dart';
 
 class PropertyCard extends StatelessWidget {
   final int index;
@@ -31,9 +34,14 @@ class PropertyCard extends StatelessWidget {
         //     },
         //   ),
         // );
-        log(propertiesCubit.nearestProps.length.toString());
-        log(propertiesCubit.nearestProps[1].x.toString());
-        log(propertiesCubit.nearestProps[1].y.toString());
+
+        propertiesCubit.getDailyRentDates();
+
+        CustomDialog.showDailyRentDialog(
+          context,
+          propertiesCubit: propertiesCubit,
+          dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
+        );
       },
       child: Card(
         key: key,
@@ -49,12 +57,13 @@ class PropertyCard extends StatelessWidget {
                       topLeft: Radius.circular(10.r),
                       topRight: Radius.circular(10.r),
                     ),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        properties.images.isEmpty
-                            ? ''
-                            : "http://192.168.43.37:8000/${properties.images[0]["image"]}",
-                      ),
+                    image: const DecorationImage(
+                      image: AssetImage(AppAssets.logo),
+                      // image: NetworkImage(
+                      //   properties.images.isEmpty
+                      //       ? ''
+                      //       : "http://192.168.43.37:8000/${properties.images[0]["image"]}",
+                      // ),
                       fit: BoxFit.cover,
                     ),
                   ),
