@@ -78,34 +78,7 @@ class _PropertiesViewState extends State<PropertiesView> {
                 ? const PropertiesViewBody()
                 : GoogleMapViewBody(
                     select: false,
-                    locations: [
-                      PropertyModel(
-                        id: 40,
-                        price: 199,
-                        space: 200,
-                        state: 'dd',
-                        governorate: 'asfasf',
-                        region: 'asf',
-                        type: 'asfd',
-                        x: 33.48633898004137,
-                        y: 36.298287995159626,
-                        images: [],
-                        isFoveate: false,
-                      ),
-                      PropertyModel(
-                        id: 40,
-                        price: 199,
-                        space: 200,
-                        state: 'dd',
-                        governorate: 'asfasf',
-                        region: 'asf',
-                        type: 'asfd',
-                        x: 33.49256,
-                        y: 36.29835,
-                        images: [],
-                        isFoveate: false,
-                      ),
-                    ],
+                    locations: propertiesCubit.nearestProps,
                   ),
             //  propertiesCubit
             //     .widgets[propertiesCubit.bottomNavigationBarIndex],
@@ -200,29 +173,40 @@ class PropertiesViewBody extends StatelessWidget {
         } else if (state is PropertiesLoading) {
           return const CustomeProgressIndicator();
         }
-        return ReorderableListView.builder(
-          header: const Header(),
-          itemBuilder: (context, index) {
-            PropertyModel property =
-                BlocProvider.of<PropertiesCubit>(context).properties[index];
+        return RefreshIndicator(
+          onRefresh: () {
+            Future<void> ref() async {
+              BlocProvider.of<PropertiesCubit>(context).getAllProperties();
+              BlocProvider.of<PropertiesCubit>(context).getNearestProperties();
+            }
 
-            return PropertyCard(
-              index: index,
-              propertiesCubit: BlocProvider.of<PropertiesCubit>(context),
-              properties: property,
-              key: Key(index.toString()),
-            );
+            return ref();
           },
-          itemCount:
-              BlocProvider.of<PropertiesCubit>(context).properties.length,
-          // scrollDirection: Axis.horizontal,
-          // reverse: true,
-          footer: const Footer(),
-          padding: const EdgeInsets.all(16.0),
-          onReorder: (int oldIndex, int newIndex) {
-            log(oldIndex.toString());
-            log(newIndex.toString());
-          },
+          child: ReorderableListView.builder(
+            header: const Header(),
+            itemBuilder: (context, index) {
+              PropertyModel property =
+                  BlocProvider.of<PropertiesCubit>(context).properties[index];
+
+              return PropertyCard(
+                index: index,
+                propertiesCubit: BlocProvider.of<PropertiesCubit>(context),
+                properties: property,
+                myProperties: false,
+                key: Key(index.toString()),
+              );
+            },
+            itemCount:
+                BlocProvider.of<PropertiesCubit>(context).properties.length,
+            // scrollDirection: Axis.horizontal,
+            // reverse: true,
+            footer: const Footer(),
+            padding: const EdgeInsets.all(16.0),
+            onReorder: (int oldIndex, int newIndex) {
+              log(oldIndex.toString());
+              log(newIndex.toString());
+            },
+          ),
         );
       },
     );

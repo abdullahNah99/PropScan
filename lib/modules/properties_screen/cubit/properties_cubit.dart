@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -88,18 +90,36 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
             emit(PropertiesFailure(errorMessage: failure.errorMessege));
           },
           (nearestProps) {
+            this.nearestProps.clear();
+            this.nearestProps.add(
+                  PropertyModel(
+                    id: -1,
+                    price: 0,
+                    space: 0,
+                    state: '',
+                    governorate: '',
+                    region: '',
+                    type: '',
+                    x: position.latitude,
+                    y: position.longitude,
+                    images: [],
+                    userId: 0,
+                    isFoveate: false,
+                  ),
+                );
             for (PropertyModel item in nearestProps) {
               if (getDistance(
                       lat1: position.latitude,
                       lon1: position.longitude,
                       lat2: item.x,
                       lon2: item.y) <
-                  15) {
+                  10) {
                 this.nearestProps.add(item);
               } else {
                 break;
               }
             }
+            log("xxxxxxxxxxxxxxxxxxxxx${this.nearestProps}xxxxxxxxxxxxxxxxxxxxxxxxxxx");
           },
         );
       },

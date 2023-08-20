@@ -91,7 +91,11 @@ abstract class CustomDrawer {
             fontSize: 18.w,
             icon: FontAwesomeIcons.ad,
             onPressed: () {
-              Navigator.pushNamed(context, MyAdvertisementsView.route);
+              Navigator.pushNamed(context, MyAdvertisementsView.route,
+                  arguments: {
+                    'propertiesCubit': propertiesCubit,
+                    'userModel': userModel,
+                  });
             },
           ),
           SizedBox(height: 15.h),

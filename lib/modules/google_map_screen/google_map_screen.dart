@@ -1,10 +1,13 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
+import 'package:untitled/shared/functions/custom_dialog.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'dart:async';
 
@@ -111,19 +114,28 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
     for (var element in widget.locations) {
       _markers.add(
         Marker(
-          markerId: MarkerId(element.id.toString()),
-          position: LatLng(element.x, element.y),
-          icon: await BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty,
-            'assets/images/home1.png',
-          ),
-        ),
+            markerId: MarkerId(element.id.toString()),
+            position: LatLng(element.x, element.y),
+            icon: element.id == -1
+                ? await BitmapDescriptor.fromAssetImage(
+                    ImageConfiguration.empty,
+                    'assets/images/location.png',
+                  )
+                : await BitmapDescriptor.fromAssetImage(
+                    ImageConfiguration.empty,
+                    'assets/images/home1.png',
+                  ),
+            onTap: () {
+              if (element.id != -1) {
+                CustomDialog.detailsDialog(element, context);
+              }
+            }),
       );
     }
     log(_markers.toString());
     _kGooglePlex = CameraPosition(
       target: LatLng(widget.locations[0].x, widget.locations[0].y),
-      zoom: 16.4746,
+      zoom: 11.9,
     );
   }
 
@@ -168,73 +180,92 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
       // setState(() {});
     }
 
-    // setState(() {});
-    Set<Circle> circles = {
-      Circle(
-        circleId: const CircleId('1'),
-        center: LatLng(widget.lat, widget.lon),
-        radius: 4000,
-        fillColor: Colors.blue.withOpacity(.3),
-        strokeWidth: 2,
-        strokeColor: Colors.blue,
-        visible: !widget.select,
-      )
-    };
+    Set<Circle> circles = widget.locations.isNotEmpty
+        ? {
+            Circle(
+              circleId: const CircleId('1'),
+              center: LatLng(widget.locations[0].x, widget.locations[0].y),
+              radius: 6000,
+              fillColor: Colors.blue.withOpacity(.099),
+              strokeWidth: 2,
+              strokeColor: Colors.blue,
+              visible: !widget.select,
+            )
+          }
+        : {};
     return Column(
       children: [
-        _kGooglePlex == null ||
-                _markers.isEmpty ||
-                customMarker == BitmapDescriptor.defaultMarker
-            ? const Expanded(
-                child: Center(
-                  child: CircularProgressIndicator(),
+        if (_kGooglePlex == null ||
+            _markers.isEmpty ||
+            customMarker == BitmapDescriptor.defaultMarker)
+          const Expanded(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        else
+          Expanded(
+            child: Stack(
+              children: [
+                GoogleMap(
+                  onTap: (val) {
+                    if (widget.select == true) {
+                      widget.lat = val.latitude;
+                      location['lat'] = widget.lat;
+
+                      widget.lon = val.longitude;
+                      location['long'] = widget.lon;
+
+                      setState(
+                        () {
+                          _markers.clear();
+                          _markers.add(Marker(
+                              markerId: const MarkerId('1'),
+                              position: LatLng(widget.lat!, widget.lon!),
+                              onTap: () {},
+                              draggable: true));
+                        },
+                      );
+                    }
+                    // }
+                  },
+                  mapType: MapType.normal,
+                  markers: _markers,
+                  initialCameraPosition: _kGooglePlex as CameraPosition,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                  circles: circles,
                 ),
-              )
-            : Expanded(
-                child: Stack(
-                  children: [
-                    GoogleMap(
-                      onTap: (val) {
-                        if (widget.select == true) {
-                          widget.lat = val.latitude;
-                          location['lat'] = widget.lat;
-
-                          widget.lon = val.longitude;
-                          location['long'] = widget.lon;
-
-                          setState(() {
-                            _markers.clear();
-                            _markers.add(Marker(
-                                markerId: const MarkerId('1'),
-                                position: LatLng(widget.lat!, widget.lon!),
-                                onTap: () {},
-                                draggable: true));
-                          });
-                        }
-                        // }
-                      },
-                      mapType: MapType.normal,
-                      markers: _markers,
-                      initialCameraPosition: _kGooglePlex as CameraPosition,
-                      onMapCreated: (GoogleMapController controller) {
-                        _controller.complete(controller);
-                      },
-                      circles: circles,
-                    ),
-                    Container(
+                if (widget.locations.isEmpty)
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      width: 55.w,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(300),
+                        color: Colors.grey,
+                      ),
                       margin: const EdgeInsets.all(20),
                       child: TextButton(
-                          onPressed: () {
-                            widget.lat = null;
-                            widget.lon = null;
-                            getPosition();
-                            getLatAndLong();
-                          },
-                          child: const Icon(Icons.location_searching_rounded)),
-                    )
-                  ],
-                ),
-              ),
+                        onPressed: () {
+                          widget.lat = null;
+                          widget.lon = null;
+                          getPosition();
+                          getLatAndLong();
+                        },
+                        child: const Icon(
+                          Icons.location_searching_rounded,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+              ],
+            ),
+          ),
         if (widget.select == true)
           Container(
             padding: const EdgeInsets.all(6),
