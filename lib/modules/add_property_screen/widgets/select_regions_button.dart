@@ -75,7 +75,7 @@ class SelectRegionsButton extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GoogleMapView(
+                              builder: (context) => GoogleMapViewBody(
                                 select: true,
                                 locations: const [],
                                 lat: addPropertyCubit.regions[index].x,

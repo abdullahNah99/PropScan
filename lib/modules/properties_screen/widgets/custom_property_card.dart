@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
-import 'package:untitled/shared/models/region_model.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 
 class PropertyCard extends StatelessWidget {
@@ -33,6 +31,9 @@ class PropertyCard extends StatelessWidget {
         //     },
         //   ),
         // );
+        log(propertiesCubit.nearestProps.length.toString());
+        log(propertiesCubit.nearestProps[1].x.toString());
+        log(propertiesCubit.nearestProps[1].y.toString());
       },
       child: Card(
         key: key,

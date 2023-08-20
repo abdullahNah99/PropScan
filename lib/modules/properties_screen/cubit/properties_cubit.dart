@@ -1,9 +1,12 @@
+import 'package:awesome_icons/awesome_icons.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
 import 'package:untitled/shared/models/firebase_models/chat_user.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import 'package:untitled/shared/network/remote/services/auth/logout_service.dart';
+import 'package:untitled/shared/network/remote/services/properties/index_properties_service.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/network/local/cache_helper.dart';
@@ -12,8 +15,99 @@ import '../../login_screen/login_screen.dart';
 class PropertiesCubit extends Cubit<PropertiesStates> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   ChatUser? chatUser;
-  PropertiesCubit() : super(PropertiesInitial());
   List<PropertyModel> properties = [];
+  //////////////////////////////////////////////////////////
+  List<PropertyModel> nearestProps = [];
+  int bottomNavigationBarIndex = 0;
+  // double? myX;
+  // double? myY;
+
+  List<BottomNavigationBarItem> bottomNavigationBarItems = [
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(FontAwesomeIcons.map),
+      label: 'Map',
+    ),
+  ];
+
+  // List<Widget> widgets = [
+  //   const PropertiesViewBody(),
+  //   GoogleMapViewBody(
+  //     select: false,
+  //     locations: nearestProps,
+  //     // const [
+  //       // RegionModel(id: 1, name: 'manar', x: 12.4543, y: 12.054656),
+  //       // RegionModel(id: 2, name: 'manar', x: 11.4543, y: 11.054656),
+  //       // RegionModel(id: 3, name: 'manar', x: 10.4543, y: 10.054656),
+  //       // RegionModel(id: 4, name: 'manar', x: 9.4543, y: 9.054656),
+  //       // RegionModel(id: 5, name: 'manar', x: 8.4543, y: 8.054656),
+  //     // ],
+  //   ),
+  // ];
+
+  void changeBottomNavigationBarIndex(int index) {
+    emit(PropertiesInitial());
+    bottomNavigationBarIndex = index;
+    emit(ChangeBottomNavigationBarIndex());
+  }
+
+  Future<Position> getMyLocation() async {
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    // .then(
+    //   (position) {
+    //     myX = position.latitude;
+    //     myY = position.longitude;
+    //   },
+    // );
+  }
+
+  double getDistance({
+    required double lat1,
+    required double lon1,
+    required double lat2,
+    required double lon2,
+  }) {
+    return (Geolocator.distanceBetween(lat1, lon1, lat2, lon2) / 1000);
+  }
+
+  Future<void> getNearestProperties() async {
+    await getMyLocation().then(
+      (position) async {
+        (await IndexPropertiesService.indexProperties(
+          x: position.latitude,
+          y: position.longitude,
+          token: await CacheHelper.getData(key: 'Token'),
+        ))
+            .fold(
+          (failure) {
+            emit(PropertiesFailure(errorMessage: failure.errorMessege));
+          },
+          (nearestProps) {
+            for (PropertyModel item in nearestProps) {
+              if (getDistance(
+                      lat1: position.latitude,
+                      lon1: position.longitude,
+                      lat2: item.x,
+                      lon2: item.y) <
+                  15) {
+                this.nearestProps.add(item);
+              } else {
+                break;
+              }
+            }
+          },
+        );
+      },
+    );
+  }
+  //////////////////////////////////////////////////////////////////////////
+
+  PropertiesCubit() : super(PropertiesInitial());
 
   Future<void> logOut(BuildContext context) async {
     emit(PropertiesLoading());
@@ -56,10 +150,8 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     }
   }
 
-  // List<PropertyModel> properties = [];
   Future<void> getAllProperties() async {
     emit(PropertiesLoading());
-
     (await ShowAllPropertiesService.showAll(
       token: await CacheHelper.getData(key: "Token"),
     ))

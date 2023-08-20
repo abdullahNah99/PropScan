@@ -42,6 +42,7 @@ class PropertyModel {
   final double y;
   final List<dynamic> images;
   bool isFoveate;
+  double? distance;
 
   PropertyModel({
     required this.id,
@@ -55,6 +56,7 @@ class PropertyModel {
     required this.y,
     required this.images,
     required this.isFoveate,
+    this.distance,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> jsonData) {

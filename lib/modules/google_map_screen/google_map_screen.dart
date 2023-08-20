@@ -1,19 +1,20 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/modules/add_property_screen/cubit/add_property_cubit.dart';
+import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'dart:async';
-import '../../shared/models/region_model.dart';
 
-class GoogleMapView extends StatefulWidget {
+class GoogleMapView extends StatelessWidget {
   static const route = 'GoogleMapView';
   final bool select;
   final AddPropertyCubit? addPropertyCubit;
   var lat;
   var lon;
-  List<RegionModel> locations = [];
-
+  List<PropertyModel> locations = [];
   GoogleMapView({
     super.key,
     required this.select,
@@ -24,10 +25,41 @@ class GoogleMapView extends StatefulWidget {
   });
 
   @override
-  State<GoogleMapView> createState() => _GoogleMapViewState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: GoogleMapViewBody(
+        locations: locations,
+        select: select,
+        addPropertyCubit: addPropertyCubit,
+        lat: lat,
+        lon: lon,
+      ),
+    );
+  }
 }
 
-class _GoogleMapViewState extends State<GoogleMapView> {
+class GoogleMapViewBody extends StatefulWidget {
+  final bool select;
+  final AddPropertyCubit? addPropertyCubit;
+  var lat;
+  var lon;
+  List<PropertyModel> locations = [];
+
+  GoogleMapViewBody({
+    super.key,
+    required this.select,
+    required this.locations,
+    this.addPropertyCubit,
+    this.lat,
+    this.lon,
+  });
+
+  @override
+  State<GoogleMapViewBody> createState() => _GoogleMapViewBodyState();
+}
+
+class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
   Position? cl;
   CameraPosition? _kGooglePlex;
   Set<Marker> _markers = {};
@@ -139,7 +171,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     // setState(() {});
     Set<Circle> circles = {
       Circle(
-        circleId: CircleId('1'),
+        circleId: const CircleId('1'),
         center: LatLng(widget.lat, widget.lon),
         radius: 4000,
         fillColor: Colors.blue.withOpacity(.3),
@@ -148,89 +180,85 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         visible: !widget.select,
       )
     };
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          _kGooglePlex == null ||
-                  _markers.isEmpty ||
-                  customMarker == BitmapDescriptor.defaultMarker
-              ? const Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : Expanded(
-                  child: Stack(
-                    children: [
-                      GoogleMap(
-                        onTap: (val) {
-                          if (widget.select == true) {
-                            widget.lat = val.latitude;
-                            location['lat'] = widget.lat;
-
-                            widget.lon = val.longitude;
-                            location['long'] = widget.lon;
-
-                            setState(() {
-                              _markers.clear();
-                              _markers.add(Marker(
-                                  markerId: const MarkerId('1'),
-                                  position: LatLng(widget.lat!, widget.lon!),
-                                  onTap: () {},
-                                  draggable: true));
-                            });
-                          }
-                          // }
-                        },
-                        mapType: MapType.normal,
-                        markers: _markers,
-                        initialCameraPosition: _kGooglePlex as CameraPosition,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
-                        circles: circles,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(20),
-                        child: TextButton(
-                            onPressed: () {
-                              widget.lat = null;
-                              widget.lon = null;
-                              getPosition();
-                              getLatAndLong();
-                            },
-                            child:
-                                const Icon(Icons.location_searching_rounded)),
-                      )
-                    ],
-                  ),
+    return Column(
+      children: [
+        _kGooglePlex == null ||
+                _markers.isEmpty ||
+                customMarker == BitmapDescriptor.defaultMarker
+            ? const Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
-          if (widget.select == true)
-            Container(
-              padding: const EdgeInsets.all(6),
-              width: double.infinity,
-              child: ElevatedButton(
-                //  style: ButtonStyle(alignment: Alignment.),
-                child: const Text(
-                  'Save Location',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                onPressed: () async {
-                  if (widget.addPropertyCubit != null) {
-                    widget.addPropertyCubit!.x = widget.lat;
-                    widget.addPropertyCubit!.y = widget.lon;
-                  }
+              )
+            : Expanded(
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      onTap: (val) {
+                        if (widget.select == true) {
+                          widget.lat = val.latitude;
+                          location['lat'] = widget.lat;
 
-                  log(location.toString());
-                  log(widget.lat.toString());
-                  log(widget.lon.toString());
-                  Navigator.pop(context, location);
-                },
+                          widget.lon = val.longitude;
+                          location['long'] = widget.lon;
+
+                          setState(() {
+                            _markers.clear();
+                            _markers.add(Marker(
+                                markerId: const MarkerId('1'),
+                                position: LatLng(widget.lat!, widget.lon!),
+                                onTap: () {},
+                                draggable: true));
+                          });
+                        }
+                        // }
+                      },
+                      mapType: MapType.normal,
+                      markers: _markers,
+                      initialCameraPosition: _kGooglePlex as CameraPosition,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                      circles: circles,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(20),
+                      child: TextButton(
+                          onPressed: () {
+                            widget.lat = null;
+                            widget.lon = null;
+                            getPosition();
+                            getLatAndLong();
+                          },
+                          child: const Icon(Icons.location_searching_rounded)),
+                    )
+                  ],
+                ),
               ),
+        if (widget.select == true)
+          Container(
+            padding: const EdgeInsets.all(6),
+            width: double.infinity,
+            child: ElevatedButton(
+              //  style: ButtonStyle(alignment: Alignment.),
+              child: const Text(
+                'Save Location',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () async {
+                if (widget.addPropertyCubit != null) {
+                  widget.addPropertyCubit!.x = widget.lat;
+                  widget.addPropertyCubit!.y = widget.lon;
+                }
+
+                log(location.toString());
+                log(widget.lat.toString());
+                log(widget.lon.toString());
+                Navigator.pop(context, location);
+              },
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
