@@ -3,7 +3,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:untitled/modules/test_uploads_images/cubit/test_state.dart';
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/services/properties/index_properties_service.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
+
+import '../../../shared/models/property_model.dart';
 
 class TestCubit extends Cubit<TestState> {
   double? myX;
