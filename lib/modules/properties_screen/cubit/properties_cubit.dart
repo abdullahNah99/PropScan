@@ -2,12 +2,14 @@ import 'package:awesome_icons/awesome_icons.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
 import 'package:untitled/shared/models/firebase_models/chat_user.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import 'package:untitled/shared/network/remote/services/auth/logout_service.dart';
 import 'package:untitled/shared/network/remote/services/properties/index_properties_service.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
+import 'package:untitled/shared/styles/app_colors.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/network/local/cache_helper.dart';
 import '../../login_screen/login_screen.dart';
@@ -174,5 +176,67 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     emit(PropertiesInitial());
     properties.isFoveate = !properties.isFoveate;
     emit(ChangeIsFoveateSuccess(isFoveate: properties.isFoveate));
+  }
+
+  List<String> dailyRentDates = [];
+  List<String> dailyRentDays = [];
+  int? dailyRentStartIndex;
+  int? dailyRentEndIndex;
+
+  Color getDailyRentItemColor({required int index}) {
+    if (dailyRentStartIndex != null) {
+      if (dailyRentEndIndex != null) {
+        if (index >= dailyRentStartIndex! && index <= dailyRentEndIndex!) {
+          return AppColors.defaultColor;
+        }
+      } else {
+        if (index == dailyRentStartIndex) {
+          return AppColors.defaultColor;
+        }
+      }
+    }
+    return AppColors.color2.withOpacity(.3);
+  }
+
+  void getDailyRentDates() {
+    dailyRentDates.clear();
+    dailyRentDays.clear();
+    Jiffy jiffy = Jiffy.now();
+    for (int i = 0; i < 90; i++) {
+      jiffy = jiffy.add(days: 1);
+      dailyRentDates.add(jiffy.format().substring(0, 10));
+      dailyRentDays.add(jiffy.EEEE);
+    }
+  }
+
+  void dailyRentItmeOnTap({required int index}) {
+    if (dailyRentStartIndex == null) {
+      dailyRentStartIndex = index;
+    } else {
+      if (dailyRentEndIndex != null && index == dailyRentEndIndex) {
+        dailyRentEndIndex = null;
+      } else {
+        if (index > dailyRentStartIndex!) {
+          dailyRentEndIndex = index;
+        } else if (index == dailyRentStartIndex) {
+          dailyRentStartIndex = null;
+          dailyRentEndIndex = null;
+        }
+      }
+    }
+  }
+
+  List<String> getSelectedDates() {
+    List<String> selectedDates = [];
+    if (dailyRentStartIndex != null) {
+      if (dailyRentEndIndex != null) {
+        for (int i = dailyRentStartIndex!; i <= dailyRentEndIndex!; i++) {
+          selectedDates.add(dailyRentDates[i]);
+        }
+      } else {
+        selectedDates.add(dailyRentDates[dailyRentStartIndex!]);
+      }
+    }
+    return selectedDates;
   }
 }
