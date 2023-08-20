@@ -55,6 +55,7 @@ class AddPropertyViewBody extends StatelessWidget {
         if (state is AddPropertyFailure) {
           CustomeSnackBar.showErrorSnackBar(context, msg: state.failureMsg);
         } else if (state is AddPropertySuccess) {
+          Navigator.pop(context);
           CustomeSnackBar.showSnackBar(
             context,
             msg: 'Property Added Successfully',
