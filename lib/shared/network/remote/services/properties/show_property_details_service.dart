@@ -15,9 +15,9 @@ abstract class ShowPropertyDetailsService {
       );
       log(response.toString());
 
-      return right(PropertyDetailsModel.fromJson(response.data));
+      return right(PropertyDetailsModel.fromJson(response.data['property']));
     } catch (ex) {
-      log('\nException: there is an error in indexProperties method');
+      log('\nException: there is an error in showDetails method');
       log('\n${ex.toString()}');
       if (ex is DioException) {
         log(ex.response.toString());
