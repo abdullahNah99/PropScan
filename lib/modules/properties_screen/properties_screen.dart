@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
 import 'package:untitled/modules/properties_screen/widgets/custom_drawer.dart';
@@ -34,9 +35,13 @@ class _PropertiesViewState extends State<PropertiesView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PropertiesCubit()..getAllProperties(),
+      create: (context) => PropertiesCubit()
+        ..getAllProperties()
+        ..getNearestProperties(),
       child: BlocBuilder<PropertiesCubit, PropertiesStates>(
         builder: (context, state) {
+          PropertiesCubit propertiesCubit =
+              BlocProvider.of<PropertiesCubit>(context);
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.defaultColor,
@@ -54,16 +59,56 @@ class _PropertiesViewState extends State<PropertiesView> {
                 ),
               ],
             ),
-            body: const PropertiesViewBody(),
+            bottomNavigationBar: BottomNavigationBar(
+              items: propertiesCubit.bottomNavigationBarItems,
+              onTap: (index) {
+                propertiesCubit.changeBottomNavigationBarIndex(index);
+              },
+              currentIndex: propertiesCubit.bottomNavigationBarIndex,
+            ),
             drawer: widget.userModel != null
                 ? CustomDrawer.getCustomDrawer(
                     context,
-                    propertiesCubit: BlocProvider.of<PropertiesCubit>(context),
-                    scaffoldKey:
-                        BlocProvider.of<PropertiesCubit>(context).scaffoldKey,
+                    propertiesCubit: propertiesCubit,
+                    scaffoldKey: propertiesCubit.scaffoldKey,
                     userModel: widget.userModel!,
                   )
                 : null,
+            body: propertiesCubit.bottomNavigationBarIndex == 0
+                ? const PropertiesViewBody()
+                : GoogleMapViewBody(
+                    select: false,
+                    locations: [
+                      PropertyModel(
+                        id: 40,
+                        price: 199,
+                        space: 200,
+                        state: 'dd',
+                        governorate: 'asfasf',
+                        region: 'asf',
+                        type: 'asfd',
+                        x: 33.48633898004137,
+                        y: 36.298287995159626,
+                        images: [],
+                        isFoveate: false,
+                      ),
+                      PropertyModel(
+                        id: 40,
+                        price: 199,
+                        space: 200,
+                        state: 'dd',
+                        governorate: 'asfasf',
+                        region: 'asf',
+                        type: 'asfd',
+                        x: 33.49256,
+                        y: 36.29835,
+                        images: [],
+                        isFoveate: false,
+                      ),
+                    ],
+                  ),
+            //  propertiesCubit
+            //     .widgets[propertiesCubit.bottomNavigationBarIndex],
           );
         },
       ),

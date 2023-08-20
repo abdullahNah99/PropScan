@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:untitled/modules/home/home.dart';
-import 'package:untitled/modules/splash_screen/splash_screen.dart';
 
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/dio_helper.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_router.dart';
 import 'firebase_options.dart';
+import 'modules/splash_screen/splash_screen.dart';
 
 late Size screenSize;
 
@@ -58,8 +57,8 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: HomeView(),
-          // initialRoute: SplashView.route,
+          // home: const TestMaps(),
+          initialRoute: SplashView.route,
           routes: AppRouter.router,
         );
       },

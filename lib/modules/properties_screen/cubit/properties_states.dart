@@ -33,3 +33,5 @@ final class GetPropertyChatUserSuccess extends PropertiesStates {
 
   GetPropertyChatUserSuccess({required this.chatUser});
 }
+
+final class ChangeBottomNavigationBarIndex extends PropertiesStates {}
