@@ -2,7 +2,9 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
+
 // import 'package:untitled/shared/models/property_model.dart';
+
 // import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 // import '../cubit/test_cubit.dart';
 // import '../test2.dart';

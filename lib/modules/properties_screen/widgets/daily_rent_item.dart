@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 
 class DailyRentItem extends StatelessWidget {
-  final void Function() onTap;
+  final void Function()? onTap;
   final int index;
   final String day;
   final String date;
@@ -29,30 +29,29 @@ class DailyRentItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: onTap,
-          // () {
-          //   if (propertiesCubit.dailyRentStartIndex == null) {
-          //     propertiesCubit.dailyRentStartIndex = index;
-          //   } else {
-          //     propertiesCubit.dailyRentEndIndex = index;
-          //   }
-          // },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 day,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
+                  decoration: propertiesCubit.reservedDates.contains(index)
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
                 ),
               ),
               SizedBox(height: 5.h),
               Text(
                 date,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 17,
+                  decoration: propertiesCubit.reservedDates.contains(index)
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
                 ),
               ),
               SizedBox(height: 5.h),

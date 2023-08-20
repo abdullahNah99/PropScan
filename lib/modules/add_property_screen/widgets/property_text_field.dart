@@ -22,7 +22,7 @@ class PropertyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? 70.w,
+      width: width ?? 95.w,
       child: TextFormField(
         validator: (value) {
           if (value?.isEmpty ?? true) {

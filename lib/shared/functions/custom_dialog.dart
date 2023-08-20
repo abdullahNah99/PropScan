@@ -1,14 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
 import 'package:untitled/main.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/shared/widgets/custome_button.dart';
-
 import '../models/property_model.dart';
 
 abstract class CustomDialog {
@@ -17,17 +14,22 @@ abstract class CustomDialog {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          content: Column(
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 50.h, horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25.r),
+          ),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 250.h,
+                height: 200.h,
                 child: PhotoViewGallery.builder(
                   backgroundDecoration:
-                      BoxDecoration(color: Colors.black.withOpacity(.85)),
-                  // pageController:
-                  //     PageController(initialPage: indexS),
+                      const BoxDecoration(color: Colors.white),
                   builder: (BuildContext context, int index) {
                     return PhotoViewGalleryPageOptions(
                       minScale: PhotoViewComputedScale.contained,
@@ -91,15 +93,23 @@ abstract class CustomDialog {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              Expanded(
+                child: SizedBox(
+                  height: 30.h,
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('More information'),
+                ),
+              ),
             ],
           ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('More information'),
-            ),
-          ],
         );
+        // actions: [
+
+        // ],
       },
     );
   }

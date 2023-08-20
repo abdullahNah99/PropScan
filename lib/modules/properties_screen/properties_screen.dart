@@ -13,8 +13,8 @@ import 'package:untitled/shared/functions/custom_snack_bar.dart';
 import 'package:untitled/shared/models/property_model.dart';
 import 'package:untitled/shared/models/user_model.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
-import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
 import 'package:untitled/shared/widgets/custome_progress_indicator.dart';
+import '../../shared/models/property_model.dart';
 import '../../shared/styles/app_colors.dart';
 
 class PropertiesView extends StatefulWidget {
