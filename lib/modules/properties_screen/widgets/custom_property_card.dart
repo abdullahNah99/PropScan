@@ -12,12 +12,14 @@ class PropertyCard extends StatelessWidget {
   final int index;
   final PropertiesCubit propertiesCubit;
   final PropertyModel properties;
+  final bool myProperties;
 
   const PropertyCard({
     super.key,
     required this.index,
     required this.propertiesCubit,
     required this.properties,
+    required this.myProperties,
   });
 
   @override
@@ -35,6 +37,11 @@ class PropertyCard extends StatelessWidget {
         //   ),
         // );
 
+        // log(propertiesCubit.nearestProps.length.toString());
+        // log(propertiesCubit.nearestProps[1].x.toString());
+        // log(propertiesCubit.nearestProps[1].y.toString());
+
+
         propertiesCubit.getDailyRentDates();
 
         CustomDialog.showDailyRentDialog(
@@ -42,6 +49,7 @@ class PropertyCard extends StatelessWidget {
           propertiesCubit: propertiesCubit,
           dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
         );
+ 
       },
       child: Card(
         key: key,
@@ -68,33 +76,34 @@ class PropertyCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  right: 10.w,
-                  top: 5.h,
-                  child: TextButton(
-                    onPressed: () {
-                      propertiesCubit.changeIsFoveate(properties: properties);
-                      log('${properties.isFoveate}');
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(2),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.r),
-                        color: Colors.grey[50],
-                      ),
-                      child: Center(
-                        child: Icon(
-                          properties.isFoveate == true
-                              ? Icons.favorite_rounded
-                              : Icons.favorite_border,
-                          color: Colors.red,
-                          size: 30,
+                if (!myProperties)
+                  Positioned(
+                    right: 10.w,
+                    top: 5.h,
+                    child: TextButton(
+                      onPressed: () {
+                        propertiesCubit.changeIsFoveate(properties: properties);
+                        log('${properties.isFoveate}');
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.r),
+                          color: Colors.grey[50],
+                        ),
+                        child: Center(
+                          child: Icon(
+                            properties.isFoveate == true
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_border,
+                            color: Colors.red,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
+                  )
               ],
             ),
             SizedBox(

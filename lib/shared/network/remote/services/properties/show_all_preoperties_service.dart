@@ -32,6 +32,7 @@ abstract class ShowAllPropertiesService {
 
 class PropertyModel {
   final int id;
+  final int userId;
   final int price;
   final int space;
   final String state;
@@ -56,12 +57,14 @@ class PropertyModel {
     required this.y,
     required this.images,
     required this.isFoveate,
+    required this.userId,
     this.distance,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> jsonData) {
     return PropertyModel(
       id: jsonData['id'],
+      userId: jsonData['user_id'],
       price: jsonData['price'],
       space: jsonData['space'],
       state: jsonData['state'],

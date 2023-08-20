@@ -2,11 +2,108 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
+
 import 'package:untitled/main.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/shared/widgets/custome_button.dart';
 
+
 abstract class CustomDialog {
+  static void detailsDialog(PropertyModel element, context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 350.h,
+                child: PhotoViewGallery.builder(
+                  backgroundDecoration:
+                      BoxDecoration(color: Colors.black.withOpacity(.85)),
+                  // pageController:
+                  //     PageController(initialPage: indexS),
+                  builder: (BuildContext context, int index) {
+                    return PhotoViewGalleryPageOptions(
+                      minScale: PhotoViewComputedScale.contained,
+                      maxScale: PhotoViewComputedScale.covered * 4,
+                      imageProvider: NetworkImage(
+                        "http://192.168.43.37:8000/${element.images[index]["image"]}",
+                      ),
+                      initialScale: PhotoViewComputedScale.contained,
+                    );
+                  },
+                  itemCount: element.images.length,
+                  loadingBuilder: (context, event) => Center(
+                    child: SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                      child: CircularProgressIndicator(
+                        value: event == null
+                            ? 0
+                            : event.cumulativeBytesLoaded /
+                                event.expectedTotalBytes!.toInt(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                "Price : ${element.price}.SP",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Space : ${element.space} ",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "type : ${element.type} ",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "governorate : ${element.governorate} ",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "region : ${element.region} ",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('More information'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static void showCustomDialog(
     BuildContext context, {
     required List<Widget> children,
