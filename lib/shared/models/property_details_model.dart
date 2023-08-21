@@ -30,9 +30,9 @@ class PropertyDetailsModel {
     required this.x,
     required this.y,
     required this.images,
-    required this.houseModel,
-    required this.farmModel,
-    required this.marketModel,
+    this.houseModel,
+    this.farmModel,
+    this.marketModel,
   });
 
   factory PropertyDetailsModel.fromJson(Map<String, dynamic> jsonData) {
@@ -50,9 +50,15 @@ class PropertyDetailsModel {
       x: jsonData['x'],
       y: jsonData['y'],
       images: jsonData['images'],
-      houseModel: HouseModel.fromJson(jsonData['house']),
-      farmModel: FarmModel.fromJson(jsonData['farm']),
-      marketModel: MarketModel.fromJson(jsonData['market']),
+      houseModel: jsonData['house'] != null
+          ? HouseModel.fromJson(jsonData['house'])
+          : null,
+      farmModel: jsonData['farm'] != null
+          ? FarmModel.fromJson(jsonData['farm'])
+          : null,
+      marketModel: jsonData['market'] != null
+          ? MarketModel.fromJson(jsonData['market'])
+          : null,
     );
   }
 }

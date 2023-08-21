@@ -10,4 +10,9 @@ abstract class AppAssets {
   static const bathtub = 'assets/images/bathtub.png';
   static const couple = 'assets/images/couple.png';
   static const newspaper = 'assets/images/newspaper.png';
+  static const ok = 'assets/images/ok.png';
+  static const cancel = 'assets/images/cancel.png';
+  static const pool = 'assets/images/pool.png';
+  static const pofruitShop = 'assets/images/fruit-shop.png';
+  static const villa = 'assets/images/villa.png';
 }

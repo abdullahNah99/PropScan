@@ -127,7 +127,11 @@ class PropertyDetailsBody extends StatelessWidget {
                         height: 10.w,
                       ),
                       IconText(
-                        image: AppAssets.home,
+                        image: propertyDetails.type == 'House'
+                            ? AppAssets.home
+                            : propertyDetails.type == 'Farm'
+                                ? AppAssets.villa
+                                : AppAssets.pofruitShop,
                         text: propertyDetails.type.toString(),
                       ),
                       SizedBox(
@@ -151,44 +155,82 @@ class PropertyDetailsBody extends StatelessWidget {
                     ]),
                   ),
                 ),
-                Card(
-                  elevation: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                if (propertyDetails.houseModel != null ||
+                    propertyDetails.farmModel != null)
+                  Card(
+                    elevation: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              IconText(
+                                image: AppAssets.livingRoom,
+                                text: propertyDetails.type == 'House'
+                                    ? propertyDetails.houseModel!.numberOfRooms
+                                        .toString()
+                                    : propertyDetails.farmModel!.numberOfRooms
+                                        .toString(),
+                              ),
+                              IconText(
+                                image: propertyDetails.type == 'House'
+                                    ? AppAssets.bathtub
+                                    : AppAssets.pool,
+                                text: propertyDetails.type == 'House'
+                                    ? propertyDetails
+                                        .houseModel!.numberOfBathrooms
+                                        .toString()
+                                    : propertyDetails.farmModel!.numberOfPools
+                                        .toString(),
+                              ),
+                              if (propertyDetails.houseModel != null)
+                                IconText(
+                                  image: AppAssets.couple,
+                                  text: propertyDetails
+                                      .houseModel!.numberOfBalcony
+                                      .toString(),
+                                ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.w,
+                          ),
+                          if (propertyDetails.houseModel != null)
                             IconText(
-                              image: AppAssets.livingRoom,
-                              text: propertyDetails.houseModel!.numberOfRooms
+                              image: AppAssets.direction,
+                              text: propertyDetails.houseModel!.direction
                                   .toString(),
                             ),
-                            IconText(
-                                image: AppAssets.bathtub,
-                                text: propertyDetails
-                                    .houseModel!.numberOfBathrooms
-                                    .toString()),
-                            IconText(
-                                image: AppAssets.couple,
-                                text: propertyDetails
-                                    .houseModel!.numberOfBalcony
-                                    .toString()),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.w,
-                        ),
-                        IconText(
-                          image: AppAssets.direction,
-                          text:
-                              propertyDetails.houseModel!.direction.toString(),
-                        ),
-                      ],
+                          if (propertyDetails.farmModel != null)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                IconText(
+                                  image: propertyDetails.farmModel!.isGarden
+                                      ? AppAssets.ok
+                                      : AppAssets.cancel,
+                                  text: 'Garden',
+                                ),
+                                IconText(
+                                  image: propertyDetails.farmModel!.isBar
+                                      ? AppAssets.ok
+                                      : AppAssets.cancel,
+                                  text: 'Bar',
+                                ),
+                                IconText(
+                                  image: propertyDetails.farmModel!.isBabyPool
+                                      ? AppAssets.ok
+                                      : AppAssets.cancel,
+                                  text: 'BabyPool',
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Stack(
@@ -231,9 +273,20 @@ class PropertyDetailsBody extends StatelessWidget {
                           text: 'Description',
                         ),
                         Text(
-                          propertyDetails.houseModel!.description.substring(
-                            1,
-                          ),
+                          propertyDetails.type == 'House'
+                              ? propertyDetails.houseModel!.description
+                                  .substring(
+                                  1,
+                                )
+                              : propertyDetails.type == 'Farm'
+                                  ? propertyDetails.farmModel!.description
+                                      .substring(
+                                      1,
+                                    )
+                                  : propertyDetails.marketModel!.description
+                                      .substring(
+                                      1,
+                                    ),
                           style: TextStyle(fontSize: 20.sp),
                         ),
                       ],
