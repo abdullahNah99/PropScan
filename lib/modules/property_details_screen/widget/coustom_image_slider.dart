@@ -95,7 +95,7 @@ class ImageSlider extends StatelessWidget {
                       image: NetworkImage(
                         "http://192.168.43.37:8000/${propertyDetails.images[indexS]['image']}",
                       ),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
