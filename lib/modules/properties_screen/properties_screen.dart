@@ -147,7 +147,7 @@ class PropertiesViewBody extends StatelessWidget {
                   children: [
                     const Center(
                         child: Text(
-                      'Network ُrror',
+                      'Network error',
                       style: TextStyle(fontSize: 30),
                     )),
                     const Center(

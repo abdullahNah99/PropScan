@@ -75,13 +75,13 @@ class PropertyCard extends StatelessWidget {
                       topLeft: Radius.circular(10.r),
                       topRight: Radius.circular(10.r),
                     ),
-                    image: const DecorationImage(
-                      image: AssetImage(AppAssets.logo),
-                      // image: NetworkImage(
-                      //   properties.images.isEmpty
-                      //       ? ''
-                      //       : "http://192.168.43.37:8000/${properties.images[0]["image"]}",
-                      // ),
+                    image: DecorationImage(
+                      // image: AssetImage(AppAssets.logo),
+                      image: NetworkImage(
+                        properties.images.isEmpty
+                            ? ''
+                            : "http://192.168.43.37:8000/${properties.images[0]["image"]}",
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
