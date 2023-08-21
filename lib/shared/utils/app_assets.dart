@@ -5,4 +5,9 @@ abstract class AppAssets {
   static const direction = 'assets/images/direction.png';
   static const address = 'assets/images/home-address.png';
   static const space = 'assets/images/house (2).png';
+  static const home = 'assets/images/home3.png';
+  static const livingRoom = 'assets/images/living-room.png';
+  static const bathtub = 'assets/images/bathtub.png';
+  static const couple = 'assets/images/couple.png';
+  static const newspaper = 'assets/images/newspaper.png';
 }
