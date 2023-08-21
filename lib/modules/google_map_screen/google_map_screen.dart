@@ -29,7 +29,9 @@ class GoogleMapView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Select Property Location'),
+      ),
       body: GoogleMapViewBody(
         locations: locations,
         select: select,
@@ -134,7 +136,7 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
     log(_markers.toString());
     _kGooglePlex = CameraPosition(
       target: LatLng(widget.locations[0].x, widget.locations[0].y),
-      zoom: 11.9,
+      zoom: 13.7,
     );
   }
 
@@ -184,7 +186,7 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
             Circle(
               circleId: const CircleId('1'),
               center: LatLng(widget.locations[0].x, widget.locations[0].y),
-              radius: 6000,
+              radius: 2500,
               fillColor: Colors.blue.withOpacity(.099),
               strokeWidth: 2,
               strokeColor: Colors.blue,
@@ -248,11 +250,21 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
                       ),
                       margin: const EdgeInsets.all(20),
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           widget.lat = null;
                           widget.lon = null;
                           getPosition();
                           getLatAndLong();
+                          // CameraPosition cameraPosition = CameraPosition(
+                          //   target: LatLng(widget.lat, widget.lon),
+                          //   zoom: 14,
+                          // );
+                          final GoogleMapController googleMapController =
+                              await _controller.future;
+                          googleMapController.animateCamera(
+                            CameraUpdate.newLatLngZoom(
+                                LatLng(widget.lat, widget.lon), 14),
+                          );
                         },
                         child: const Icon(
                           Icons.location_searching_rounded,

@@ -58,6 +58,7 @@ class SelectRegionsButton extends StatelessWidget {
                       color: Colors.white,
                     ),
           onTap: () async {
+            FocusScope.of(context).unfocus();
             if (addPropertyCubit.selectedRegion != null) {
               addPropertyCubit.removeSelectedItem(helper: 'R');
             } else {
@@ -75,7 +76,7 @@ class SelectRegionsButton extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GoogleMapViewBody(
+                              builder: (context) => GoogleMapView(
                                 select: true,
                                 locations: const [],
                                 lat: addPropertyCubit.regions[index].x,

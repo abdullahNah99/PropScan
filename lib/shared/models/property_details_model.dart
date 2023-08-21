@@ -13,6 +13,8 @@ class PropertyDetailsModel {
   final double y;
   final List<dynamic> images;
   final HouseModel? houseModel;
+  final FarmModel? farmModel;
+  final MarketModel? marketModel;
 
   PropertyDetailsModel({
     required this.id,
@@ -29,24 +31,29 @@ class PropertyDetailsModel {
     required this.y,
     required this.images,
     required this.houseModel,
+    required this.farmModel,
+    required this.marketModel,
   });
 
   factory PropertyDetailsModel.fromJson(Map<String, dynamic> jsonData) {
     return PropertyDetailsModel(
-        id: jsonData['id'],
-        price: jsonData['price'],
-        space: jsonData['space'],
-        userID: jsonData['user_id'],
-        regionID: jsonData['region_id'],
-        propertyStateID: jsonData['property_state_id'],
-        state: jsonData['state'],
-        governorate: jsonData['governorate'],
-        region: jsonData['region'],
-        type: jsonData['type'],
-        x: jsonData['x'],
-        y: jsonData['y'],
-        images: jsonData['images'],
-        houseModel: HouseModel.fromJson(jsonData['house']));
+      id: jsonData['id'],
+      price: jsonData['price'],
+      space: jsonData['space'],
+      userID: jsonData['user_id'],
+      regionID: jsonData['region_id'],
+      propertyStateID: jsonData['property_state_id'],
+      state: jsonData['state'],
+      governorate: jsonData['governorate'],
+      region: jsonData['region'],
+      type: jsonData['type'],
+      x: jsonData['x'],
+      y: jsonData['y'],
+      images: jsonData['images'],
+      houseModel: HouseModel.fromJson(jsonData['house']),
+      farmModel: FarmModel.fromJson(jsonData['farm']),
+      marketModel: MarketModel.fromJson(jsonData['market']),
+    );
   }
 }
 
@@ -78,6 +85,61 @@ class HouseModel {
       propertyID: jsonData['property_id'],
       description: jsonData['description'],
       direction: jsonData['direction'],
+    );
+  }
+}
+
+class FarmModel {
+  final int id;
+  final int numberOfRooms;
+  final int numberOfPools;
+  final int propertyID;
+  final bool isGarden;
+  final bool isBar;
+  final bool isBabyPool;
+  final String description;
+
+  FarmModel({
+    required this.id,
+    required this.numberOfRooms,
+    required this.numberOfPools,
+    required this.propertyID,
+    required this.isGarden,
+    required this.isBar,
+    required this.isBabyPool,
+    required this.description,
+  });
+
+  factory FarmModel.fromJson(Map<String, dynamic> jsonData) {
+    return FarmModel(
+      id: jsonData['id'],
+      numberOfRooms: jsonData['number_of_rooms'],
+      numberOfPools: jsonData['number_of_pools'],
+      propertyID: jsonData['property_id'],
+      isGarden: jsonData['is_garden'],
+      isBar: jsonData['is_bar'],
+      isBabyPool: jsonData['is_baby_pool'],
+      description: jsonData['description'],
+    );
+  }
+}
+
+class MarketModel {
+  final int id;
+  final int propertyID;
+  final String description;
+
+  MarketModel({
+    required this.id,
+    required this.propertyID,
+    required this.description,
+  });
+
+  factory MarketModel.fromJson(Map<String, dynamic> jsonData) {
+    return MarketModel(
+      id: jsonData['id'],
+      propertyID: jsonData['property_id'],
+      description: jsonData['description'],
     );
   }
 }

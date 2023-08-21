@@ -117,6 +117,7 @@ abstract class CustomDialog {
   static void showCustomDialog(
     BuildContext context, {
     required List<Widget> children,
+    double? hight,
   }) {
     showDialog(
       context: context,
@@ -125,7 +126,7 @@ abstract class CustomDialog {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           content: SizedBox(
-            height: 300.h,
+            height: hight ?? 300.h,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(

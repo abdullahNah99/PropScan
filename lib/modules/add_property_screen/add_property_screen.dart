@@ -21,6 +21,7 @@ class AddPropertyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int target = ModalRoute.of(context)!.settings.arguments as int;
     return BlocProvider(
       create: (context) => AddPropertyCubit(),
       child: GestureDetector(
@@ -35,7 +36,7 @@ class AddPropertyView extends StatelessWidget {
                 SizedBox(width: 5),
               ],
             ),
-            body: const AddPropertyViewBody(),
+            body: AddPropertyViewBody(target: target),
           ),
         ),
       ),
@@ -44,12 +45,13 @@ class AddPropertyView extends StatelessWidget {
 }
 
 class AddPropertyViewBody extends StatelessWidget {
-  const AddPropertyViewBody({super.key});
+  final int target;
+  const AddPropertyViewBody({super.key, required this.target});
 
   @override
   Widget build(BuildContext context) {
-    AddPropertyCubit addPropertyCubit =
-        BlocProvider.of<AddPropertyCubit>(context);
+    // AddPropertyCubit addPropertyCubit =
+    //     BlocProvider.of<AddPropertyCubit>(context);
     return BlocConsumer<AddPropertyCubit, AddPropertyStates>(
       listener: (context, state) {
         if (state is AddPropertyFailure) {
@@ -67,7 +69,7 @@ class AddPropertyViewBody extends StatelessWidget {
         if (state is AddPropertyLoading) {
           return const CustomeProgressIndicator();
         } else {
-          return _AddPropertyBody(addPropertyCubit: addPropertyCubit);
+          return _AddPropertyBody(target: target);
         }
       },
     );
@@ -75,8 +77,9 @@ class AddPropertyViewBody extends StatelessWidget {
 }
 
 class _AddPropertyBody extends StatelessWidget {
-  final AddPropertyCubit addPropertyCubit;
-  const _AddPropertyBody({required this.addPropertyCubit});
+  // final AddPropertyCubit addPropertyCubit;
+  final int target;
+  const _AddPropertyBody({required this.target});
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +114,8 @@ class _AddPropertyBody extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SelectGovernoratesButton(addPropertyCubit: addPropertyCubit),
-                  SelectRegionsButton(addPropertyCubit: addPropertyCubit),
+                  SelectGovernoratesButton(addPropertyCubit: cubit),
+                  SelectRegionsButton(addPropertyCubit: cubit),
                 ],
               ),
               SizedBox(height: 30.h),
@@ -120,6 +123,7 @@ class _AddPropertyBody extends StatelessWidget {
                 color: AppColors.defaultColor,
                 text: 'Continue',
                 onPressed: () async {
+                  cubit.description = '$target${cubit.description}';
                   if (cubit.formKey.currentState!.validate()) {
                     if (cubit.selectedRegion == null) {
                       CustomeSnackBar.showSnackBar(

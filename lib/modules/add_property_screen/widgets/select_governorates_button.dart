@@ -57,6 +57,7 @@ class SelectGovernoratesButton extends StatelessWidget {
                       color: Colors.white,
                     ),
           onTap: () async {
+            FocusScope.of(context).unfocus();
             if (addPropertyCubit.selctedGovernorate != null) {
               addPropertyCubit.removeSelectedItem(helper: 'G');
             } else {

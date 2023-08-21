@@ -7,6 +7,7 @@ import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
 import '../../../shared/models/property_model.dart';
+import '../../property_details_screen/property_details_screen.dart';
 
 class PropertyCard extends StatelessWidget {
   final int index;
@@ -26,9 +27,6 @@ class PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-
-
-
         Navigator.pushNamed(context, PropertyDetailsView.route, arguments: {
           "propertyID": properties.id,
         });
@@ -46,7 +44,6 @@ class PropertyCard extends StatelessWidget {
         // log(propertiesCubit.nearestProps[1].x.toString());
         // log(propertiesCubit.nearestProps[1].y.toString());
 
-
         propertiesCubit.getDailyRentDates();
 
         CustomDialog.showDailyRentDialog(
@@ -62,7 +59,6 @@ class PropertyCard extends StatelessWidget {
         //   propertiesCubit: propertiesCubit,
         //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
         // );
-
       },
       child: Card(
         key: key,
