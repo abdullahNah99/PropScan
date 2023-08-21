@@ -8,6 +8,7 @@ import 'package:untitled/modules/property_details_screen/property_details_screen
 import 'package:untitled/shared/functions/custom_dialog.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
 import '../../../shared/models/property_model.dart';
+import '../../property_details_screen/property_details_screen.dart';
 
 class PropertyCard extends StatelessWidget {
   final int index;
