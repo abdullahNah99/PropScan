@@ -236,7 +236,7 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
                   },
                   circles: circles,
                 ),
-                if (widget.locations.isEmpty)
+                if (widget.locations.isEmpty && widget.select == true)
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Container(

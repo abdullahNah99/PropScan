@@ -5,6 +5,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
+import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
 import 'package:untitled/shared/widgets/custome_button.dart';
 import '../models/property_model.dart';
 
@@ -100,7 +101,12 @@ abstract class CustomDialog {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, PropertyDetailsView.route,
+                        arguments: {
+                          "propertyID": element.id,
+                        });
+                  },
                   child: const Text('More information'),
                 ),
               ),

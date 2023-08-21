@@ -104,6 +104,7 @@ class PropertyDetailsBody extends StatelessWidget {
                   color: AppColors.defaultColor,
                 ),
                 Card(
+                  elevation: 8,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(children: [
@@ -126,7 +127,7 @@ class PropertyDetailsBody extends StatelessWidget {
                         height: 10.w,
                       ),
                       IconText(
-                        image: AppAssets.price,
+                        image: AppAssets.home,
                         text: propertyDetails.type.toString(),
                       ),
                       SizedBox(
@@ -151,6 +152,7 @@ class PropertyDetailsBody extends StatelessWidget {
                   ),
                 ),
                 Card(
+                  elevation: 8,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -159,16 +161,17 @@ class PropertyDetailsBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconText(
-                                image: AppAssets.price,
-                                text: propertyDetails.houseModel!.numberOfRooms
-                                    .toString()),
+                              image: AppAssets.livingRoom,
+                              text: propertyDetails.houseModel!.numberOfRooms
+                                  .toString(),
+                            ),
                             IconText(
-                                image: AppAssets.address,
+                                image: AppAssets.bathtub,
                                 text: propertyDetails
                                     .houseModel!.numberOfBathrooms
                                     .toString()),
                             IconText(
-                                image: AppAssets.address,
+                                image: AppAssets.couple,
                                 text: propertyDetails
                                     .houseModel!.numberOfBalcony
                                     .toString()),
@@ -186,32 +189,51 @@ class PropertyDetailsBody extends StatelessWidget {
                     ),
                   ),
                 ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 300.h,
-                      child: GoogleMapViewBody(
-                        select: false,
-                        locations: [],
-                        lat: propertyDetails.x,
-                        lon: propertyDetails.y,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 300.h,
+                        child: GoogleMapViewBody(
+                          select: false,
+                          locations: const [],
+                          lat: propertyDetails.x,
+                          lon: propertyDetails.y,
+                        ),
                       ),
-                    ),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return GoogleMapViewBody(
+                                  select: false,
+                                  locations: const [],
+                                  lat: propertyDetails.x,
+                                  lon: propertyDetails.y,
+                                );
+                              },
+                            ));
+                          },
+                          child: const Text('Go to map'))
+                    ],
                   ),
                 ),
                 Card(
+                  elevation: 8,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         const IconText(
-                          image: AppAssets.direction,
+                          image: AppAssets.newspaper,
                           text: 'Description',
                         ),
                         Text(
-                          propertyDetails.houseModel!.description,
+                          propertyDetails.houseModel!.description.substring(
+                            1,
+                          ),
                           style: TextStyle(fontSize: 20.sp),
                         ),
                       ],
