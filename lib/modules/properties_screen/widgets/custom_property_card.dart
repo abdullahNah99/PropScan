@@ -2,13 +2,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
-import 'package:untitled/modules/properties_screen/widgets/daily_rent_grid_view.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
 import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
-import 'package:untitled/shared/functions/custom_dialog.dart';
-import 'package:untitled/shared/utils/app_assets.dart';
 import '../../../shared/models/property_model.dart';
-import '../../property_details_screen/property_details_screen.dart';
 
 class PropertyCard extends StatelessWidget {
   final int index;

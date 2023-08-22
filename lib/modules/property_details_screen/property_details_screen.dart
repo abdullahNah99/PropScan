@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
-
 import 'package:untitled/modules/property_details_screen/cubit/property_details_cubit.dart';
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
@@ -85,9 +84,10 @@ class PropertyDetailsBody extends StatelessWidget {
         } else if (state is PropertyDetailsLoading) {
           return const CustomeProgressIndicator();
         }
+        PropertyDetailsCubit cubit =
+            BlocProvider.of<PropertyDetailsCubit>(context);
         PropertyDetailsModel propertyDetails =
-            BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails
-                as PropertyDetailsModel;
+            cubit.propertyDetails as PropertyDetailsModel;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
