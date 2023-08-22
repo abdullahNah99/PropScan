@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +6,7 @@ import 'package:untitled/modules/property_details_screen/cubit/property_details_
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
 import 'package:untitled/modules/property_details_screen/widget/daily_rent_grid_view.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
+import 'package:untitled/shared/functions/custom_snack_bar.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
@@ -26,8 +25,9 @@ class PropertyDetailsView extends StatelessWidget {
     String type = args['type'];
 
     return BlocProvider(
-      create: (context) =>
-          PropertyDetailsCubit()..getPropertyDetails(propertyID: propertyID),
+      create: (context) => PropertyDetailsCubit()
+        ..getPropertyDetails(propertyID: propertyID)
+        ..getReservationDates(propertyID: propertyID),
       child: Scaffold(
         appBar: AppBar(
           title: Text(type),
@@ -49,7 +49,20 @@ class PropertyDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     PropertyDetailsCubit propertyDetailsCubit =
         BlocProvider.of<PropertyDetailsCubit>(context);
-    return BlocBuilder<PropertyDetailsCubit, PropertyDetailsState>(
+    return BlocConsumer<PropertyDetailsCubit, PropertyDetailsState>(
+      listener: (context, state) {
+        if (state is ReservationFailure) {
+          Navigator.pop(context);
+          CustomeSnackBar.showErrorSnackBar(context, msg: state.errorMessage);
+        } else if (state is ReservationSuccess) {
+          Navigator.pop(context);
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: 'Reservation Added Successfully',
+            color: Colors.green,
+          );
+        }
+      },
       builder: (context, state) {
         if (state is PropertyDetailsSuccess) {
           BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails =
@@ -93,9 +106,8 @@ class PropertyDetailsBody extends StatelessWidget {
         } else if (state is PropertyDetailsLoading) {
           return const CustomeProgressIndicator();
         }
-      
-        PropertyDetailsModel propertyDetails =
 
+        PropertyDetailsModel propertyDetails =
             BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails
                 as PropertyDetailsModel;
 
@@ -352,7 +364,7 @@ class GeneralInformationCard extends StatelessWidget {
         child: Column(children: [
           IconText(
             image: AppAssets.price,
-            text: "Price : ${propertyDetails.price.toString()}000000",
+            text: "Price : ${propertyDetails.price.toString()}",
           ),
           SizedBox(
             height: 10.w,
