@@ -30,6 +30,7 @@ abstract class StoreReservationService {
       log('\nException: there is an error in storeReservation method');
       log('\n${ex.toString()}');
       if (ex is DioException) {
+        log(ex.response!.data.toString());
         return left(ServerFailure.fromDioError(ex));
       }
       return left(ServerFailure(ex.toString()));

@@ -168,9 +168,12 @@ abstract class CustomDialog {
               text: 'Confirm',
               onPressed: () {
                 log(propertyDetailsCubit.getSelectedDates().toString());
-
-                // showCustomDialog(context,
-                //     children: List.generate(3, (index) => const Text('Test')));
+                if (propertyDetailsCubit.dailyRentStartIndex == null ||
+                    propertyDetailsCubit.dailyRentEndIndex == null) {
+                  Navigator.pop(context);
+                } else {
+                  propertyDetailsCubit.bookReservation();
+                }
               },
             ),
           ],

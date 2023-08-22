@@ -56,14 +56,21 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
 
   Future<void> bookReservation() async {
     (await StoreReservationService.storeReservation(
-            token: await CacheHelper.getData(key: 'Token'),
+            token:
+                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTkyLjE2OC40My4zNzo4MDAwL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkyNzIzMzEwLCJleHAiOjE2OTI3MjY5MTAsIm5iZiI6MTY5MjcyMzMxMCwianRpIjoiRlNBRTlLdEJaQmFWc2lDaSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.2mpfj3U4jQcvGHeeGlGe0sDg4urVN5u-6MwyCWMRPXw',
+            // token: await CacheHelper.getData(key: 'Token'),
             startDate: dailyRentDates[dailyRentStartIndex!],
             endDate: dailyRentDates[dailyRentEndIndex!],
-            price: int.parse((propertyDetails!.price * .1).toString()),
+            // price: int.parse((propertyDetails!.price * .1).toString()),
+            price: 1000,
             propertyID: propertyDetails!.id))
         .fold(
-      (failure) {},
-      (success) {},
+      (failure) {
+        emit(ReservationFailure(errorMessage: failure.errorMessege));
+      },
+      (success) {
+        emit(ReservationSuccess());
+      },
     );
   }
 
