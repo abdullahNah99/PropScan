@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,9 @@ import 'package:jiffy/jiffy.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_property_details_service.dart';
+import 'package:untitled/shared/network/remote/services/reservations/get_reservation_dates.dart';
+import 'package:untitled/shared/network/remote/services/reservations/store_reservation_service.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
-
 part 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
@@ -34,19 +36,50 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     );
   }
 
+  Future<void> getReservationDates({required int propertyID}) async {
+    emit(PropertyDetailsLoading());
+    (await GetReservationDatesService.getReservationDates(
+            propertyID: propertyID))
+        .fold(
+      (failure) {
+        emit(PropertyDetailsFailure(errorMessage: failure.errorMessege));
+      },
+      (reservationDates) {
+        for (ReservationModel item in reservationDates) {
+          getDatesBetween(item.startDate, item.endDate);
+        }
+        log(test.toString());
+        emit(PropertyDetailsInitial());
+      },
+    );
+  }
+
+  Future<void> bookReservation() async {
+    (await StoreReservationService.storeReservation(
+            token: await CacheHelper.getData(key: 'Token'),
+            startDate: dailyRentDates[dailyRentStartIndex!],
+            endDate: dailyRentDates[dailyRentEndIndex!],
+            price: int.parse((propertyDetails!.price * .1).toString()),
+            propertyID: propertyDetails!.id))
+        .fold(
+      (failure) {},
+      (success) {},
+    );
+  }
+
   List<String> dailyRentDates = [];
   List<String> dailyRentDays = [];
   int? dailyRentStartIndex;
   int? dailyRentEndIndex;
 
   List<String> test = [
-    '2023-08-24',
-    '2023-08-25',
-    '2023-08-26',
-    '2023-08-27',
-    '2023-08-28',
-    '2023-08-29',
-    '2023-09-06',
+    // '2023-08-24',
+    // '2023-08-25',
+    // '2023-08-26',
+    // '2023-08-27',
+    // '2023-08-28',
+    // '2023-08-29',
+    // '2023-09-06',
   ];
 
   Color getDailyRentItemColor({required int index}) {
@@ -115,5 +148,23 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
       }
     }
     return selectedDates;
+  }
+
+  void getDatesBetween(String date1, String date2) {
+    DateTime startDate = DateTime(
+      int.parse(date1.substring(0, 4)),
+      int.parse(date1.substring(5, 7)),
+      int.parse(date1.substring(8, 10)),
+    );
+    DateTime endDate = DateTime(
+      int.parse(date2.substring(0, 4)),
+      int.parse(date2.substring(5, 7)),
+      int.parse(date2.substring(8, 10)),
+    );
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+      test.add(days[i].toString().substring(0, 10));
+    }
   }
 }
