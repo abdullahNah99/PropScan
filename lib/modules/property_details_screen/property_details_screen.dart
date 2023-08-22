@@ -9,7 +9,6 @@ import 'package:untitled/modules/property_details_screen/cubit/property_details_
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
 import 'package:untitled/modules/property_details_screen/widget/daily_rent_grid_view.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
-import 'package:untitled/shared/functions/custom_snack_bar.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
@@ -89,6 +88,7 @@ class PropertyDetailsBody extends StatelessWidget {
           );
         }
       },
+
       builder: (context, state) {
         if (state is PropertyDetailsSuccess) {
           BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails =
@@ -154,7 +154,7 @@ class PropertyDetailsBody extends StatelessWidget {
                   PrivateInformationCard(
                     propertyDetails: propertyDetails,
                   ),
-                LocationInformation(propertyDetails: propertyDetails),
+                // LocationInformation(propertyDetails: propertyDetails),
                 DescriptionCard(propertyDetails: propertyDetails)
               ],
             ),
@@ -453,8 +453,12 @@ class AllButtons extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     fixedSize: Size(0, 45.h),
                   ),
-                  onPressed: () {},
-                  // ignore: prefer_const_constructors
+                  onPressed: () {
+                    // log(propertyDetails.userID.toString());
+                    propertyDetailsCubit.getPropertyChatUser(
+                      localUserID: propertyDetails.userID,
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

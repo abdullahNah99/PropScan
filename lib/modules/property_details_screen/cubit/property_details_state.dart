@@ -48,3 +48,10 @@ final class ReservationFailure extends PropertyDetailsState {
 
 final class ReservationSuccess extends PropertyDetailsState {}
 
+
+final class GetPropertyChatUserSuccess extends PropertyDetailsState {
+  final ChatUser chatUser;
+
+  const GetPropertyChatUserSuccess({required this.chatUser});
+}
+

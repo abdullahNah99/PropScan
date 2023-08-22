@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:untitled/shared/models/firebase_models/chat_user.dart';
 
 import '../../../shared/models/property_model.dart';
 
@@ -29,10 +28,10 @@ final class ChangeIsFoveateSuccess extends PropertiesStates {
   ChangeIsFoveateSuccess({required this.isFoveate});
 }
 
-final class GetPropertyChatUserSuccess extends PropertiesStates {
-  final ChatUser chatUser;
+// final class GetPropertyChatUserSuccess extends PropertiesStates {
+//   final ChatUser chatUser;
 
-  GetPropertyChatUserSuccess({required this.chatUser});
-}
+//   GetPropertyChatUserSuccess({required this.chatUser});
+// }
 
 final class ChangeBottomNavigationBarIndex extends PropertiesStates {}

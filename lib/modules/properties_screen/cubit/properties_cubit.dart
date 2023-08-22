@@ -137,21 +137,21 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     );
   }
 
-  Future<void> getPropertyChatUser({required int localUserID}) async {
-    emit(PropertiesLoading());
-    try {
-      FirebaseAPIs.firesotre
-          .collection('users')
-          .where('local_user_id', isEqualTo: localUserID)
-          .snapshots()
-          .listen((event) {
-        emit(GetPropertyChatUserSuccess(
-            chatUser: ChatUser.factory(event.docs[0].data())));
-      });
-    } catch (ex) {
-      emit(PropertiesFailure(errorMessage: ex.toString()));
-    }
-  }
+  // Future<void> getPropertyChatUser({required int localUserID}) async {
+  //   emit(PropertiesLoading());
+  //   try {
+  //     FirebaseAPIs.firesotre
+  //         .collection('users')
+  //         .where('local_user_id', isEqualTo: localUserID)
+  //         .snapshots()
+  //         .listen((event) {
+  //       emit(GetPropertyChatUserSuccess(
+  //           chatUser: ChatUser.factory(event.docs[0].data())));
+  //     });
+  //   } catch (ex) {
+  //     emit(PropertiesFailure(errorMessage: ex.toString()));
+  //   }
+  // }
 
   Future<void> getAllProperties() async {
     emit(PropertiesLoading());
