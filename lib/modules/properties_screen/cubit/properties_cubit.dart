@@ -178,3 +178,4 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     properties.isFoveate = !properties.isFoveate;
     emit(ChangeIsFoveateSuccess(isFoveate: properties.isFoveate));
   }
+}
