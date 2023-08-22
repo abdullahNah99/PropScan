@@ -9,6 +9,9 @@ import 'package:untitled/shared/network/remote/services/properties/show_property
 import 'package:untitled/shared/network/remote/services/reservations/get_reservation_dates.dart';
 import 'package:untitled/shared/network/remote/services/reservations/store_reservation_service.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
+
+import '../../../shared/models/firebase_models/chat_user.dart';
+import '../../../shared/network/remote/firebase/firebase_apis.dart';
 part 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
@@ -56,13 +59,11 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
 
   Future<void> bookReservation() async {
     (await StoreReservationService.storeReservation(
-            token:
-                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTkyLjE2OC40My4zNzo4MDAwL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkyNzIzMzEwLCJleHAiOjE2OTI3MjY5MTAsIm5iZiI6MTY5MjcyMzMxMCwianRpIjoiRlNBRTlLdEJaQmFWc2lDaSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.2mpfj3U4jQcvGHeeGlGe0sDg4urVN5u-6MwyCWMRPXw',
-            // token: await CacheHelper.getData(key: 'Token'),
-            startDate: dailyRentDates[dailyRentStartIndex!],
-            endDate: dailyRentDates[dailyRentEndIndex!],
-            // price: int.parse((propertyDetails!.price * .1).toString()),
-            price: 1000,
+            token: await CacheHelper.getData(key: 'Token'),
+            startDate: dailyRentDates[dailyRentStartIndex! + 1],
+            endDate: dailyRentDates[dailyRentEndIndex! + 1],
+            price: int.parse('${(propertyDetails!.price * .1).round()}'),
+            // price: 1000,
             propertyID: propertyDetails!.id))
         .fold(
       (failure) {
@@ -72,6 +73,23 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
         emit(ReservationSuccess());
       },
     );
+  }
+
+  Future<void> getPropertyChatUser({required int localUserID}) async {
+    emit(PropertyDetailsLoading());
+    try {
+      FirebaseAPIs.firesotre
+          .collection('users')
+          .where('local_user_id', isEqualTo: localUserID)
+          .snapshots()
+          .listen((event) {
+        // log(event.docs[0].data().toString());
+        var chatUser = ChatUser.factory(event.docs[0].data());
+        emit(GetPropertyChatUserSuccess(chatUser: chatUser));
+      });
+    } catch (ex) {
+      emit(PropertyDetailsFailure(errorMessage: ex.toString()));
+    }
   }
 
   List<String> dailyRentDates = [];

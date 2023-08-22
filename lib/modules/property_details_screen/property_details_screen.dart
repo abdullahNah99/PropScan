@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +14,8 @@ import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
 import 'package:untitled/shared/widgets/custome_image.dart';
 import 'package:untitled/shared/widgets/custome_progress_indicator.dart';
+
+import '../chat_screen.dart/chat_screen.dart';
 
 class PropertyDetailsView extends StatelessWidget {
   static const route = 'PropertyDetailsView';
@@ -60,6 +64,15 @@ class PropertyDetailsBody extends StatelessWidget {
             context,
             msg: 'Reservation Added Successfully',
             color: Colors.green,
+          );
+        } else if (state is GetPropertyChatUserSuccess) {
+          log(state.chatUser.toString());
+          log(state.chatUser.email);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatView(user: state.chatUser),
+            ),
           );
         }
       },
@@ -427,8 +440,12 @@ class AllButtons extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     fixedSize: Size(0, 45.h),
                   ),
-                  onPressed: () {},
-                  // ignore: prefer_const_constructors
+                  onPressed: () {
+                    // log(propertyDetails.userID.toString());
+                    propertyDetailsCubit.getPropertyChatUser(
+                      localUserID: propertyDetails.userID,
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
