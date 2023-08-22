@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,14 +6,11 @@ import 'package:untitled/modules/property_details_screen/cubit/property_details_
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
 import 'package:untitled/modules/property_details_screen/widget/daily_rent_grid_view.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
-import 'package:untitled/shared/functions/custom_snack_bar.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
 import 'package:untitled/shared/widgets/custome_image.dart';
 import 'package:untitled/shared/widgets/custome_progress_indicator.dart';
-
-import '../chat_screen.dart/chat_screen.dart';
 
 class PropertyDetailsView extends StatelessWidget {
   static const route = 'PropertyDetailsView';
@@ -53,29 +48,29 @@ class PropertyDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     PropertyDetailsCubit propertyDetailsCubit =
         BlocProvider.of<PropertyDetailsCubit>(context);
-    return BlocConsumer<PropertyDetailsCubit, PropertyDetailsState>(
-      listener: (context, state) {
-        if (state is ReservationFailure) {
-          Navigator.pop(context);
-          CustomeSnackBar.showErrorSnackBar(context, msg: state.errorMessage);
-        } else if (state is ReservationSuccess) {
-          Navigator.pop(context);
-          CustomeSnackBar.showSnackBar(
-            context,
-            msg: 'Reservation Added Successfully',
-            color: Colors.green,
-          );
-        } else if (state is GetPropertyChatUserSuccess) {
-          log(state.chatUser.toString());
-          log(state.chatUser.email);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatView(user: state.chatUser),
-            ),
-          );
-        }
-      },
+    return BlocBuilder<PropertyDetailsCubit, PropertyDetailsState>(
+      // listener: (context, state) {
+      //   if (state is ReservationFailure) {
+      //     Navigator.pop(context);
+      //     CustomeSnackBar.showErrorSnackBar(context, msg: state.errorMessage);
+      //   } else if (state is ReservationSuccess) {
+      //     Navigator.pop(context);
+      //     CustomeSnackBar.showSnackBar(
+      //       context,
+      //       msg: 'Reservation Added Successfully',
+      //       color: Colors.green,
+      //     );
+      //   } else if (state is GetPropertyChatUserSuccess) {
+      //     log(state.chatUser.toString());
+      //     log(state.chatUser.email);
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => ChatView(user: state.chatUser),
+      //       ),
+      //     );
+      //   }
+      // },
       builder: (context, state) {
         if (state is PropertyDetailsSuccess) {
           BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails =
@@ -141,7 +136,7 @@ class PropertyDetailsBody extends StatelessWidget {
                   PrivateInformationCard(
                     propertyDetails: propertyDetails,
                   ),
-                LocationInformation(propertyDetails: propertyDetails),
+                // LocationInformation(propertyDetails: propertyDetails),
                 DescriptionCard(propertyDetails: propertyDetails)
               ],
             ),
