@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
-import 'package:untitled/modules/properties_screen/widgets/daily_rent_grid_view.dart';
+import 'package:untitled/modules/property_details_screen/widget/daily_rent_grid_view.dart';
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
 import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
@@ -30,6 +30,7 @@ class PropertyCard extends StatelessWidget {
       onTap: () async {
         Navigator.pushNamed(context, PropertyDetailsView.route, arguments: {
           "propertyID": properties.id,
+          "type": properties.type,
         });
         log(properties.id.toString());
 
@@ -57,7 +58,7 @@ class PropertyCard extends StatelessWidget {
 
         // CustomDialog.showDailyRentDialog(
         //   context,
-        //   propertiesCubit: propertiesCubit,
+        //   propertyDetailsCubit: propertiesCubit,
         //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
         // );
       },

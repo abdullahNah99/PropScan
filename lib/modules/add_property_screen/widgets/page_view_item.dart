@@ -58,7 +58,7 @@ class PageViewItem extends StatelessWidget {
               ),
             PropertyInfoItem(
               text: 'Space',
-              onChanged: (p0) => cubit.space = int.parse(p0),
+              onChanged: (p0) => cubit.space = p0,
             ),
             Divider(color: Colors.grey, height: 20.h),
             PropertyInfoItem(

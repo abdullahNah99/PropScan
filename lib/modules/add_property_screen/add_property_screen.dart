@@ -124,7 +124,7 @@ class _AddPropertyBody extends StatelessWidget {
                 color: AppColors.defaultColor,
                 text: 'Continue',
                 onPressed: () async {
-                  cubit.description = '$target${cubit.description}';
+                  cubit.space = '$target${cubit.space}';
                   if (cubit.formKey.currentState!.validate()) {
                     if (cubit.selectedRegion == null) {
                       CustomeSnackBar.showSnackBar(

@@ -198,9 +198,9 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
     }
   }
 
-  int? numOfRooms, numOfBathrooms, numOfBalcony, price, space, numOfPools;
+  int? numOfRooms, numOfBathrooms, numOfBalcony, price, numOfPools;
   double? x, y;
-  String? description;
+  String? description, space;
   String direction = '';
 
   Future<void> storeProperty() async {
