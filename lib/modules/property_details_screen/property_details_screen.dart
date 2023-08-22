@@ -9,6 +9,7 @@ import 'package:untitled/modules/property_details_screen/cubit/property_details_
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
 import 'package:untitled/modules/property_details_screen/widget/daily_rent_grid_view.dart';
 import 'package:untitled/shared/functions/custom_dialog.dart';
+import 'package:untitled/shared/functions/custom_snack_bar.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
@@ -88,7 +89,6 @@ class PropertyDetailsBody extends StatelessWidget {
           );
         }
       },
-
       builder: (context, state) {
         if (state is PropertyDetailsSuccess) {
           BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails =
@@ -154,7 +154,7 @@ class PropertyDetailsBody extends StatelessWidget {
                   PrivateInformationCard(
                     propertyDetails: propertyDetails,
                   ),
-                // LocationInformation(propertyDetails: propertyDetails),
+                LocationInformation(propertyDetails: propertyDetails),
                 DescriptionCard(propertyDetails: propertyDetails)
               ],
             ),
@@ -211,36 +211,57 @@ class LocationInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 300.h,
-            child: GoogleMapViewBody(
-              select: false,
-              locations: const [],
-              lat: propertyDetails.x,
-              lon: propertyDetails.y,
+        padding: const EdgeInsets.all(8.0),
+        child:
+            //  Stack(
+            //   children: [
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: 300.h,
+            //   child: GoogleMapViewBody(
+            //     select: false,
+            //     locations: const [],
+            //     lat: propertyDetails.x,
+            //     lon: propertyDetails.y,
+            //   ),
+            // ),
+            Row(
+          children: [
+            Text(
+              'Location',
+              style: TextStyle(
+                  fontSize: 28.sp,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2),
             ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return GoogleMapViewBody(
-                      select: false,
-                      locations: const [],
-                      lat: propertyDetails.x,
-                      lon: propertyDetails.y,
-                    );
-                  },
-                ));
-              },
-              child: const Text('Go to map'))
-        ],
-      ),
-    );
+            const Spacer(),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(175.w, 50.h),
+                  backgroundColor: AppColors.defaultColor,
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return GoogleMapViewBody(
+                        select: false,
+                        locations: const [],
+                        lat: propertyDetails.x,
+                        lon: propertyDetails.y,
+                      );
+                    },
+                  ));
+                },
+                child: Text(
+                  'Go to map',
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 20.sp, letterSpacing: 2),
+                )),
+          ],
+        )
+        //   ],
+        // ),
+        );
   }
 }
 

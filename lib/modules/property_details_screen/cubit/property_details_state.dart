@@ -25,7 +25,6 @@ final class PropertyDetailsSuccess extends PropertyDetailsState {
   const PropertyDetailsSuccess({required this.properties});
 }
 
-
 final class StoreReportLoading extends PropertyDetailsState {}
 
 final class StoreReportFailure extends PropertyDetailsState {
@@ -48,10 +47,8 @@ final class ReservationFailure extends PropertyDetailsState {
 
 final class ReservationSuccess extends PropertyDetailsState {}
 
-
 final class GetPropertyChatUserSuccess extends PropertyDetailsState {
   final ChatUser chatUser;
 
   const GetPropertyChatUserSuccess({required this.chatUser});
 }
-
