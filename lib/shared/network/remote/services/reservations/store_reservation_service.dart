@@ -22,6 +22,7 @@ abstract class StoreReservationService {
           'price': price,
           'reservation_type_id': 3,
         },
+        token: token,
       );
       log(response.toString());
 

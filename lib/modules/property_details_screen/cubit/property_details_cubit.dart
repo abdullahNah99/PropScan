@@ -43,6 +43,24 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     );
   }
 
+  void getDatesBetween(String date1, String date2) {
+    DateTime startDate = DateTime(
+      int.parse(date1.substring(0, 4)),
+      int.parse(date1.substring(5, 7)),
+      int.parse(date1.substring(8, 10)),
+    );
+    DateTime endDate = DateTime(
+      int.parse(date2.substring(0, 4)),
+      int.parse(date2.substring(5, 7)),
+      int.parse(date2.substring(8, 10)),
+    );
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+      test.add(days[i].toString().substring(0, 10));
+    }
+  }
+
   Future<void> getReservationDates({required int propertyID}) async {
     emit(PropertyDetailsLoading());
     (await GetReservationDatesService.getReservationDates(
@@ -63,14 +81,13 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
 
   Future<void> bookReservation() async {
     (await StoreReservationService.storeReservation(
-            token:
-                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTkyLjE2OC40My4zNzo4MDAwL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkyNzIzMzEwLCJleHAiOjE2OTI3MjY5MTAsIm5iZiI6MTY5MjcyMzMxMCwianRpIjoiRlNBRTlLdEJaQmFWc2lDaSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.2mpfj3U4jQcvGHeeGlGe0sDg4urVN5u-6MwyCWMRPXw',
-            // token: await CacheHelper.getData(key: 'Token'),
-            startDate: dailyRentDates[dailyRentStartIndex!],
-            endDate: dailyRentDates[dailyRentEndIndex!],
-            // price: int.parse((propertyDetails!.price * .1).toString()),
-            price: 1000,
-            propertyID: propertyDetails!.id))
+      token: await CacheHelper.getData(key: 'Token'),
+      startDate: dailyRentDates[dailyRentStartIndex!],
+      endDate: dailyRentDates[dailyRentEndIndex!],
+      // price: int.parse((propertyDetails!.price * .1).toString()),
+      price: 1000,
+      propertyID: propertyDetails!.id,
+    ))
         .fold(
       (failure) {
         emit(ReservationFailure(errorMessage: failure.errorMessege));
@@ -191,7 +208,6 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     return selectedDates;
   }
 
-
   Future<void> storeReport(
       {required int propertyID, required String description}) async {
     emit(StoreReportLoading());
@@ -215,22 +231,22 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
       },
     );
 
-  void getDatesBetween(String date1, String date2) {
-    DateTime startDate = DateTime(
-      int.parse(date1.substring(0, 4)),
-      int.parse(date1.substring(5, 7)),
-      int.parse(date1.substring(8, 10)),
-    );
-    DateTime endDate = DateTime(
-      int.parse(date2.substring(0, 4)),
-      int.parse(date2.substring(5, 7)),
-      int.parse(date2.substring(8, 10)),
-    );
-    List<DateTime> days = [];
-    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
-      days.add(startDate.add(Duration(days: i)));
-      test.add(days[i].toString().substring(0, 10));
+    void getDatesBetween(String date1, String date2) {
+      DateTime startDate = DateTime(
+        int.parse(date1.substring(0, 4)),
+        int.parse(date1.substring(5, 7)),
+        int.parse(date1.substring(8, 10)),
+      );
+      DateTime endDate = DateTime(
+        int.parse(date2.substring(0, 4)),
+        int.parse(date2.substring(5, 7)),
+        int.parse(date2.substring(8, 10)),
+      );
+      List<DateTime> days = [];
+      for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+        days.add(startDate.add(Duration(days: i)));
+        test.add(days[i].toString().substring(0, 10));
+      }
     }
-
   }
 }
