@@ -26,11 +26,19 @@ class PropertyDetailsView extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     int propertyID = args['propertyID'];
     String type = args['type'];
+    int space = args['space'];
 
     return BlocProvider(
-      create: (context) => PropertyDetailsCubit()
-        ..getPropertyDetails(propertyID: propertyID)
-        ..getReservationDates(propertyID: propertyID),
+      create: (context) {
+        if (space.toString()[0] == '3') {
+          return PropertyDetailsCubit()
+            ..getPropertyDetails(propertyID: propertyID)
+            ..getReservationDates(propertyID: propertyID);
+        } else {
+          return PropertyDetailsCubit()
+            ..getPropertyDetails(propertyID: propertyID);
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(type),
@@ -125,19 +133,19 @@ class PropertyDetailsBody extends StatelessWidget {
           return const CustomeProgressIndicator();
         }
 
-        PropertyDetailsModel propertyDetails =
-            BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails
-                as PropertyDetailsModel;
+        PropertyDetailsModel? propertyDetails =
+            BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails;
 
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Header(propertyDetails: propertyDetails),
+                Header(propertyDetails: propertyDetails!),
                 AllButtons(
-                    propertyDetails: propertyDetails,
-                    propertyDetailsCubit: propertyDetailsCubit),
+                  propertyDetails: propertyDetails,
+                  propertyDetailsCubit: propertyDetailsCubit,
+                ),
                 GeneralInformationCard(
                   propertyDetails: propertyDetails,
                 ),
@@ -517,46 +525,43 @@ class AllButtons extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return Scaffold(
-                          backgroundColor: Colors.transparent,
-                          body: AlertDialog(
-                            content: ContentDialog(
-                              propertyDetailsCubit: propertyDetailsCubit,
-                            ),
-                            actions: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'Close',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (propertyDetailsCubit.descriptionReport !=
-                                      '') {
-                                    propertyDetailsCubit.storeReport(
-                                        propertyID: propertyDetails.id,
-                                        description: propertyDetailsCubit
-                                            .descriptionReport);
-                                  } else {
-                                    CustomeSnackBar.showSnackBar(
-                                      context,
-                                      msg:
-                                          'Please choose the reason for submitting the report',
-                                      color: Colors.orange,
-                                    );
-                                  }
-                                },
-                                child: const Text('Submit'),
-                              ),
-                            ],
+                        return AlertDialog(
+                          content: ContentDialog(
+                            propertyDetailsCubit: propertyDetailsCubit,
                           ),
+                          actions: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                'Close',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (propertyDetailsCubit.descriptionReport !=
+                                    '') {
+                                  propertyDetailsCubit.storeReport(
+                                      propertyID: propertyDetails.id,
+                                      description: propertyDetailsCubit
+                                          .descriptionReport);
+                                } else {
+                                  CustomeSnackBar.showSnackBar(
+                                    context,
+                                    msg:
+                                        'Please choose the reason for submitting the report',
+                                    color: Colors.orange,
+                                  );
+                                }
+                              },
+                              child: const Text('Submit'),
+                            ),
+                          ],
                         );
                       },
                     );
