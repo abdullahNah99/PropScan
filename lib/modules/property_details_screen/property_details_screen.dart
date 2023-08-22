@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/add_property_screen/widgets/property_text_field.dart';
 import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 import 'package:untitled/modules/property_details_screen/cubit/property_details_cubit.dart';
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
@@ -22,11 +25,19 @@ class PropertyDetailsView extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     int propertyID = args['propertyID'];
     String type = args['type'];
+    int space = args['space'];
 
     return BlocProvider(
-      create: (context) => PropertyDetailsCubit()
-        ..getPropertyDetails(propertyID: propertyID)
-        ..getReservationDates(propertyID: propertyID),
+      create: (context) {
+        if (space.toString()[0] == '3') {
+          return PropertyDetailsCubit()
+            ..getPropertyDetails(propertyID: propertyID)
+            ..getReservationDates(propertyID: propertyID);
+        } else {
+          return PropertyDetailsCubit()
+            ..getPropertyDetails(propertyID: propertyID);
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(type),
@@ -48,29 +59,36 @@ class PropertyDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     PropertyDetailsCubit propertyDetailsCubit =
         BlocProvider.of<PropertyDetailsCubit>(context);
-    return BlocBuilder<PropertyDetailsCubit, PropertyDetailsState>(
-      // listener: (context, state) {
-      //   if (state is ReservationFailure) {
-      //     Navigator.pop(context);
-      //     CustomeSnackBar.showErrorSnackBar(context, msg: state.errorMessage);
-      //   } else if (state is ReservationSuccess) {
-      //     Navigator.pop(context);
-      //     CustomeSnackBar.showSnackBar(
-      //       context,
-      //       msg: 'Reservation Added Successfully',
-      //       color: Colors.green,
-      //     );
-      //   } else if (state is GetPropertyChatUserSuccess) {
-      //     log(state.chatUser.toString());
-      //     log(state.chatUser.email);
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => ChatView(user: state.chatUser),
-      //       ),
-      //     );
-      //   }
-      // },
+    return BlocConsumer<PropertyDetailsCubit, PropertyDetailsState>(
+      listener: (context, state) {
+        if (state is ReservationFailure) {
+          Navigator.pop(context);
+          CustomeSnackBar.showErrorSnackBar(context, msg: state.errorMessage);
+        } else if (state is ReservationSuccess) {
+          Navigator.pop(context);
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: 'Reservation Added Successfully',
+            color: Colors.green,
+          );
+        }
+        if (state is StoreReportSuccess) {
+          Navigator.pop(context);
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: state.messageModel.message,
+            color: Colors.green,
+          );
+        }
+        if (state is StoreReportFailure) {
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: 'Network Error',
+            color: Colors.red,
+          );
+        }
+      },
+
       builder: (context, state) {
         if (state is PropertyDetailsSuccess) {
           BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails =
@@ -115,19 +133,19 @@ class PropertyDetailsBody extends StatelessWidget {
           return const CustomeProgressIndicator();
         }
 
-        PropertyDetailsModel propertyDetails =
-            BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails
-                as PropertyDetailsModel;
+        PropertyDetailsModel? propertyDetails =
+            BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails;
 
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Header(propertyDetails: propertyDetails),
+                Header(propertyDetails: propertyDetails!),
                 AllButtons(
-                    propertyDetails: propertyDetails,
-                    propertyDetailsCubit: propertyDetailsCubit),
+                  propertyDetails: propertyDetails,
+                  propertyDetailsCubit: propertyDetailsCubit,
+                ),
                 GeneralInformationCard(
                   propertyDetails: propertyDetails,
                 ),
@@ -503,7 +521,55 @@ class AllButtons extends StatelessWidget {
                     backgroundColor: Colors.grey.shade300,
                     fixedSize: Size(0, 45.h),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    propertyDetailsCubit.descriptionReport = '';
+                    for (var element in propertyDetailsCubit.reports) {
+                      element.isReport = false;
+                    }
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: ContentDialog(
+                            propertyDetailsCubit: propertyDetailsCubit,
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                'Close',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (propertyDetailsCubit.descriptionReport !=
+                                    '') {
+                                  propertyDetailsCubit.storeReport(
+                                      propertyID: propertyDetails.id,
+                                      description: propertyDetailsCubit
+                                          .descriptionReport);
+                                } else {
+                                  CustomeSnackBar.showSnackBar(
+                                    context,
+                                    msg:
+                                        'Please choose the reason for submitting the report',
+                                    color: Colors.orange,
+                                  );
+                                }
+                              },
+                              child: const Text('Submit'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -561,6 +627,68 @@ class AllButtons extends StatelessWidget {
           height: 10.h,
         ),
       ],
+    );
+  }
+}
+
+class ContentDialog extends StatefulWidget {
+  const ContentDialog({super.key, required this.propertyDetailsCubit});
+  final PropertyDetailsCubit propertyDetailsCubit;
+
+  @override
+  State<ContentDialog> createState() => _ContentDialogState();
+}
+
+class _ContentDialogState extends State<ContentDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Column(
+            children: List.generate(widget.propertyDetailsCubit.reports.length,
+                (index) {
+              // log(widget.propertyDetailsCubit.reports[index].isReport.toString());
+              return Row(
+                children: [
+                  Text(widget.propertyDetailsCubit.reports[index].report),
+                  const Spacer(),
+                  Checkbox(
+                    value: widget.propertyDetailsCubit.reports[index].isReport,
+                    onChanged: (value) {
+                      widget.propertyDetailsCubit.changeChecked(
+                          widget.propertyDetailsCubit.reports[index],
+                          index,
+                          value!);
+                      setState(() {});
+                    },
+                  ),
+                ],
+              );
+            }),
+          ),
+          Text(
+            'Other',
+            style: TextStyle(
+              color: AppColors.color2,
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Center(
+            child: PropertyTextField(
+              width: 250.w,
+              maxLines: 3,
+              // hintText: 'Description',
+              keyboardType: TextInputType.multiline,
+              onChanged: (p0) {
+                widget.propertyDetailsCubit.descriptionReport = p0;
+                log(widget.propertyDetailsCubit.descriptionReport);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

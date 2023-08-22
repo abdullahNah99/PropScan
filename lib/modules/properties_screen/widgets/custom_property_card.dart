@@ -30,6 +30,7 @@ class PropertyCard extends StatelessWidget {
         Navigator.pushNamed(context, PropertyDetailsView.route, arguments: {
           "propertyID": properties.id,
           "type": properties.type,
+          "space": properties.space,
         });
         log(properties.id.toString());
 
