@@ -60,7 +60,8 @@ class DioHelper {
       url,
       queryParameters: query,
       options: Options(
-        headers: {"authorization": "Bearer $token"},
+        headers: {'auth-token': token},
+        // headers: {"authorization": "Bearer $token"},
       ),
       data: data,
     );
