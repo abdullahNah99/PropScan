@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:untitled/shared/models/Report_model.dart';
+import 'package:untitled/shared/models/message_model.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_property_details_service.dart';
+import 'package:untitled/shared/network/remote/services/reports/store_report_service.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 
 part 'property_details_state.dart';
@@ -48,6 +53,33 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     '2023-08-29',
     '2023-09-06',
   ];
+
+  List<ReportModel> reports = [
+    ReportModel(report: 'report1', isReport: false),
+    ReportModel(report: 'report2', isReport: false),
+    ReportModel(report: 'report3', isReport: false),
+    ReportModel(report: 'report4', isReport: false),
+    ReportModel(report: 'report5', isReport: false),
+    ReportModel(report: 'report6', isReport: false),
+    ReportModel(report: 'report7', isReport: false),
+  ];
+  String descriptionReport = '';
+  void changeChecked(ReportModel reports, int index, bool value) {
+    for (int i = 0; i < this.reports.length; i++) {
+      if (i != index) {
+        this.reports[i].isReport = false;
+      } else {
+        this.reports[i].isReport = value;
+        if (value == true) {
+          descriptionReport = this.reports[i].report;
+          log(descriptionReport);
+        } else {
+          descriptionReport = '';
+          log(descriptionReport);
+        }
+      }
+    }
+  }
 
   Color getDailyRentItemColor({required int index}) {
     if (reservedDates.contains(index)) {
@@ -115,5 +147,29 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
       }
     }
     return selectedDates;
+  }
+
+  Future<void> storeReport(
+      {required int propertyID, required String description}) async {
+    emit(StoreReportLoading());
+    (await StoreReportService.addReport(
+      token: await CacheHelper.getData(key: "Token"),
+      propertyID: propertyID,
+      description: description,
+    ))
+        .fold(
+      (failure) {
+        emit(
+          StoreReportFailure(
+            errorMessage: failure.errorMessege,
+          ),
+        );
+      },
+      (messageModel) {
+        emit(
+          StoreReportSuccess(messageModel: messageModel),
+        );
+      },
+    );
   }
 }
