@@ -9,9 +9,13 @@ import 'package:untitled/shared/models/message_model.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_property_details_service.dart';
-import 'package:untitled/shared/network/remote/services/reports/store_report_service.dart';
-import 'package:untitled/shared/styles/app_colors.dart';
 
+import 'package:untitled/shared/network/remote/services/reports/store_report_service.dart';
+
+import 'package:untitled/shared/network/remote/services/reservations/get_reservation_dates.dart';
+import 'package:untitled/shared/network/remote/services/reservations/store_reservation_service.dart';
+
+import 'package:untitled/shared/styles/app_colors.dart';
 part 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
@@ -39,19 +43,57 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     );
   }
 
+  Future<void> getReservationDates({required int propertyID}) async {
+    emit(PropertyDetailsLoading());
+    (await GetReservationDatesService.getReservationDates(
+            propertyID: propertyID))
+        .fold(
+      (failure) {
+        emit(PropertyDetailsFailure(errorMessage: failure.errorMessege));
+      },
+      (reservationDates) {
+        for (ReservationModel item in reservationDates) {
+          getDatesBetween(item.startDate, item.endDate);
+        }
+        log(test.toString());
+        emit(PropertyDetailsInitial());
+      },
+    );
+  }
+
+  Future<void> bookReservation() async {
+    (await StoreReservationService.storeReservation(
+            token:
+                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTkyLjE2OC40My4zNzo4MDAwL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkyNzIzMzEwLCJleHAiOjE2OTI3MjY5MTAsIm5iZiI6MTY5MjcyMzMxMCwianRpIjoiRlNBRTlLdEJaQmFWc2lDaSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.2mpfj3U4jQcvGHeeGlGe0sDg4urVN5u-6MwyCWMRPXw',
+            // token: await CacheHelper.getData(key: 'Token'),
+            startDate: dailyRentDates[dailyRentStartIndex!],
+            endDate: dailyRentDates[dailyRentEndIndex!],
+            // price: int.parse((propertyDetails!.price * .1).toString()),
+            price: 1000,
+            propertyID: propertyDetails!.id))
+        .fold(
+      (failure) {
+        emit(ReservationFailure(errorMessage: failure.errorMessege));
+      },
+      (success) {
+        emit(ReservationSuccess());
+      },
+    );
+  }
+
   List<String> dailyRentDates = [];
   List<String> dailyRentDays = [];
   int? dailyRentStartIndex;
   int? dailyRentEndIndex;
 
   List<String> test = [
-    '2023-08-24',
-    '2023-08-25',
-    '2023-08-26',
-    '2023-08-27',
-    '2023-08-28',
-    '2023-08-29',
-    '2023-09-06',
+    // '2023-08-24',
+    // '2023-08-25',
+    // '2023-08-26',
+    // '2023-08-27',
+    // '2023-08-28',
+    // '2023-08-29',
+    // '2023-09-06',
   ];
 
   List<ReportModel> reports = [
@@ -149,6 +191,7 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     return selectedDates;
   }
 
+
   Future<void> storeReport(
       {required int propertyID, required String description}) async {
     emit(StoreReportLoading());
@@ -171,5 +214,23 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
         );
       },
     );
+
+  void getDatesBetween(String date1, String date2) {
+    DateTime startDate = DateTime(
+      int.parse(date1.substring(0, 4)),
+      int.parse(date1.substring(5, 7)),
+      int.parse(date1.substring(8, 10)),
+    );
+    DateTime endDate = DateTime(
+      int.parse(date2.substring(0, 4)),
+      int.parse(date2.substring(5, 7)),
+      int.parse(date2.substring(8, 10)),
+    );
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+      test.add(days[i].toString().substring(0, 10));
+    }
+
   }
 }
