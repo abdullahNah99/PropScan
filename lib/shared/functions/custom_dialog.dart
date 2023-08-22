@@ -4,10 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:untitled/main.dart';
+
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/property_details_screen/cubit/property_details_cubit.dart';
+
 import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
 import 'package:untitled/shared/widgets/custome_button.dart';
+import '../../modules/property_details_screen/cubit/property_details_cubit.dart';
 import '../models/property_model.dart';
 
 abstract class CustomDialog {
@@ -156,6 +159,7 @@ abstract class CustomDialog {
   static void showDailyRentDialog(
     BuildContext context, {
     required Widget dailyRentGrid,
+
     required PropertyDetailsCubit propertyDetailsCubit,
   }) {
     showDialog(

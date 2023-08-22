@@ -2,14 +2,12 @@ import 'package:awesome_icons/awesome_icons.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_states.dart';
 import 'package:untitled/shared/models/firebase_models/chat_user.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import 'package:untitled/shared/network/remote/services/auth/logout_service.dart';
 import 'package:untitled/shared/network/remote/services/properties/index_properties_service.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_all_preoperties_service.dart';
-import 'package:untitled/shared/styles/app_colors.dart';
 import '../../../shared/functions/custom_snack_bar.dart';
 import '../../../shared/models/property_model.dart';
 import '../../../shared/network/local/cache_helper.dart';
@@ -180,4 +178,3 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     properties.isFoveate = !properties.isFoveate;
     emit(ChangeIsFoveateSuccess(isFoveate: properties.isFoveate));
   }
-}

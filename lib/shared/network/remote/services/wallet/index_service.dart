@@ -6,11 +6,12 @@ import '../../dio_helper.dart';
 
 abstract class WalletIndexService {
   static Future<Either<Failure, List<WalletDataModel>>> walletIndex(
-      {required int propertyID}) async {
+      {required String token}) async {
     try {
       List<WalletDataModel> walletData = [];
       var response = await DioHelper.getData(
         url: 'wallet/?per_page=&page=',
+        token: token,
       );
       var data = response.data['wallet']['walletOperations']['data'];
       for (var item in data) {
@@ -31,10 +32,11 @@ abstract class WalletIndexService {
 
 class WalletDataModel {
   final int id;
-  final double value;
+  final int value;
   final bool type;
   final String description;
   final int walletID;
+  final String date;
 
   WalletDataModel({
     required this.id,
@@ -42,6 +44,7 @@ class WalletDataModel {
     required this.type,
     required this.description,
     required this.walletID,
+    required this.date,
   });
 
   factory WalletDataModel.fromJson(Map<String, dynamic> jsonData) {
@@ -51,6 +54,7 @@ class WalletDataModel {
       type: jsonData['type'],
       description: jsonData['description'],
       walletID: jsonData['wallet_id'],
+      date: jsonData['created_at'],
     );
   }
 }

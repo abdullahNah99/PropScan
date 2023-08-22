@@ -6,6 +6,7 @@ import 'package:untitled/modules/my_advertisements_screen/my_advertisements_scre
 import 'package:untitled/modules/profile_screen/profile_screen.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
 import 'package:untitled/modules/properties_screen/widgets/custom_drawer_button.dart';
+import 'package:untitled/modules/wallet_screen/wallet_screen.dart';
 import 'package:untitled/shared/models/user_model.dart';
 import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
@@ -69,6 +70,14 @@ abstract class CustomDrawer {
             icon: Icons.account_circle,
             onPressed: () {
               Navigator.pushNamed(context, ProfileView.route);
+            },
+          ),
+          SizedBox(height: 15.h),
+          CustomDrawerButton(
+            text: 'Wallet',
+            icon: Icons.wallet,
+            onPressed: () {
+              Navigator.pushNamed(context, WalletView.route);
             },
           ),
           SizedBox(height: 15.h),
