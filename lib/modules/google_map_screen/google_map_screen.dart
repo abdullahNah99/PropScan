@@ -133,7 +133,7 @@ class _GoogleMapViewBodyState extends State<GoogleMapViewBody> {
             }),
       );
     }
-    log(_markers.toString());
+    // log(_markers.toString());
     _kGooglePlex = CameraPosition(
       target: LatLng(widget.locations[0].x, widget.locations[0].y),
       zoom: 13.7,

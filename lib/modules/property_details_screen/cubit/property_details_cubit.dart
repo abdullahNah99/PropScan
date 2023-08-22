@@ -22,7 +22,7 @@ import '../../../shared/network/remote/firebase/firebase_apis.dart';
 part 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
-  PropertyDetailsCubit() : super(PropertyDetailsInitial());
+  PropertyDetailsCubit() : super(PropertyDetailsLoading());
 
   PropertyDetailsModel? propertyDetails;
 
@@ -65,7 +65,7 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
   }
 
   Future<void> getReservationDates({required int propertyID}) async {
-    emit(PropertyDetailsLoading());
+    // emit(PropertyDetailsLoading());
     (await GetReservationDatesService.getReservationDates(
             propertyID: propertyID))
         .fold(
@@ -77,21 +77,19 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
           getDatesBetween(item.startDate, item.endDate);
         }
         log(test.toString());
-        emit(PropertyDetailsInitial());
+        // emit(PropertyDetailsInitial());
       },
     );
   }
 
   Future<void> bookReservation() async {
     (await StoreReservationService.storeReservation(
-
             token: await CacheHelper.getData(key: 'Token'),
             startDate: dailyRentDates[dailyRentStartIndex! + 1],
             endDate: dailyRentDates[dailyRentEndIndex! + 1],
             price: int.parse('${(propertyDetails!.price * .1).round()}'),
             // price: 1000,
             propertyID: propertyDetails!.id))
-
         .fold(
       (failure) {
         emit(ReservationFailure(errorMessage: failure.errorMessege));

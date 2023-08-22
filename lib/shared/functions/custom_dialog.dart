@@ -107,6 +107,8 @@ abstract class CustomDialog {
                     Navigator.pushNamed(context, PropertyDetailsView.route,
                         arguments: {
                           "propertyID": element.id,
+                          'type': element.type,
+                          "space": element.space
                         });
                   },
                   child: const Text('More information'),
