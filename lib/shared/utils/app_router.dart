@@ -5,6 +5,7 @@ import 'package:untitled/modules/profile_screen/profile_screen.dart';
 import 'package:untitled/modules/properties_screen/properties_screen.dart';
 import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
 import 'package:untitled/modules/register_screen/register_screen.dart';
+import 'package:untitled/modules/wallet_screen/wallet_screen.dart';
 import 'package:untitled/shared/network/remote/firebase/firebase_apis.dart';
 import '../../modules/add_property_screen/add_property_screen.dart';
 import '../../modules/login_screen/login_screen.dart';
@@ -21,6 +22,7 @@ abstract class AppRouter {
     ConversationsView.route: (context) => const ConversationsView(),
     MyAdvertisementsView.route: (context) => const MyAdvertisementsView(),
     PropertyDetailsView.route: (context) => const PropertyDetailsView(),
+    WalletView.route: (context) => const WalletView(),
     // TestMaps.route: (context) => const TestMaps(),
     // RegisterView.route: (context) => const RegisterView(),
     // GoogleMapView.route: (context) =>  GoogleMapView(),
