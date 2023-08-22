@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/modules/add_property_screen/widgets/property_text_field.dart';
 import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 import 'package:untitled/modules/property_details_screen/cubit/property_details_cubit.dart';
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
@@ -491,7 +492,50 @@ class AllButtons extends StatelessWidget {
                     backgroundColor: Colors.grey.shade300,
                     fixedSize: Size(0, 45.h),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Scaffold(
+                          backgroundColor: Colors.transparent,
+                          body: AlertDialog(
+                            content: ContentDialog(
+                              propertyDetailsCubit: propertyDetailsCubit,
+                            ),
+                            actions: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'Close',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (propertyDetailsCubit.descriptionReport !=
+                                      '') {
+                                    propertyDetailsCubit.storeReport(
+                                        propertyID: propertyDetails.id,
+                                        description: propertyDetailsCubit
+                                            .descriptionReport);
+                                  } else {
+                                    CustomeSnackBar.showSnackBar(context,
+                                        msg: 'xxxxxxxxxxx');
+                                  }
+                                },
+                                child: const Text('Submit'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -549,6 +593,69 @@ class AllButtons extends StatelessWidget {
           height: 10.h,
         ),
       ],
+    );
+  }
+}
+
+class ContentDialog extends StatefulWidget {
+  const ContentDialog({super.key, required this.propertyDetailsCubit});
+  final PropertyDetailsCubit propertyDetailsCubit;
+
+  @override
+  State<ContentDialog> createState() => _ContentDialogState();
+}
+
+class _ContentDialogState extends State<ContentDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Column(
+            children: List.generate(widget.propertyDetailsCubit.reports.length,
+                (index) {
+              // log(widget.propertyDetailsCubit.reports[index].isReport.toString());
+              return Row(
+                children: [
+                  Text(widget.propertyDetailsCubit.reports[index].report),
+                  const Spacer(),
+                  Checkbox(
+                    value: widget.propertyDetailsCubit.reports[index].isReport,
+                    onChanged: (value) {
+                      log(value.toString());
+                      widget.propertyDetailsCubit.changeChecked(
+                          widget.propertyDetailsCubit.reports[index],
+                          index,
+                          value!);
+                      setState(() {});
+                    },
+                  ),
+                ],
+              );
+            }),
+          ),
+          Text(
+            'Other',
+            style: TextStyle(
+              color: AppColors.color2,
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Center(
+            child: PropertyTextField(
+              width: 250.w,
+              maxLines: 3,
+              // hintText: 'Description',
+              keyboardType: TextInputType.multiline,
+              onChanged: (p0) {
+                widget.propertyDetailsCubit.descriptionReport = p0;
+                log(widget.propertyDetailsCubit.descriptionReport);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

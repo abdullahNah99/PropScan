@@ -9,6 +9,8 @@ sealed class PropertyDetailsState extends Equatable {
 
 final class PropertyDetailsInitial extends PropertyDetailsState {}
 
+final class ChangeChecked extends PropertyDetailsState {}
+
 final class PropertyDetailsLoading extends PropertyDetailsState {}
 
 final class PropertyDetailsFailure extends PropertyDetailsState {
@@ -23,6 +25,21 @@ final class PropertyDetailsSuccess extends PropertyDetailsState {
   const PropertyDetailsSuccess({required this.properties});
 }
 
+
+final class StoreReportLoading extends PropertyDetailsState {}
+
+final class StoreReportFailure extends PropertyDetailsState {
+  final String errorMessage;
+
+  const StoreReportFailure({required this.errorMessage});
+}
+
+final class StoreReportSuccess extends PropertyDetailsState {
+  final MessageModel messageModel;
+
+  const StoreReportSuccess({required this.messageModel});
+}
+
 final class ReservationFailure extends PropertyDetailsState {
   final String errorMessage;
 
@@ -30,3 +47,4 @@ final class ReservationFailure extends PropertyDetailsState {
 }
 
 final class ReservationSuccess extends PropertyDetailsState {}
+
