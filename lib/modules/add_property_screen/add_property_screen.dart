@@ -145,6 +145,12 @@ class _AddPropertyBody extends StatelessWidget {
                         msg: 'Please Select Direction',
                         color: Colors.red,
                       );
+                    } else if (cubit.x == null || cubit.y == null) {
+                      CustomeSnackBar.showSnackBar(
+                        context,
+                        msg: 'Please Select Property address on the map',
+                        color: Colors.red,
+                      );
                     } else {
                       await cubit.storeProperty();
                     }
