@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,6 +63,21 @@ class PropertyDetailsBody extends StatelessWidget {
             context,
             msg: 'Reservation Added Successfully',
             color: Colors.green,
+          );
+        }
+        if (state is StoreReportSuccess) {
+          Navigator.pop(context);
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: state.messageModel.message,
+            color: Colors.green,
+          );
+        }
+        if (state is StoreReportFailure) {
+          CustomeSnackBar.showSnackBar(
+            context,
+            msg: 'Network Error',
+            color: Colors.red,
           );
         }
       },
@@ -493,6 +510,10 @@ class AllButtons extends StatelessWidget {
                     fixedSize: Size(0, 45.h),
                   ),
                   onPressed: () {
+                    propertyDetailsCubit.descriptionReport = '';
+                    for (var element in propertyDetailsCubit.reports) {
+                      element.isReport = false;
+                    }
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -524,8 +545,12 @@ class AllButtons extends StatelessWidget {
                                         description: propertyDetailsCubit
                                             .descriptionReport);
                                   } else {
-                                    CustomeSnackBar.showSnackBar(context,
-                                        msg: 'xxxxxxxxxxx');
+                                    CustomeSnackBar.showSnackBar(
+                                      context,
+                                      msg:
+                                          'Please choose the reason for submitting the report',
+                                      color: Colors.orange,
+                                    );
                                   }
                                 },
                                 child: const Text('Submit'),
@@ -622,7 +647,6 @@ class _ContentDialogState extends State<ContentDialog> {
                   Checkbox(
                     value: widget.propertyDetailsCubit.reports[index].isReport,
                     onChanged: (value) {
-                      log(value.toString());
                       widget.propertyDetailsCubit.changeChecked(
                           widget.propertyDetailsCubit.reports[index],
                           index,
