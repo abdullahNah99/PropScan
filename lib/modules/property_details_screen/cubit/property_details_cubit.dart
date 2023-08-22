@@ -5,7 +5,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:untitled/shared/models/property_details_model.dart';
 import 'package:untitled/shared/network/local/cache_helper.dart';
 import 'package:untitled/shared/network/remote/services/properties/show_property_details_service.dart';
-import '../../../shared/styles/app_colors.dart';
+
 part 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
@@ -37,6 +37,18 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
   List<String> dailyRentDays = [];
   int? dailyRentStartIndex;
   int? dailyRentEndIndex;
+
+  List<String> test = [
+    '2023-08-24',
+    '2023-08-25',
+    '2023-08-26',
+    '2023-08-27',
+    '2023-08-28',
+    '2023-08-29',
+    '2023-09-06',
+  ];
+
+
 
   Color getDailyRentItemColor({required int index}) {
     if (reservedDates.contains(index)) {
@@ -106,13 +118,4 @@ class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
     return selectedDates;
   }
 
-  List<String> test = [
-    '2023-08-24',
-    '2023-08-25',
-    '2023-08-26',
-    '2023-08-27',
-    '2023-08-28',
-    '2023-08-29',
-    '2023-09-06',
-  ];
 }

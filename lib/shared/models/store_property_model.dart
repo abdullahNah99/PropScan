@@ -1,6 +1,6 @@
 abstract class StorePropertyModel {
   final int price;
-  final int space;
+  final String space;
   final int regionID;
   final int propertyTypeID;
   final double x;

@@ -17,7 +17,7 @@ abstract class StorePropertyService {
           endPoint: 'properties/',
           body: {
             'price': storePropertyModel.price.toString(),
-            'space': storePropertyModel.space.toString(),
+            'space': storePropertyModel.space,
             'region_id': storePropertyModel.regionID.toString(),
             'x': storePropertyModel.x.toString(),
             'y': storePropertyModel.y.toString(),
@@ -36,7 +36,7 @@ abstract class StorePropertyService {
           endPoint: 'properties/',
           body: {
             'price': storePropertyModel.price.toString(),
-            'space': storePropertyModel.space.toString(),
+            'space': storePropertyModel.space,
             'region_id': storePropertyModel.regionID.toString(),
             'x': storePropertyModel.x.toString(),
             'y': storePropertyModel.y.toString(),
@@ -56,7 +56,7 @@ abstract class StorePropertyService {
           endPoint: 'properties/',
           body: {
             'price': storePropertyModel.price.toString(),
-            'space': storePropertyModel.space.toString(),
+            'space': storePropertyModel.space,
             'region_id': storePropertyModel.regionID.toString(),
             'x': storePropertyModel.x.toString(),
             'y': storePropertyModel.y.toString(),
