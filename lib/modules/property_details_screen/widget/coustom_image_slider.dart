@@ -76,7 +76,7 @@ class ImageSlider extends StatelessWidget {
                                   },
                                   child: const Icon(
                                     Icons.close,
-                                    color: Colors.redAccent,
+                                    color: Colors.white,
                                     size: 50,
                                   ),
                                 ),
