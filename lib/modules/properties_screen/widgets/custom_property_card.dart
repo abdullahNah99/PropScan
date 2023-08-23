@@ -2,9 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/properties_screen/cubit/properties_cubit.dart';
-
-import 'package:untitled/modules/property_details_screen/widget/daily_rent_grid_view.dart';
-
 import 'package:untitled/modules/properties_screen/widgets/row_details.dart';
 import 'package:untitled/modules/property_details_screen/property_details_screen.dart';
 import '../../../shared/models/property_model.dart';
@@ -33,34 +30,6 @@ class PropertyCard extends StatelessWidget {
           "space": properties.space,
         });
         log(properties.id.toString());
-
-        // propertiesCubit.getDailyRentDates();
-
-        // CustomDialog.showDailyRentDialog(
-        //   context,
-        //   propertiesCubit: propertiesCubit,
-        //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
-        // );
-
-        // log(propertiesCubit.nearestProps.length.toString());
-        // log(propertiesCubit.nearestProps[1].x.toString());
-        // log(propertiesCubit.nearestProps[1].y.toString());
-
-        // propertiesCubit.getDailyRentDates();
-
-        // CustomDialog.showDailyRentDialog(
-        //   context,
-        //   propertiesCubit: propertiesCubit,
-        //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
-        // );
-
-        // propertiesCubit.getDailyRentDates();
-
-        // CustomDialog.showDailyRentDialog(
-        //   context,
-        //   propertyDetailsCubit: propertiesCubit,
-        //   dailyRentGrid: DailyRentGrid(propertiesCubit: propertiesCubit),
-        // );
       },
       child: Card(
         key: key,
@@ -120,9 +89,17 @@ class PropertyCard extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            const RowDetails(
-              icon: Icons.phone,
-              text: '0934487928',
+            // const RowDetails(
+            //   icon: Icons.phone,
+            //   text: '0934487928',
+            // ),
+            RowDetails(
+              icon: Icons.home,
+              text: properties.space.toString()[0] == '1'
+                  ? '${properties.type} For Sale'
+                  : properties.space.toString()[0] == '2'
+                      ? '${properties.type} For Rent'
+                      : '${properties.type} For Daily Rent',
             ),
             RowDetails(
               icon: Icons.location_on_outlined,

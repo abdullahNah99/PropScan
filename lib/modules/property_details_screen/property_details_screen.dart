@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/modules/add_property_screen/widgets/property_text_field.dart';
+import 'package:untitled/modules/chat_screen.dart/chat_screen.dart';
 import 'package:untitled/modules/google_map_screen/google_map_screen.dart';
 import 'package:untitled/modules/property_details_screen/cubit/property_details_cubit.dart';
 import 'package:untitled/modules/property_details_screen/widget/coustom_image_slider.dart';
@@ -14,6 +15,8 @@ import 'package:untitled/shared/styles/app_colors.dart';
 import 'package:untitled/shared/utils/app_assets.dart';
 import 'package:untitled/shared/widgets/custome_image.dart';
 import 'package:untitled/shared/widgets/custome_progress_indicator.dart';
+
+import '../../shared/functions/custom_snack_bar.dart';
 
 class PropertyDetailsView extends StatelessWidget {
   static const route = 'PropertyDetailsView';
@@ -71,24 +74,28 @@ class PropertyDetailsBody extends StatelessWidget {
             msg: 'Reservation Added Successfully',
             color: Colors.green,
           );
-        }
-        if (state is StoreReportSuccess) {
+        } else if (state is StoreReportSuccess) {
           Navigator.pop(context);
           CustomeSnackBar.showSnackBar(
             context,
             msg: state.messageModel.message,
             color: Colors.green,
           );
-        }
-        if (state is StoreReportFailure) {
+        } else if (state is StoreReportFailure) {
           CustomeSnackBar.showSnackBar(
             context,
             msg: 'Network Error',
             color: Colors.red,
           );
+        } else if (state is GetPropertyChatUserSuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatView(user: state.chatUser),
+            ),
+          );
         }
       },
-
       builder: (context, state) {
         if (state is PropertyDetailsSuccess) {
           BlocProvider.of<PropertyDetailsCubit>(context).propertyDetails =
@@ -486,7 +493,9 @@ class AllButtons extends StatelessWidget {
                     backgroundColor: Colors.green,
                     fixedSize: Size(0, 45.h),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // launchUrl(Uri.parse("tel://${phoneNum}"));
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -530,8 +539,11 @@ class AllButtons extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          content: ContentDialog(
-                            propertyDetailsCubit: propertyDetailsCubit,
+                          content: GestureDetector(
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            child: ContentDialog(
+                              propertyDetailsCubit: propertyDetailsCubit,
+                            ),
                           ),
                           actions: [
                             ElevatedButton(
@@ -555,12 +567,13 @@ class AllButtons extends StatelessWidget {
                                       description: propertyDetailsCubit
                                           .descriptionReport);
                                 } else {
-                                  CustomeSnackBar.showSnackBar(
-                                    context,
-                                    msg:
-                                        'Please choose the reason for submitting the report',
-                                    color: Colors.orange,
-                                  );
+                                  // CustomeSnackBar.showSnackBar(
+                                  //   context,
+                                  //   msg:
+                                  //       'Please choose the reason for submitting the report',
+                                  //   color: Colors.orange,
+                                  // );
+                                  Navigator.pop(context);
                                 }
                               },
                               child: const Text('Submit'),
